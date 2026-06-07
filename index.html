@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>True Maple Leaf — Canadian Trivia Made in Canada</title>
+<meta name="description" content="True Maple Leaf — the Canadian trivia game made in Canada. 10 fresh questions every hour on Canada, pop culture and football. Build a streak, climb your city leaderboard. Free for a limited launch period.">
+<meta name="theme-color" content="#c8102e">
+<meta property="og:title" content="True Maple Leaf — Canadian Trivia">
+<meta property="og:description" content="How well do you know Canada? 10 fresh questions every hour. Build your streak, climb your city's leaderboard.">
+<meta property="og:type" content="website">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='15' fill='%23c8102e'/><text x='32' y='43' font-family='Arial,Helvetica,sans-serif' font-size='25' font-weight='bold' fill='%23fff' text-anchor='middle'>TML</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#c8102e;--red-dk:#a00d24;--red-lt:#fff1f3;--red-mid:#e8102a;
+  --ink:#0f0f0f;--ink2:#3a3a3a;--ink3:#7a7a7a;--ink4:#b0b0b0;
+  --paper:#fffef9;--paper2:#f7f5ef;--paper3:#eeece4;
+  --border:#e2dfd6;--border2:#ccc9bf;
+  --green:#1a9e6e;--glt:#effaf4;--gbr:#a8e0c4;
+  --amber:#b87a10;--alt:#fdf6e3;
+  --gold:#c8971f;--gold-mid:#e3b53e;--gold-dk:#9c7414;--gold-lt:#fbf3da;--gold-br:#e7cf86;
+  --r:10px;--rl:16px;--rx:22px;--r2x:28px;
+  --sh:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.06);
+  --sh-lift:0 4px 20px rgba(0,0,0,.1),0 12px 40px rgba(0,0,0,.08);
+}
+html{font-family:"Inter",-apple-system,sans-serif;background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{min-height:100vh;overflow-x:hidden}
+.screen{display:none;min-height:100vh;flex-direction:column}
+.screen.active{display:flex}
+img,svg{display:block}
+a{color:inherit;text-decoration:none}
+html{scroll-behavior:smooth}
+::selection{background:rgba(200,16,46,.18)}
+:focus-visible{outline:2px solid var(--red);outline-offset:2px;border-radius:6px}
+.logo-mark svg{width:18px;height:18px}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+}
+
+/* ─── NAV ─── */
+nav{display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:60px;border-bottom:1px solid var(--border);background:rgba(255,254,249,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);position:sticky;top:0;z-index:200}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-mark{width:32px;height:32px;background:var(--red);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.logo-glyph{color:#fff;font-weight:800;font-size:10.5px;letter-spacing:.04em}
+.logo-text{font-size:14px;font-weight:700;color:var(--ink);letter-spacing:-.02em}
+.logo-text span{color:var(--red)}
+.nav-actions{display:flex;align-items:center;gap:8px}
+.nav-link{font-size:13px;font-weight:500;color:var(--ink3);padding:6px 14px;border-radius:var(--rx);cursor:pointer;background:none;border:none;font-family:inherit;transition:color .15s,background .15s}
+.nav-link:hover{color:var(--ink);background:var(--paper2)}
+.nav-cta{font-size:13px;font-weight:600;color:#fff;background:var(--red);padding:8px 20px;border-radius:var(--rx);cursor:pointer;border:none;font-family:inherit;transition:background .15s,transform .12s,box-shadow .15s}
+.nav-cta:hover{background:var(--red-dk);box-shadow:0 4px 14px rgba(200,16,46,.35)}
+.nav-cta:active{transform:scale(.97)}
+
+/* ─── HOME HERO (light, editorial) ─── */
+.hero{position:relative;overflow:hidden;background:var(--paper);padding:60px 40px 64px;border-bottom:1px solid var(--border)}
+.hero-grid{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.hero-left{max-width:560px}
+.hero-kicker{display:inline-flex;align-items:center;gap:8px;background:var(--red-lt);border:1px solid rgba(200,16,46,.18);border-radius:var(--rx);padding:6px 14px;font-size:11px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin-bottom:22px}
+.hero-kicker span{width:7px;height:7px;border-radius:50%;background:var(--red);animation:liveBlink 1.5s infinite}
+@keyframes liveBlink{0%,100%{opacity:1}50%{opacity:.25}}
+h1.hero-headline{font-size:clamp(38px,5vw,60px);font-weight:800;line-height:1.03;letter-spacing:-.035em;color:var(--ink);margin-bottom:18px}
+h1.hero-headline em{font-style:normal;color:var(--red)}
+.hero-desc{font-size:17px;color:var(--ink2);max-width:490px;line-height:1.6;margin-bottom:12px;font-weight:400}
+.hero-discreet{font-size:12.5px;color:var(--ink3);margin-bottom:24px}
+.hero-cta-wrap{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:12px}
+.btn-play{background:var(--red);color:#fff;border:none;border-radius:var(--rx);padding:16px 30px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:-.01em;transition:all .2s;display:inline-flex;align-items:center;gap:9px;box-shadow:0 6px 20px rgba(200,16,46,.28)}
+.btn-play:hover{background:var(--red-dk);transform:translateY(-2px);box-shadow:0 10px 30px rgba(200,16,46,.4)}
+.btn-play:active{transform:scale(.98)}
+.btn-ghost-inv{background:var(--paper);color:var(--ink);border:1px solid var(--border2);border-radius:var(--rx);padding:15px 26px;font-size:15px;font-weight:500;cursor:pointer;font-family:inherit;transition:all .15s}
+.btn-ghost-inv:hover{background:var(--paper2);border-color:var(--ink3)}
+.start-here{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--red);white-space:nowrap}
+.start-here svg{animation:nudge 1.3s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(-6px)}}
+.hero-help{font-size:13px;color:var(--ink3);margin-bottom:22px;line-height:1.5}
+.hero-help strong{color:var(--ink2);font-weight:600}
+.gov-note{display:flex;align-items:flex-start;gap:9px;font-size:12px;color:var(--ink3);background:var(--paper2);border:1px solid var(--border);border-radius:12px;padding:11px 14px;line-height:1.5;max-width:470px}
+.gov-note b{color:var(--ink2);font-weight:600}
+.hero-preview{justify-self:center;width:100%;max-width:380px}
+.phone{background:var(--paper);border:1px solid var(--gold-br);border-radius:24px;box-shadow:0 0 0 1.5px var(--gold-br),var(--sh-lift);overflow:hidden;animation:goldGlow 2.6s ease-in-out infinite}
+@keyframes goldGlow{0%,100%{box-shadow:0 0 0 1.5px var(--gold-br),0 0 6px rgba(227,181,62,.15),var(--sh-lift)}50%{box-shadow:0 0 0 2px var(--gold-mid),0 0 30px rgba(227,181,62,.55),var(--sh-lift)}}
+.phone-bar{display:flex;align-items:center;gap:9px;padding:12px 16px;border-bottom:1px solid var(--border);background:var(--paper2)}
+.phone-dot{width:9px;height:9px;border-radius:50%;background:var(--red)}
+.phone-bar small{font-size:11px;color:var(--ink3);font-weight:600}
+.phone-timer{margin-left:auto;font-size:12px;font-weight:800;color:var(--red);background:var(--red-lt);border-radius:20px;padding:3px 11px}
+.phone-body{padding:18px}
+.phone-cat{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#1a6b2e;background:#f0faf3;border:1px solid #9FE1CB;border-radius:20px;padding:4px 10px;display:inline-block;margin-bottom:12px}
+.phone-q{font-size:15px;font-weight:700;color:var(--ink);line-height:1.4;margin-bottom:14px}
+.phone-opt{display:flex;align-items:center;gap:10px;border:1.5px solid var(--border);border-radius:12px;padding:11px 13px;font-size:13px;color:var(--ink2);margin-bottom:8px}
+.phone-opt b{width:22px;height:22px;border-radius:7px;background:var(--paper2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--ink3)}
+.phone-opt.ok{border-color:var(--green);background:var(--glt)}
+.phone-opt.ok b{background:var(--green);border-color:var(--green);color:#fff}
+.phone-opt.ok span{color:#0d6b47;font-weight:700;margin-left:auto}
+.hero-trust{max-width:1140px;margin:36px auto 0;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.trust-chip{display:flex;align-items:center;gap:8px;background:var(--paper2);border:1px solid var(--border);border-radius:12px;padding:10px 16px;font-size:13px;color:var(--ink2)}
+.trust-chip b{color:var(--ink);font-weight:700}
+@media(max-width:880px){
+  .hero{padding:44px 22px 48px}
+  .hero-grid{grid-template-columns:1fr;gap:34px}
+  .hero-preview{order:-1;max-width:340px}
+  .hero-left{max-width:none}
+}
+
+/* ─── CATEGORIES SECTION ─── */
+.section{padding:80px 40px}
+.section-inner{max-width:1080px;margin:0 auto}
+.section-header{margin-bottom:48px}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:12px}
+.section-h2{font-size:clamp(28px,4vw,44px);font-weight:800;letter-spacing:-.03em;color:var(--ink);line-height:1.05}
+.section-p{font-size:15px;color:var(--ink3);margin-top:10px;max-width:420px;line-height:1.65}
+
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden}
+.cat-card{background:var(--paper);padding:32px 28px;cursor:pointer;transition:background .15s;position:relative;overflow:hidden}
+.cat-card::before{content:"";position:absolute;inset:0;background:var(--red);opacity:0;transition:opacity .15s}
+.cat-card:hover::before{opacity:.04}
+.cat-card:hover .cat-arrow{opacity:1;transform:translateX(0)}
+.cat-emoji{font-size:36px;margin-bottom:16px;display:block;line-height:1}
+.cat-badge{font-size:10px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.cat-title{font-size:20px;font-weight:700;color:var(--ink);letter-spacing:-.02em;margin-bottom:8px}
+.cat-body{font-size:13px;color:var(--ink3);line-height:1.6}
+.cat-arrow{font-size:18px;margin-top:14px;color:var(--red);opacity:0;transform:translateX(-6px);transition:all .2s;display:block}
+
+/* ─── HOW IT WORKS ─── */
+.how-section{background:var(--paper2);padding:80px 40px}
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;max-width:1080px;margin:48px auto 0;position:relative}
+.steps-grid::before{content:"";position:absolute;top:20px;left:10%;right:10%;height:1px;background:var(--border2);z-index:0}
+.step{position:relative;z-index:1;padding:0 20px;text-align:center}
+.step-num{width:40px;height:40px;border-radius:50%;background:var(--red);color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
+.step-t{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:6px;letter-spacing:-.01em}
+.step-d{font-size:12px;color:var(--ink3);line-height:1.6}
+
+/* ─── PROOF SECTION ─── */
+.proof-section{padding:80px 40px;background:var(--paper2)}
+.proof-inner{max-width:1080px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.proof-text .eyebrow{color:var(--red)}
+.proof-text .section-h2{color:var(--ink)}
+.proof-text .section-p{color:var(--ink3);max-width:380px;margin-top:16px;font-size:16px}
+.proof-cards{display:flex;flex-direction:column;gap:12px}
+.proof-card{background:var(--paper);border:1px solid var(--border);border-radius:var(--rl);padding:20px 24px;display:flex;align-items:center;gap:16px;box-shadow:var(--sh)}
+.proof-ic{font-size:26px;flex-shrink:0}
+.proof-title{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:3px}
+.proof-sub{font-size:12px;color:var(--ink3)}
+
+/* ─── CTA BAND ─── */
+.cta-band{background:var(--red);padding:72px 40px;text-align:center;position:relative;overflow:hidden}
+.cta-band::before{content:"✦";position:absolute;font-size:400px;opacity:.06;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+.cta-band h2{font-size:clamp(30px,5vw,54px);font-weight:900;color:#fff;letter-spacing:-.03em;margin-bottom:12px;position:relative;line-height:1.05}
+.cta-band p{font-size:16px;color:rgba(255,255,255,.7);margin-bottom:32px;position:relative}
+.btn-wh{background:#fff;color:var(--red);border:none;border-radius:var(--rx);padding:17px 40px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;letter-spacing:-.01em;position:relative}
+.btn-wh:hover{background:var(--paper2);transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,0,0,.2)}
+
+footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer-brand{font-size:13px;font-weight:600;color:var(--ink3)}
+.footer-links{display:flex;gap:0}
+.footer-links a{font-size:12px;color:var(--ink4);padding:4px 12px;border-right:1px solid var(--border);transition:color .15s}
+.footer-links a:last-child{border-right:none}
+.footer-links a:hover{color:var(--red)}
+.footer-legal{font-size:11px;color:var(--ink4);width:100%}
+
+/* ─── AUTH ─── */
+#screen-signin,#screen-username{background:var(--paper2)}
+.auth-page{flex:1;display:flex;align-items:center;justify-content:center;padding:40px}
+.auth-box{background:var(--paper);border:1px solid var(--border);border-radius:var(--r2x);padding:48px 44px;width:100%;max-width:400px;box-shadow:var(--sh-lift)}
+.auth-em{font-size:48px;margin-bottom:20px}
+.auth-title{font-size:26px;font-weight:800;letter-spacing:-.03em;color:var(--ink);margin-bottom:6px}
+.auth-sub{font-size:14px;color:var(--ink3);line-height:1.6;margin-bottom:32px}
+.social-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:14px;border-radius:var(--r);font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;border:1px solid var(--border);background:var(--paper);color:var(--ink);transition:background .15s,border-color .15s}
+.social-btn:hover{background:var(--paper2);border-color:var(--border2)}
+.divider{display:flex;align-items:center;gap:12px;margin:18px 0;font-size:12px;color:var(--ink4)}
+.divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--border)}
+.field{width:100%;padding:13px 15px;border:1px solid var(--border);border-radius:var(--r);font-size:14px;font-family:inherit;color:var(--ink);background:var(--paper);outline:none;transition:border-color .15s,box-shadow .15s;margin-bottom:10px}
+.field:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(200,16,46,.1)}
+.field::placeholder{color:var(--ink4)}
+.cc{font-size:11px;color:var(--ink4);text-align:right;margin:-6px 0 10px}
+.drop{width:100%;padding:13px 15px;border:1px solid var(--border);border-radius:var(--r);font-size:14px;font-family:inherit;color:var(--ink);background:var(--paper);outline:none;margin-bottom:14px;appearance:none;cursor:pointer;transition:border-color .15s}
+.drop:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(200,16,46,.1)}
+.notif-row{display:flex;align-items:flex-start;gap:10px;background:var(--paper2);border-radius:var(--r);padding:12px;margin-bottom:18px}
+.notif-row input{margin-top:2px;accent-color:var(--red);flex-shrink:0}
+.notif-row label{font-size:12px;color:var(--ink3);line-height:1.5}
+.btn-main{width:100%;padding:15px;border-radius:var(--r);font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;border:none;background:var(--red);color:#fff;transition:background .15s,box-shadow .15s;letter-spacing:-.01em}
+.btn-main:hover{background:var(--red-dk);box-shadow:0 4px 16px rgba(200,16,46,.35)}
+.fine{font-size:11px;color:var(--ink4);line-height:1.6;margin-top:16px;text-align:center}
+.fine a{color:var(--red)}
+
+/* ─── GAME ─── */
+#screen-game{background:var(--paper2)}
+.game-shell{display:flex;flex-direction:column;min-height:100vh}
+
+/* game top bar */
+.gtb{background:var(--paper);border-bottom:1px solid var(--border);padding:14px 28px;position:sticky;top:0;z-index:100}
+.gtb-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.g-brand{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--ink3);letter-spacing:-.01em}
+.g-brand-dot{width:8px;height:8px;background:var(--red);border-radius:50%}
+.btn-exit{background:none;border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:500;color:var(--ink3);cursor:pointer;font-family:inherit;transition:all .15s;margin-left:4px}
+.btn-exit:hover{border-color:var(--ink3);color:var(--ink)}
+.g-pts{margin-left:auto;background:var(--red-lt);border:1px solid rgba(200,16,46,.2);border-radius:20px;padding:6px 14px;font-size:13px;font-weight:700;color:var(--red);transition:transform .15s}
+.pts-pop{animation:ptsPop .35s cubic-bezier(.34,1.56,.64,1)}
+@keyframes ptsPop{0%,100%{transform:scale(1)}50%{transform:scale(1.22)}}
+.prog-wrap{position:relative}
+.prog-bg{height:4px;background:var(--paper3);border-radius:2px;overflow:hidden}
+.prog-bar{height:100%;background:var(--red);border-radius:2px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+.prog-info{display:flex;justify-content:space-between;margin-top:5px;font-size:11px;color:var(--ink4);font-weight:500}
+.streak-live{color:var(--gold-dk);font-weight:700;opacity:0;transition:opacity .2s}
+.streak-live.on{opacity:1}
+
+/* timer */
+.timer-stage{display:flex;flex-direction:column;align-items:center;padding:24px 28px 0}
+.timer-ring{position:relative;width:72px;height:72px}
+.timer-ring svg{transform:rotate(-90deg)}
+.tr-bg{fill:none;stroke:var(--paper3);stroke-width:5}
+.tr-arc{fill:none;stroke:var(--red);stroke-width:5;stroke-linecap:round;transition:stroke-dashoffset 1s linear,stroke .4s}
+.tr-num{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:var(--ink);transition:color .4s;letter-spacing:-.03em}
+.urgent .tr-arc{stroke:#E24B4A}
+.urgent .tr-num{color:#E24B4A}
+.urgent .timer-ring{animation:tremble .5s ease-in-out infinite}
+@keyframes tremble{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+
+/* question card */
+.q-card{background:var(--paper);border:1px solid var(--border);border-radius:var(--r2x);margin:16px 28px 0;padding:28px 28px 24px;box-shadow:var(--sh)}
+.q-cat{display:inline-flex;align-items:center;gap:5px;border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;letter-spacing:.04em;border:1px solid;margin-bottom:16px;text-transform:uppercase}
+.q-text{font-size:clamp(16px,2.5vw,21px);font-weight:700;color:var(--ink);line-height:1.4;letter-spacing:-.02em}
+
+/* options */
+.opts-grid{display:flex;flex-direction:column;gap:8px;padding:0 28px;margin-top:14px;padding-bottom:28px}
+.opt{background:var(--paper);border:1.5px solid var(--border);border-radius:var(--rl);padding:15px 20px 15px 16px;font-size:14px;font-weight:500;color:var(--ink);cursor:pointer;text-align:left;font-family:inherit;transition:border-color .12s,background .12s,transform .08s;line-height:1.4;display:flex;align-items:center;gap:12px;position:relative}
+.opt-letter{width:26px;height:26px;border-radius:8px;background:var(--paper2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--ink3);flex-shrink:0;transition:all .12s}
+.opt:hover:not(:disabled){border-color:var(--red);transform:translateX(3px)}
+.opt:hover:not(:disabled) .opt-letter{background:var(--red-lt);border-color:rgba(200,16,46,.3);color:var(--red)}
+.opt:disabled{cursor:default}
+.opt.correct{background:var(--glt);border-color:var(--green)}
+.opt.correct .opt-letter{background:var(--green);border-color:var(--green);color:#fff}
+.opt.correct .opt-text{color:#0d6b47;font-weight:600}
+.opt.wrong{background:#fff5f5;border-color:#e04444}
+.opt.wrong .opt-letter{background:#e04444;border-color:#e04444;color:#fff}
+.opt.wrong .opt-text{color:#a02020}
+.opt.reveal{background:var(--glt);border-color:var(--green)}
+.opt.reveal .opt-letter{background:var(--green);border-color:var(--green);color:#fff}
+.opt-text{flex:1}
+.opt-check{font-size:16px;margin-left:auto;flex-shrink:0}
+
+/* feedback & fact */
+.feedback{margin:0 28px 12px;border-radius:var(--r);padding:11px 16px;font-size:13px;font-weight:500;opacity:0;transition:opacity .25s}
+.feedback.show{opacity:1}
+.fb-ok{background:var(--glt);border:1px solid var(--gbr);color:#0d6b47}
+.fb-bad{background:#fff5f5;border:1px solid #fcc;color:#a02020}
+.fb-time{background:var(--alt);border:1px solid #e6c97a;color:var(--amber)}
+.fact-card{margin:0 28px 24px;background:var(--paper2);border-radius:var(--r);padding:13px 16px;font-size:13px;color:var(--ink3);line-height:1.6;border-left:3px solid var(--red);opacity:0;transition:opacity .3s .1s}
+.fact-card.show{opacity:1}
+.fact-card strong{color:var(--ink);font-weight:600}
+
+/* slide animation */
+@keyframes slideInRight{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:translateX(0)}}
+.slide-in{animation:slideInRight .28s cubic-bezier(.25,.46,.45,.94) forwards}
+
+/* ─── RESULT ─── */
+#screen-result{background:var(--paper2)}
+.result-page{flex:1;max-width:540px;margin:0 auto;width:100%;padding:36px 28px 48px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.result-top-tag{font-size:11px;font-weight:700;color:var(--gold-dk);letter-spacing:.12em;text-transform:uppercase;margin-bottom:18px}
+.result-maple{font-size:72px;animation:bigPop .7s cubic-bezier(.34,1.56,.64,1) forwards;display:block;margin-bottom:6px}
+@keyframes bigPop{from{transform:scale(0) rotate(-15deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+.result-num-row{display:flex;align-items:baseline;justify-content:center;gap:6px;margin-bottom:4px}
+.result-big-num{font-size:80px;font-weight:900;color:var(--ink);letter-spacing:-.05em;line-height:1}
+.result-denom{font-size:30px;color:var(--ink4);font-weight:400}
+.result-sub{font-size:12px;font-weight:600;color:var(--ink4);letter-spacing:.1em;text-transform:uppercase;margin-bottom:24px}
+
+/* persona */
+.persona-chip{display:inline-flex;align-items:center;gap:9px;background:var(--ink);color:#fff;border-radius:var(--rx);padding:9px 18px 9px 12px;margin-bottom:8px;animation:flipInUp .5s cubic-bezier(.34,1.3,.64,1) .2s both}
+.persona-em{font-size:24px;line-height:1}
+.persona-txt{font-size:14px;font-weight:500;color:rgba(255,255,255,.7)}
+.persona-txt strong{color:#fff;font-weight:700}
+.persona-blurb{font-size:13px;color:var(--ink3);line-height:1.5;max-width:340px;margin:0 auto 22px}
+
+/* XP bar */
+.xp-section{width:100%;margin-bottom:22px}
+.xp-top{display:flex;justify-content:space-between;font-size:12px;color:var(--ink4);margin-bottom:6px;font-weight:500}
+.xp-track{height:8px;background:var(--paper3);border-radius:5px;overflow:hidden}
+.xp-bar{height:100%;background:linear-gradient(90deg,var(--gold-dk),var(--gold-mid));border-radius:5px;width:0;transition:width 1.3s cubic-bezier(.4,0,.2,1) .5s}
+
+/* badges */
+.badge-row{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-bottom:22px}
+.badge{background:var(--gold-lt);border:1px solid var(--gold-br);border-radius:var(--r);padding:7px 13px;font-size:12px;font-weight:700;color:var(--gold-dk);box-shadow:var(--sh)}
+
+/* rank card */
+.rank-block{background:linear-gradient(150deg,var(--gold-mid),var(--gold));border-radius:var(--r2x);padding:24px 28px;margin-bottom:22px;width:100%;text-align:left;position:relative;overflow:hidden;box-shadow:0 8px 28px rgba(200,150,30,.30)}
+.rank-block::after{content:"✦";position:absolute;right:-10px;top:-10px;font-size:100px;color:#3d2a06;opacity:.13;transform:rotate(15deg);pointer-events:none}
+.rank-label{font-size:10px;font-weight:700;color:rgba(61,42,6,.6);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.rank-num{font-size:42px;font-weight:900;color:#3d2a06;letter-spacing:-.04em;line-height:1}
+.rank-num span{color:var(--red)}
+.rank-province{font-size:14px;color:rgba(61,42,6,.7);margin-top:4px}
+.rank-move{font-size:13px;color:#0d6b47;font-weight:700;margin-top:8px;display:flex;align-items:center;gap:5px}
+
+/* action buttons */
+.btn-share-big{width:100%;background:var(--red);color:#fff;border:none;border-radius:var(--rx);padding:17px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:9px;transition:all .15s;letter-spacing:-.01em}
+.btn-share-big:hover{background:var(--red-dk);box-shadow:0 6px 20px rgba(200,16,46,.35);transform:translateY(-1px)}
+.btn-outline{width:100%;background:none;border:1px solid var(--border);border-radius:var(--rx);padding:14px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;color:var(--ink3);margin-bottom:9px;transition:background .15s}
+.btn-outline:hover{background:var(--paper)}
+.result-note{font-size:12px;color:var(--ink4);margin-top:8px}
+
+/* ─── LEADERBOARD ─── */
+#screen-leaderboard{background:var(--paper)}
+.lb-page{padding:36px 40px 60px;max-width:740px;margin:0 auto;width:100%}
+.lb-title{font-size:36px;font-weight:900;letter-spacing:-.03em;margin-bottom:4px}
+.lb-status{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--ink3);margin-bottom:22px}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.lb-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:24px}
+.lb-tab{border-radius:20px;padding:7px 16px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:var(--paper);color:var(--ink3);font-family:inherit;transition:all .15s}
+.lb-tab:hover{border-color:var(--red);color:var(--red)}
+.lb-tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.lb-table{border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;margin-bottom:14px}
+.lb-row{display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border);transition:background .12s}
+.lb-row:last-child{border-bottom:none}
+.lb-row:hover{background:var(--paper2)}
+.lb-pos{width:32px;text-align:center;font-size:15px;font-weight:700;color:var(--ink3);flex-shrink:0}
+.lb-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+.lb-details{flex:1;min-width:0}
+.lb-name{font-size:14px;font-weight:700;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lb-meta{font-size:12px;color:var(--ink3);margin-top:1px}
+.lb-score{font-size:15px;font-weight:800;color:var(--red);letter-spacing:-.02em}
+.you-row{background:var(--red-lt);border:1px solid rgba(200,16,46,.2);border-radius:var(--rl);padding:14px 20px;display:flex;align-items:center;gap:14px}
+.you-badge{font-size:9px;font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:.1em;flex-shrink:0;background:rgba(200,16,46,.12);padding:3px 8px;border-radius:20px}
+
+/* ─── COOKIE ─── */
+#cookie-bar{display:none;position:fixed;bottom:0;left:0;right:0;z-index:500;background:rgba(255,254,249,.97);backdrop-filter:blur(16px);border-top:1px solid var(--border);padding:14px 28px}
+.cookie-in{max-width:840px;margin:0 auto;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.cookie-copy{flex:1;min-width:180px}
+.cookie-copy strong{font-size:13px;color:var(--ink);display:block;margin-bottom:2px}
+.cookie-copy span{font-size:12px;color:var(--ink3)}
+.cookie-actions{display:flex;gap:8px;flex-shrink:0}
+
+/* ─── MODALS ─── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(15,15,15,.6);z-index:600;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(6px)}
+.overlay.open{display:flex}
+.modal-box{background:var(--paper);border-radius:var(--r2x);padding:36px 32px;max-width:400px;width:100%;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,.25);animation:modalIn .3s cubic-bezier(.34,1.3,.64,1)}
+@keyframes modalIn{from{transform:scale(.9) translateY(16px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.modal-em{font-size:40px;margin-bottom:14px}
+.modal-title{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
+.modal-sub{font-size:14px;color:var(--ink3);line-height:1.6;margin-bottom:24px}
+#share-canvas{width:100%;border-radius:var(--rl);border:1px solid var(--border);margin-bottom:16px;display:block}
+.share-social{display:flex;gap:8px;justify-content:center;margin-bottom:14px}
+.share-ic{width:44px;height:44px;border-radius:50%;border:1px solid var(--border);background:var(--paper);font-size:18px;font-weight:700;cursor:pointer;font-family:inherit;color:var(--ink);transition:transform .12s,background .15s,border-color .15s;display:flex;align-items:center;justify-content:center}
+.share-ic:hover{transform:translateY(-2px)}
+.share-x:hover{background:#0f0f0f;color:#fff;border-color:#0f0f0f}
+.share-fb:hover{background:#1877f2;color:#fff;border-color:#1877f2}
+.share-wa:hover{background:#25d366;color:#fff;border-color:#25d366}
+.share-dl:hover{background:var(--red);color:#fff;border-color:var(--red)}
+
+/* ─── CONFETTI ─── */
+.cf{position:fixed;pointer-events:none;z-index:999;animation:cfFall var(--d) ease-in forwards}
+@keyframes cfFall{0%{opacity:1;transform:translateY(-20px) rotate(0deg) scale(1)}100%{opacity:0;transform:translateY(105vh) rotate(740deg) scale(.6)}}
+
+/* ─── UTILS ─── */
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+.shake{animation:shake .38s ease}
+@keyframes correctBounce{0%,100%{transform:scale(1) translateX(3px)}40%{transform:scale(1.02) translateX(3px)}}
+.c-bounce{animation:correctBounce .35s ease}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:768px){
+  nav{padding:0 20px}
+  .hero{padding:60px 24px 60px;min-height:85vh}
+  .hero-bg-leaf{font-size:300px;right:-60px}
+  .section{padding:56px 20px}
+  .how-section{padding:56px 20px}
+  .proof-section{padding:56px 20px}
+  .cta-band{padding:56px 20px}
+  footer{padding:20px 24px}
+  .cat-grid{grid-template-columns:1fr;gap:0}
+  .steps-grid{grid-template-columns:1fr 1fr;gap:28px}
+  .steps-grid::before{display:none}
+  .proof-inner{grid-template-columns:1fr;gap:36px}
+  .lb-page{padding:24px 20px 48px}
+  .gtb{padding:12px 20px}
+  .q-card{margin:14px 16px 0;padding:22px 20px 18px}
+  .opts-grid{padding:0 16px 24px}
+  .feedback,.fact-card{margin-left:16px;margin-right:16px}
+  .result-page{padding:28px 20px 40px}
+  .auth-box{padding:32px 22px}
+}
+@media(max-width:480px){
+  nav{padding:0 16px}
+  .hero{padding:48px 16px 52px}
+  .steps-grid{grid-template-columns:1fr}
+  .stats-bar{flex-direction:column}
+  .sbar-cell{border-right:none;border-bottom:1px solid rgba(255,255,255,.08)}
+  .sbar-cell:last-child{border-bottom:none}
+}
+
+/* ═══ 3D & DEPTH EFFECTS ═══ */
+/* Question card — mouse tracking tilt */
+.q-card{transform-style:preserve-3d;will-change:transform}
+
+/* Slide-in with 3D depth */
+@keyframes slideInRight{
+  from{opacity:0;transform:translateX(28px) perspective(600px) rotateY(14deg)}
+  to{opacity:1;transform:translateX(0) perspective(600px) rotateY(0)}
+}
+
+/* Correct answer 3D flip-in */
+@keyframes flipInUp{
+  from{opacity:.4;transform:perspective(400px) rotateX(-30deg) scale(.96)}
+  to{opacity:1;transform:perspective(400px) rotateX(0) scale(1)}
+}
+.opt.correct{animation:flipInUp .3s cubic-bezier(.34,1.3,.64,1)}
+.opt.reveal{animation:flipInUp .3s cubic-bezier(.34,1.3,.64,1)}
+
+/* Stats bar 3D tilt — looks like a physical scoreboard */
+.stats-bar{
+  transform:perspective(900px) rotateX(8deg);
+  transform-origin:50% 0;
+  transition:transform .4s ease
+}
+.stats-bar:hover{transform:perspective(900px) rotateX(0deg)}
+
+/* Category cards 3D */
+.cat-card{will-change:transform;transform-style:preserve-3d}
+
+/* Proof cards 3D */
+.proof-card{will-change:transform}
+
+/* Rank block 3D pop-in */
+@keyframes rankPop3D{
+  from{opacity:0;transform:perspective(600px) rotateX(-12deg) scale(.95) translateY(10px)}
+  to{opacity:1;transform:perspective(600px) rotateX(0) scale(1) translateY(0)}
+}
+.rank-block{animation:rankPop3D .55s cubic-bezier(.34,1.3,.64,1) .35s both}
+
+/* Result maple leaf — 3D spin entry */
+@keyframes leafSpin3D{
+  from{transform:scale(0) perspective(200px) rotateY(-180deg);opacity:0}
+  to{transform:scale(1) perspective(200px) rotateY(0);opacity:1}
+}
+.result-maple{animation:leafSpin3D .75s cubic-bezier(.34,1.56,.64,1) forwards!important}
+
+/* Auth box 3D float */
+@keyframes authFloat{
+  from{opacity:0;transform:perspective(600px) rotateX(-8deg) translateY(20px) scale(.97)}
+  to{opacity:1;transform:perspective(600px) rotateX(0) translateY(0) scale(1)}
+}
+.auth-box{animation:authFloat .45s cubic-bezier(.34,1.3,.64,1)}
+
+/* Hero kicker floating badge */
+@keyframes floatBadge{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.hero-kicker{animation:floatBadge 3.5s ease-in-out infinite}
+
+/* Freshness live badge */
+#q-freshness{
+  display:none;align-items:center;gap:4px;
+  font-size:10px;font-weight:700;color:var(--green);
+  background:var(--glt);border:1px solid var(--gbr);
+  border-radius:20px;padding:2px 9px;letter-spacing:.02em
+}
+
+/* Option 3D hover push */
+.opt:hover:not(:disabled){
+  border-color:var(--red);
+  transform:translateX(3px) perspective(300px) rotateX(-1.5deg);
+  box-shadow:0 4px 12px rgba(200,16,46,.12)
+}
+.float-pts{position:fixed;transform:translate(-50%,-50%);z-index:998;pointer-events:none;font-size:26px;font-weight:900;color:var(--gold-dk);text-shadow:0 1px 0 #fff,0 0 14px rgba(227,181,62,.6);animation:floatUp 1.2s cubic-bezier(.25,.8,.3,1) forwards}
+@keyframes floatUp{0%{opacity:0;transform:translate(-50%,-40%) scale(.6)}18%{opacity:1;transform:translate(-50%,-62%) scale(1.18)}100%{opacity:0;transform:translate(-50%,-185%) scale(1)}}
+.combo-toast{position:fixed;left:50%;top:24%;transform:translateX(-50%);z-index:999;pointer-events:none;background:var(--gold-mid);color:#3d2a06;font-weight:800;font-size:16px;padding:10px 22px;border-radius:24px;border:1px solid var(--gold-br);box-shadow:0 10px 30px rgba(200,150,30,.5);animation:comboPop 1.5s cubic-bezier(.25,.9,.3,1) forwards}
+@keyframes comboPop{0%{opacity:0;transform:translateX(-50%) translateY(-10px) scale(.7)}15%{opacity:1;transform:translateX(-50%) translateY(0) scale(1.1)}30%{transform:translateX(-50%) translateY(0) scale(1)}80%{opacity:1}100%{opacity:0;transform:translateX(-50%) translateY(-14px) scale(.96)}}
+.gold-flash{animation:goldFlash .65s ease}
+@keyframes goldFlash{0%{box-shadow:var(--sh)}28%{box-shadow:0 0 0 3px var(--gold-br),0 10px 34px rgba(200,150,30,.45)}100%{box-shadow:var(--sh)}}
+.g-pts.gold{background:var(--gold-lt);border-color:var(--gold-br);color:var(--gold-dk)}
+.trust-gold{background:var(--gold-lt)!important;border-color:var(--gold-br)!important;color:var(--gold-dk)!important}
+.trust-gold b{color:var(--gold-dk)!important}
+.lb-gold{background:var(--gold-lt)}
+.lb-gold .lb-score{color:var(--gold-dk)}
+@media(prefers-reduced-motion:reduce){.float-pts,.combo-toast{animation-duration:.8s!important}}
+.share-ig:hover{background:#c8102e;color:#fff;border-color:#c8102e}
+.share-tip{font-size:11px;color:var(--ink4);line-height:1.5;margin:-4px 0 14px;text-align:center}
+.praise{position:fixed;left:50%;top:30%;transform:translateX(-50%);z-index:997;pointer-events:none;font-size:32px;font-weight:900;color:var(--gold-dk);text-shadow:0 2px 0 #fff,0 0 18px rgba(227,181,62,.6);animation:praisePop .9s ease forwards}
+@keyframes praisePop{0%{opacity:0;transform:translateX(-50%) scale(.5) rotate(-6deg)}25%{opacity:1;transform:translateX(-50%) scale(1.18) rotate(2deg)}100%{opacity:0;transform:translateX(-50%) scale(1) translateY(-34px)}}
+.spark{position:fixed;z-index:998;pointer-events:none;font-size:16px;will-change:transform,opacity;animation:sparkFly .75s ease-out forwards}
+@keyframes sparkFly{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(var(--tx,0),var(--ty,0)) scale(.3)}}
+.hero-gold{display:inline-flex;align-items:center;gap:7px;background:var(--gold-lt);border:1px solid var(--gold-br);color:var(--gold-dk);font-size:12px;font-weight:700;border-radius:var(--rx);padding:6px 14px;margin-bottom:18px}
+.save-streak{width:100%;background:var(--gold-lt);border:1px solid var(--gold-br);border-radius:var(--rx);padding:13px 15px;margin-bottom:14px;display:flex;align-items:center;gap:12px;text-align:left}
+.save-streak .ss-txt{flex:1;font-size:13px;color:var(--gold-dk);line-height:1.45}
+.save-streak .ss-txt b{color:#3d2a06}
+.save-streak button{flex-shrink:0;background:var(--red);color:#fff;border:none;border-radius:var(--rx);padding:10px 15px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap}
+.save-streak button:hover{background:var(--red-dk)}
+</style>
+</head>
+<body>
+
+<!-- ════ HOME ════ -->
+<div id="screen-home" class="screen active">
+  <nav>
+    <div class="logo">
+      <div class="logo-mark"><span class="logo-glyph">TML</span></div>
+      <div class="logo-text">True <span>Maple</span> Leaf</div>
+    </div>
+    <div class="nav-actions">
+      <button class="nav-link" onclick="goLB()">Leaderboard</button>
+      <button class="nav-cta" id="nav-auth" onclick="go('screen-signin')">Sign in</button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-grid">
+      <div class="hero-left">
+        <div class="hero-kicker"><span></span> Fresh questions every hour</div>
+        <div class="hero-gold"><span aria-hidden="true">★</span> Premium experience · free for a limited launch period</div>
+        <h1 class="hero-headline">How well do you really know <em>Canada</em>?</h1>
+        <p class="hero-desc">Ten new trivia questions every hour — Canadian history, pop culture, and the World Cup. Play on your own, or make it a friendly contest with friends, coworkers, and the table next to you.</p>
+        <p class="hero-discreet">Made in Canada · built for every Canadian, ages 16 to 100.</p>
+        <div class="hero-cta-wrap">
+          <button class="btn-play" onclick="startGame()"><span>Play this hour's challenge</span><span style="font-size:18px">&rarr;</span></button>
+          <span class="start-here"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg> Tap to start &mdash; it's free</span>
+        </div>
+        <p class="hero-help">No sign-up needed to try. Play your first <strong>3 questions free</strong>, then save your streak with a one-tap email login.</p>
+        <div class="gov-note"><span aria-hidden="true">&#128274;</span><span><b>Independent &amp; unofficial.</b> A privately run game, just for fun &mdash; this is not a government website and is not affiliated with the Government of Canada or any official body.</span></div>
+      </div>
+      <div class="hero-preview" aria-hidden="true">
+        <div class="phone">
+          <div class="phone-bar"><span class="phone-dot"></span><small>Question 3 of 10</small><span class="phone-timer">&#9201; 24</span></div>
+          <div class="phone-body">
+            <span class="phone-cat">&#9917; Football</span>
+            <div class="phone-q">Which Canadian city is hosting FIFA World Cup 2026 matches?</div>
+            <div class="phone-opt"><b>A</b> Calgary</div>
+            <div class="phone-opt ok"><b>B</b> Vancouver <span>&#10003;</span></div>
+            <div class="phone-opt"><b>C</b> Halifax</div>
+            <div class="phone-opt"><b>D</b> Quebec City</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-chip"><span aria-hidden="true">&#127942;</span> <b>Live</b> city leaderboards</div>
+      <div class="trust-chip"><span aria-hidden="true">&#128293;</span> Daily <b>streaks</b></div>
+      <div class="trust-chip trust-gold"><span aria-hidden="true">&#11088;</span> <b>No ads</b> &middot; no prizes &middot; just for fun</div>
+    </div>
+  </div>
+
+  <!-- Categories -->
+  <div class="section" style="background:var(--paper)">
+    <div class="section-inner">
+      <div class="section-header" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px">
+        <div>
+          <div class="eyebrow">3 Categories</div>
+          <h2 class="section-h2">The questions<br>everyone loves</h2>
+        </div>
+        <p class="section-p">Proven by research — the 3 categories that keep people playing daily. Each challenge mixes all three.</p>
+      </div>
+      <div class="cat-grid">
+        <div class="cat-card">
+          <span class="cat-emoji">⚽</span>
+          <div class="cat-badge">World Cup 2026 — Live 🔥</div>
+          <div class="cat-title">Football</div>
+          <p class="cat-body">FIFA World Cup 2026 is happening now with games in Toronto and Vancouver. Goals, legends, records, and history.</p>
+          <span class="cat-arrow">→</span>
+        </div>
+        <div class="cat-card">
+          <span class="cat-emoji">🎬</span>
+          <div class="cat-badge">#1 Most Played Globally</div>
+          <div class="cat-title">Pop Culture</div>
+          <p class="cat-body">Movies, music, TV, celebrities — the category everyone thinks they will ace. Canadian artists, global hits, iconic films.</p>
+          <span class="cat-arrow">→</span>
+        </div>
+        <div class="cat-card">
+          <span class="cat-emoji">🧭</span>
+          <div class="cat-badge">Our Identity</div>
+          <div class="cat-title">Canada</div>
+          <p class="cat-body">History, geography, culture, food, famous Canadians — how well do you really know the country you call home?</p>
+          <span class="cat-arrow">→</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- How it works -->
+  <div class="how-section">
+    <div class="section-inner" style="text-align:center">
+      <div class="eyebrow">How it works</div>
+      <h2 class="section-h2">Simple. Daily. Canadian.</h2>
+      <div class="steps-grid">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-t">Play 10 questions</div>
+          <div class="step-d">A fresh set every hour, the same for every Canadian. 30 seconds per question. Answer fast for bonus points.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-t">Build your streak</div>
+          <div class="step-d">Come back each day to grow your streak. Miss a day and it resets. Do not break the chain.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-t">Climb your city</div>
+          <div class="step-d">Ranked against players in your city and nationally. Live leaderboard updates every 30 seconds.</div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-t">Share your result</div>
+          <div class="step-d">Beautiful result card with your score, rank, and streak. One tap to share anywhere you like.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Social proof -->
+  <div class="proof-section">
+    <div class="proof-inner">
+      <div class="proof-text">
+        <div class="eyebrow">Why people come back</div>
+        <h2 class="section-h2">Built on psychology.<br>Designed for habit.</h2>
+        <p class="section-p">Every detail — the streak, the timer, the city board — is engineered to make you want to return next hour.</p>
+      </div>
+      <div class="proof-cards">
+        <div class="proof-card">
+          <div class="proof-ic">🔥</div>
+          <div><div class="proof-title">Streak psychology</div><div class="proof-sub">Loss aversion keeps you coming back — missing a streak hurts more than winning feels good.</div></div>
+        </div>
+        <div class="proof-card">
+          <div class="proof-ic">⚡</div>
+          <div><div class="proof-title">Speed bonus</div><div class="proof-sub">Faster answers earn more points — uncertainty about your bonus score creates a dopamine loop.</div></div>
+        </div>
+        <div class="proof-card">
+          <div class="proof-ic">🏆</div>
+          <div><div class="proof-title">City rivalry</div><div class="proof-sub">People compete hardest with those closest to them — city boards make competition feel winnable.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA band -->
+  <div class="cta-band">
+    <h2>Ready to prove it?</h2>
+    <p>No password. Fresh questions every hour. Free for a limited launch period — Premium coming soon.</p>
+    <button class="btn-wh" onclick="startGame()">Play this hour's challenge →</button>
+  </div>
+
+  <footer>
+    <div class="footer-brand">© 2026 True Maple Leaf · Made in Canada, for Canadians</div>
+    <div class="footer-links">
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="mailto:hello@truemapleleaf.com">Contact</a>
+    </div>
+    <div class="footer-legal">True Maple Leaf is an independent, privately owned entertainment website. It is not affiliated with, endorsed by, sponsored by, or connected to the Government of Canada or any government body, agency, sports league, or broadcaster. All questions are original and provided for entertainment only and may contain errors. A free trivia game — no prizes, payouts, or gambling.</div>
+  </footer>
+</div>
+
+<!-- ════ SIGN IN ════ -->
+<div id="screen-signin" class="screen">
+  <nav>
+    <div class="logo" onclick="go('screen-home')" style="cursor:pointer">
+      <div class="logo-mark"><span class="logo-glyph">TML</span></div>
+      <div class="logo-text">True <span>Maple</span> Leaf</div>
+    </div>
+    <div class="nav-actions">
+      <button class="nav-link" onclick="go('screen-home')">← Back</button>
+    </div>
+  </nav>
+  <div class="auth-page">
+    <div class="auth-box">
+      <div class="auth-em">🎯</div>
+      <div class="auth-title">Join the challenge</div>
+      <div class="auth-sub">No password needed. Sign in with Google or your email — takes 30 seconds.</div>
+      <button class="social-btn" onclick="mockLogin()">
+        <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
+        Continue with Google
+      </button>
+      <div class="divider">or use your email</div>
+      <input class="field" type="email" placeholder="your@email.ca" id="email-inp">
+      <button class="btn-main" onclick="mockLogin()">Send magic link →</button>
+      <div class="fine">By continuing you agree to our <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a>. We only store your email, username, and city.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ USERNAME SETUP ════ -->
+<div id="screen-username" class="screen">
+  <nav>
+    <div class="logo">
+      <div class="logo-mark"><span class="logo-glyph">TML</span></div>
+      <div class="logo-text">True <span>Maple</span> Leaf</div>
+    </div>
+  </nav>
+  <div class="auth-page">
+    <div class="auth-box">
+      <div class="auth-em">👤</div>
+      <div class="auth-title">Pick your name</div>
+      <div class="auth-sub">Shown on the leaderboard. Max 10 characters — make it memorable.</div>
+      <input class="field" type="text" placeholder="e.g. MapleKing" id="uname" maxlength="10" oninput="document.getElementById('cc').textContent=this.value.length">
+      <div class="cc"><span id="cc">0</span>/10</div>
+      <select class="drop" id="prov">
+        <option value="" disabled selected>Select your city</option>
+        <option>Toronto</option><option>Montreal</option><option>Vancouver</option>
+        <option>Calgary</option><option>Edmonton</option><option>Ottawa</option>
+        <option>Winnipeg</option><option>Quebec City</option><option>Hamilton</option>
+        <option>Kitchener–Waterloo</option><option>London</option><option>Halifax</option>
+        <option>Victoria</option><option>Saskatoon</option><option>Regina</option>
+        <option>St. John's</option><option>Mississauga</option><option>Brampton</option>
+        <option>Surrey</option><option>Other city in Canada</option>
+      </select>
+      <div class="notif-row">
+        <input type="checkbox" id="notif">
+        <label for="notif">Send me a daily streak reminder — I can unsubscribe any time</label>
+      </div>
+      <button class="btn-main" onclick="finishSetup()">Let's play →</button>
+      <div class="fine">We only collect your email, username, and city. <a href="privacy.html">Privacy Policy</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ GAME ════ -->
+<div id="screen-game" class="screen">
+  <div class="game-shell">
+    <div class="gtb">
+      <div class="gtb-row">
+        <div class="g-brand">
+          <div class="g-brand-dot"></div>
+          True Maple Leaf
+        </div>
+        <button class="btn-exit" onclick="openQuit()">✕ Quit</button>
+        <button class="btn-exit" id="snd-btn" onclick="toggleSound()" title="Sound on/off" style="margin-left:4px">🔊</button>
+        <div class="g-pts" id="g-pts">💎 0 pts</div>
+      </div>
+      <div class="prog-wrap">
+        <div class="prog-bg"><div class="prog-bar" id="prog" style="width:0%"></div></div>
+        <div class="prog-info">
+          <span id="prog-lbl">Question 1 of 10</span>
+          <span id="q-freshness">🔄</span>
+          <span class="streak-live" id="streak-live">🔥 <span id="sc">0</span> in a row!</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="game-content" style="flex:1;overflow-y:auto">
+      <div class="timer-stage">
+        <div class="timer-ring" id="t-ring">
+          <svg width="72" height="72" viewBox="0 0 72 72">
+            <circle class="tr-bg" cx="36" cy="36" r="28"/>
+            <circle class="tr-arc" id="t-arc" cx="36" cy="36" r="28" stroke-dasharray="175.9" stroke-dashoffset="0"/>
+          </svg>
+          <div class="tr-num" id="t-num">30</div>
+        </div>
+      </div>
+      <div class="q-card" id="q-card">
+        <div class="q-cat" id="q-cat">🧭 Canada</div>
+        <div class="q-text" id="q-text">Loading question...</div>
+      </div>
+      <div class="opts-grid" id="opts"></div>
+      <div class="feedback" id="fb"></div>
+      <div class="fact-card" id="fact"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ RESULT ════ -->
+<div id="screen-result" class="screen">
+  <nav>
+    <div class="logo">
+      <div class="logo-mark"><span class="logo-glyph">TML</span></div>
+      <div class="logo-text">True <span>Maple</span> Leaf</div>
+    </div>
+    <div class="nav-actions">
+      <button class="nav-link" onclick="goLB()">Leaderboard</button>
+    </div>
+  </nav>
+  <div class="result-page">
+    <div class="result-top-tag" id="res-tag">Your result</div>
+    <span class="result-maple">🎯</span>
+    <div class="result-num-row">
+      <span class="result-big-num" id="res-num">0</span>
+      <span class="result-denom">/10</span>
+    </div>
+    <div class="result-sub">questions correct</div>
+    <div class="persona-chip" id="persona">
+      <span class="persona-em" id="persona-em">🎯</span>
+      <span class="persona-txt">You play like <strong id="persona-name">a true Canadian</strong></span>
+    </div>
+    <div class="persona-blurb" id="persona-blurb"></div>
+    <div class="xp-section">
+      <div class="xp-top"><span>XP earned today</span><span id="xp-label">0 pts</span></div>
+      <div class="xp-track"><div class="xp-bar" id="xp-bar"></div></div>
+    </div>
+    <div class="badge-row" id="badges"></div>
+    <div class="rank-block">
+      <div class="rank-label">Your rank</div>
+      <div class="rank-num" id="res-rank">#<span>—</span></div>
+      <div class="rank-province" id="res-prov">in Toronto</div>
+      <div class="rank-move" id="res-move">↑ Up 3 spots this hour</div>
+    </div>
+    <div class="save-streak" id="save-streak" style="display:none">
+      <span style="font-size:22px" aria-hidden="true">🔥</span>
+      <div class="ss-txt">Don't lose your <b id="ss-days">streak</b> — save it with a free one-tap email login.</div>
+      <button onclick="go('screen-signin')">Save streak →</button>
+    </div>
+    <button class="btn-share-big" onclick="openShare()">Share my card</button>
+    <button class="btn-outline" onclick="goLB()">View leaderboard</button>
+    <button class="btn-outline" onclick="go('screen-home')">Back to home</button>
+    <div class="result-note">New questions every hour · come back soon</div>
+  </div>
+  <footer>
+    <div class="footer-brand">True Maple Leaf</div>
+    <div class="footer-links"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+  </footer>
+</div>
+
+<!-- ════ LEADERBOARD ════ -->
+<div id="screen-leaderboard" class="screen">
+  <nav>
+    <div class="logo" onclick="go('screen-home')" style="cursor:pointer">
+      <div class="logo-mark"><span class="logo-glyph">TML</span></div>
+      <div class="logo-text">True <span>Maple</span> Leaf</div>
+    </div>
+    <div class="nav-actions">
+      <button class="nav-cta" onclick="startGame()">Play now →</button>
+    </div>
+  </nav>
+  <div class="lb-page">
+    <h1 class="lb-title">Leaderboard</h1>
+    <div class="lb-status"><span class="live-dot"></span> Live · updates every 30 seconds</div>
+    <div class="lb-tabs">
+      <button class="lb-tab on" onclick="filterLB(this,'National')">National</button>
+      <button class="lb-tab" onclick="filterLB(this,'Toronto')">Toronto</button>
+      <button class="lb-tab" onclick="filterLB(this,'Vancouver')">Vancouver</button>
+      <button class="lb-tab" onclick="filterLB(this,'Montreal')">Montreal</button>
+      <button class="lb-tab" onclick="filterLB(this,'Calgary')">Calgary</button>
+      <button class="lb-tab" onclick="filterLB(this,'Ottawa')">Ottawa</button>
+      <button class="lb-tab" onclick="filterLB(this,'Edmonton')">Edmonton</button>
+      <button class="lb-tab" onclick="filterLB(this,'Winnipeg')">Winnipeg</button>
+      <button class="lb-tab" onclick="filterLB(this,'Halifax')">Halifax</button>
+    </div>
+    <div class="lb-table" id="lb-list"></div>
+    <div class="you-row">
+      <span class="you-badge">You</span>
+      <div class="lb-av" style="background:var(--red-lt);color:var(--red);border:2px solid rgba(200,16,46,.25)" id="you-av">ME</div>
+      <div class="lb-details">
+        <div class="lb-name" style="color:var(--red)" id="you-name">YourName</div>
+        <div class="lb-meta" id="you-meta">Toronto · 🔥 0 day streak</div>
+      </div>
+      <div class="lb-score" id="you-rank">#—</div>
+    </div>
+  </div>
+  <footer>
+    <div class="footer-brand">True Maple Leaf</div>
+    <div class="footer-links"><a href="privacy.html">Privacy Policy</a><a href="terms.html">Terms of Service</a></div>
+    <div class="footer-legal">True Maple Leaf is an independent, privately owned entertainment website. It is not affiliated with, endorsed by, sponsored by, or connected to the Government of Canada or any government body, agency, sports league, or broadcaster. All questions are original and provided for entertainment only and may contain errors. A free trivia game — no prizes, payouts, or gambling.</div>
+  </footer>
+</div>
+
+<!-- ════ COOKIE BANNER ════ -->
+<div id="cookie-bar">
+  <div class="cookie-in">
+    <div class="cookie-copy">
+      <strong>We use essential cookies</strong>
+      <span>Session cookies only — no tracking, no ads. <a href="privacy.html" style="color:var(--red)">Learn more</a></span>
+    </div>
+    <div class="cookie-actions">
+      <button class="nav-cta" onclick="acceptCookie()">Accept</button>
+      <button class="nav-link" onclick="document.getElementById('cookie-bar').style.display='none'">Decline</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ SHARE MODAL ════ -->
+<div class="overlay" id="share-overlay">
+  <div class="modal-box">
+    <div class="modal-em">🏆</div>
+    <div class="modal-title" id="m-title">Great score!</div>
+    <div class="modal-sub">Your premium player card — overall rating, persona and city. Bragging rights only, no prizes. Share it and challenge your city.</div>
+    <canvas id="share-canvas" width="480" height="360"></canvas>
+    <button class="btn-main" style="margin-bottom:9px" onclick="shareCard()">📲 Share my card</button>
+    <div class="share-social">
+      <button class="share-ic share-x" onclick="shareTo('x')" title="Share on X">𝕏</button>
+      <button class="share-ic share-fb" onclick="shareTo('facebook')" title="Share on Facebook">f</button>
+      <button class="share-ic share-ig" onclick="shareTo('instagram')" title="Share on Instagram">◎</button>
+      <button class="share-ic share-wa" onclick="shareTo('whatsapp')" title="Share on WhatsApp">✆</button>
+      <button class="share-ic share-dl" onclick="downloadCard()" title="Download image">⬇</button>
+    </div>
+    <div class="share-tip">On your phone, tap <strong>Share my card</strong> to post the image straight to Instagram or WhatsApp Status. On desktop, the image is saved so you can attach it.</div>
+    <button class="btn-outline" onclick="document.getElementById('share-overlay').classList.remove('open')">Close</button>
+  </div>
+</div>
+
+<!-- ════ QUIT MODAL ════ -->
+<div class="overlay" id="quit-overlay">
+  <div class="modal-box">
+    <div class="modal-em">⚠️</div>
+    <div class="modal-title">Quit the challenge?</div>
+    <div class="modal-sub">Your progress will not be saved. Your streak is safe — come back any time!</div>
+    <button class="btn-main" style="margin-bottom:9px" onclick="quitGame()">Yes, quit</button>
+    <button class="btn-outline" onclick="document.getElementById('quit-overlay').classList.remove('open')">Keep playing</button>
+  </div>
+</div>
+
+<script>
+var S = {
+  username:"CanadaFan", city:"Toronto", streak:0, totalXP:0, lastPlay:null,
+  score:0, qIndex:0, sStreak:0, answered:false,
+  timerVal:30, timerInt:null, answers:[], questions:[]
+};
+
+// ═══ MAKE.COM EMAIL-CAPTURE WEBHOOK ═══
+// Paste the webhook URL from your Make "Custom webhook" trigger here.
+// Leave "" to skip sending (the site still works in demo mode).
+var MAKE_WEBHOOK_URL = "";
+function captureEmail(email){
+  try{ localStorage.setItem("tml_email", email); }catch(e){}
+  if(!MAKE_WEBHOOK_URL) return Promise.resolve();
+  return fetch(MAKE_WEBHOOK_URL,{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      email:email,
+      source:"truemapleleaf.com",
+      consent_notifications:false,
+      signed_up_at:new Date().toISOString()
+    })
+  }).catch(function(){});
+}
+
+// ═══ PERSISTENT LOGIN + STREAK (localStorage) ═══
+function todayKey(){return new Date().toLocaleDateString("en-CA");}
+function loadUser(){
+  try{
+    var raw=localStorage.getItem("tml_user");
+    if(!raw)return;
+    var u=JSON.parse(raw);
+    S.username=u.username||S.username;
+    S.city=u.city||S.city;
+    S.streak=u.streak||0;
+    S.totalXP=u.totalXP||0;
+    S.lastPlay=u.lastPlay||null;
+    paintUser();
+  }catch(e){}
+}
+function saveUser(){
+  try{
+    localStorage.setItem("tml_user",JSON.stringify({
+      username:S.username,city:S.city,streak:S.streak,
+      totalXP:S.totalXP,lastPlay:S.lastPlay
+    }));
+  }catch(e){}
+}
+function paintUser(){
+  var yn=document.getElementById("you-name");if(yn)yn.textContent=S.username;
+  var ya=document.getElementById("you-av");if(ya)ya.textContent=S.username.substring(0,2).toUpperCase();
+  var ym=document.getElementById("you-meta");if(ym)ym.textContent=S.city+" · 🔥 "+S.streak+" day streak";
+  // returning player: nav becomes a one-tap play button
+  var na=document.getElementById("nav-auth");
+  if(na){na.textContent="Play, @"+S.username+" →";na.onclick=function(){startGame()};}
+}
+// Advance the daily streak: +1 on a new day, reset to 1 after a gap.
+function bumpStreak(){
+  var t=todayKey();
+  if(S.lastPlay===t)return;            // already counted today
+  if(!S.lastPlay){S.streak=1;}
+  else{
+    var diff=(new Date(t)-new Date(S.lastPlay))/86400000;
+    S.streak = diff<=1.5 ? S.streak+1 : 1;
+  }
+  S.lastPlay=t;
+}
+
+var QB = [
+  {cat:"⚽ Football",cc:"#1a6b2e",cb:"#f0faf3",cbr:"#9FE1CB",q:"The FIFA World Cup 2026 is co-hosted by three countries. Which are they?",opts:["Canada, USA & Mexico","Canada, USA & Brazil","USA, Mexico & Argentina","Canada, Mexico & UK"],a:0,fact:"FIFA World Cup 2026 is the first ever hosted by 3 nations. Canada hosts matches in Toronto and Vancouver."},
+  {cat:"⚽ Football",cc:"#1a6b2e",cb:"#f0faf3",cbr:"#9FE1CB",q:"Which two Canadian cities host FIFA World Cup 2026 matches?",opts:["Toronto & Montreal","Vancouver & Calgary","Toronto & Vancouver","Ottawa & Toronto"],a:2,fact:"Toronto hosts 6 matches including Canada's opener. Vancouver hosts 7 matches, forming the Western region with Seattle and San Francisco."},
+  {cat:"⚽ Football",cc:"#1a6b2e",cb:"#f0faf3",cbr:"#9FE1CB",q:"How many teams compete in FIFA World Cup 2026 — expanded from 32?",opts:["36","40","48","56"],a:2,fact:"World Cup 2026 expands to 48 teams for the first time, adding 16 more nations and a new group-stage format."},
+  {cat:"⚽ Football",cc:"#1a6b2e",cb:"#f0faf3",cbr:"#9FE1CB",q:"Which nation has won the most FIFA World Cup titles in history?",opts:["Germany","Argentina","Brazil","France"],a:2,fact:"Brazil has won 5 World Cups — 1958, 1962, 1970, 1994, and 2002. They are the only team to have played in every single tournament."},
+  {cat:"⚽ Football",cc:"#1a6b2e",cb:"#f0faf3",cbr:"#9FE1CB",q:"Who captained Argentina to World Cup victory at Qatar 2022?",opts:["Cristiano Ronaldo","Neymar Jr.","Lionel Messi","Kylian Mbappe"],a:2,fact:"Lionel Messi captained Argentina to victory in Qatar 2022, winning 4-2 on penalties after a 3-3 draw against France."},
+  {cat:"⚽ Football",cc:"#1a6b2e",cb:"#f0faf3",cbr:"#9FE1CB",q:"Canada qualified for its first FIFA World Cup in 36 years at which tournament?",opts:["2018 Russia","2022 Qatar","2014 Brazil","2010 South Africa"],a:1,fact:"Canada qualified for Qatar 2022 — their first appearance since 1986. In 2026 they play all three group games on home soil."},
+  {cat:"⚽ Football",cc:"#1a6b2e",cb:"#f0faf3",cbr:"#9FE1CB",q:"What is it called when a player scores three goals in a single match?",opts:["A brace","A treble","A hat-trick","A triple"],a:2,fact:"A hat-trick is one of football's most celebrated individual achievements. The term originated in cricket."},
+  {cat:"⚽ Football",cc:"#1a6b2e",cb:"#f0faf3",cbr:"#9FE1CB",q:"Which MLS club did Lionel Messi join in July 2023?",opts:["LA Galaxy","Toronto FC","Inter Miami CF","New York City FC"],a:2,fact:"Messi joined Inter Miami CF in July 2023, breaking MLS attendance records and boosting North American soccer ahead of World Cup 2026."},
+  {cat:"⚽ Football",cc:"#1a6b2e",cb:"#f0faf3",cbr:"#9FE1CB",q:"Which country has appeared in the most FIFA World Cup finals ever?",opts:["Brazil","Germany","Italy","Argentina"],a:1,fact:"Germany has appeared in 8 World Cup finals — winning 4 in 1954, 1974, 1990, and 2014."},
+  {cat:"⚽ Football",cc:"#1a6b2e",cb:"#f0faf3",cbr:"#9FE1CB",q:"Which stadium hosts the FIFA World Cup 2026 final on July 19, 2026?",opts:["BMO Field Toronto","BC Place Vancouver","MetLife Stadium New Jersey","AT&T Stadium Dallas"],a:2,fact:"MetLife Stadium in East Rutherford, New Jersey hosts the 2026 final — capacity 82,500, the largest in the tournament."},
+  {cat:"🎬 Pop Culture",cc:"#7F77DD",cb:"#f5f4ff",cbr:"#CECBF6",q:"Which Canadian rapper was born Aubrey Drake Graham in Toronto?",opts:["The Weeknd","Nav","Drake","Tory Lanez"],a:2,fact:"Drake was born in Toronto in 1986 and started his career as an actor on Degrassi before becoming one of the world's best-selling music artists."},
+  {cat:"🎬 Pop Culture",cc:"#7F77DD",cb:"#f5f4ff",cbr:"#CECBF6",q:"Canadian artist Abel Tesfaye is better known by what stage name?",opts:["Drake","Shawn Mendes","The Weeknd","Nav"],a:2,fact:"The Weeknd (Abel Tesfaye) was born in Toronto to Ethiopian immigrant parents and raised in Scarborough and Mississauga, Ontario."},
+  {cat:"🎬 Pop Culture",cc:"#7F77DD",cb:"#f5f4ff",cbr:"#CECBF6",q:"Ryan Reynolds, who plays Deadpool in Marvel films, was born in which Canadian city?",opts:["Toronto","Edmonton","Vancouver","Calgary"],a:2,fact:"Ryan Reynolds was born in Vancouver, BC in 1976. Deadpool and Wolverine (2024) became the highest-grossing R-rated film of all time."},
+  {cat:"🎬 Pop Culture",cc:"#7F77DD",cb:"#f5f4ff",cbr:"#CECBF6",q:"Justin Bieber was raised in which Canadian city before being discovered on YouTube?",opts:["Toronto","London, Ontario","Stratford, Ontario","Hamilton"],a:2,fact:"Justin Bieber was raised in Stratford, Ontario and discovered at age 13 by talent manager Scooter Braun."},
+  {cat:"🎬 Pop Culture",cc:"#7F77DD",cb:"#f5f4ff",cbr:"#CECBF6",q:"Celine Dion's hit song 'My Heart Will Go On' was the theme for which 1997 film?",opts:["The English Patient","Braveheart","Titanic","Forrest Gump"],a:2,fact:"Celine Dion is from Charlemagne, Quebec. Titanic was also directed by Canadian James Cameron. The song became one of the best-selling singles ever."},
+  {cat:"🎬 Pop Culture",cc:"#7F77DD",cb:"#f5f4ff",cbr:"#CECBF6",q:"'Schitt's Creek' was co-created by which Canadian father-and-son duo?",opts:["Mike Myers and son","Dan Levy and Eugene Levy","Martin Short and son","Jim Carrey and son"],a:1,fact:"Dan and Eugene Levy co-created the show. It swept all 7 major Emmy comedy categories in 2020 — a record never achieved before."},
+  {cat:"🎬 Pop Culture",cc:"#7F77DD",cb:"#f5f4ff",cbr:"#CECBF6",q:"The rock band Rush, famous for Tom Sawyer and 2112, formed in 1968 in which Canadian city?",opts:["Ottawa","Vancouver","Toronto","Calgary"],a:2,fact:"Rush — Geddy Lee, Alex Lifeson, and Neil Peart — formed in Willowdale, Toronto and became one of the best-selling music acts of all time."},
+  {cat:"🎬 Pop Culture",cc:"#7F77DD",cb:"#f5f4ff",cbr:"#CECBF6",q:"Shawn Mendes broke which record with his 2015 debut album?",opts:["Oldest debut at #1","First social media #1","Youngest solo artist to debut at #1 on Billboard 200","Fastest million copies in Canada"],a:2,fact:"Shawn Mendes from Pickering, Ontario became the youngest solo artist to debut at #1 on the Billboard 200 with his 2015 self-titled album."},
+  {cat:"🧭 Canada",cc:"#c8102e",cb:"#fff5f7",cbr:"#fcc",q:"In what year did Canada officially become a country through Confederation?",opts:["1776","1867","1901","1931"],a:1,fact:"Canada became a self-governing Dominion on July 1, 1867. That date is now celebrated as Canada Day."},
+  {cat:"🧭 Canada",cc:"#c8102e",cb:"#fff5f7",cbr:"#fcc",q:"What is the capital city of Canada?",opts:["Toronto","Vancouver","Ottawa","Montreal"],a:2,fact:"Ottawa became capital in 1857 when Queen Victoria chose it over Toronto, Quebec City, Kingston, and Montreal for its location on the Ontario-Quebec border."},
+  {cat:"🧭 Canada",cc:"#c8102e",cb:"#fff5f7",cbr:"#fcc",q:"Which is the largest province in Canada by land area?",opts:["Ontario","British Columbia","Alberta","Quebec"],a:3,fact:"Quebec covers about 1.5 million square kilometres — larger than Iran. Ontario has the most people but Quebec has the most land."},
+  {cat:"🧭 Canada",cc:"#c8102e",cb:"#fff5f7",cbr:"#fcc",q:"Canada produces approximately what percentage of the world's maple syrup?",opts:["50%","63%","71%","80%"],a:3,fact:"Canada — primarily Quebec — produces about 80% of the world's maple syrup. Quebec alone accounts for roughly 70% of the global supply."},
+  {cat:"🧭 Canada",cc:"#c8102e",cb:"#fff5f7",cbr:"#fcc",q:"Tim Hortons was co-founded in 1964 by which Canadian hockey player?",opts:["Bobby Orr","Gordie Howe","Tim Horton","Frank Mahovlich"],a:2,fact:"Tim Horton was an NHL defenceman who co-founded the chain in Hamilton, Ontario in 1964. There are now over 5,700 locations worldwide."},
+  {cat:"🧭 Canada",cc:"#c8102e",cb:"#fff5f7",cbr:"#fcc",q:"Basketball was invented in 1891 by which Canadian?",opts:["John Naismith","Alexander Graham Bell","Frederick Banting","Sandford Fleming"],a:0,fact:"James Naismith from Almonte, Ontario invented basketball in 1891 while teaching in Springfield, Massachusetts."},
+  {cat:"🧭 Canada",cc:"#c8102e",cb:"#fff5f7",cbr:"#fcc",q:"Canada has two official languages. What are they?",opts:["English and French","English and Inuktitut","French and Spanish","English and Cree"],a:0,fact:"Canada has been officially bilingual since the Official Languages Act of 1969. New Brunswick is the only officially bilingual province."},
+  {cat:"🧭 Canada",cc:"#c8102e",cb:"#fff5f7",cbr:"#fcc",q:"Which Canadian national park, established in 1885, was the country's first?",opts:["Pacific Rim","Jasper","Banff","Yoho"],a:2,fact:"Banff National Park in Alberta was Canada's first national park and the third in the world after Yellowstone and Mackinac."},
+  {cat:"🧭 Canada",cc:"#c8102e",cb:"#fff5f7",cbr:"#fcc",q:"The Bay of Fundy is famous for having the world's what?",opts:["Largest estuary","Highest tides","Longest beach","Most diverse marine life"],a:1,fact:"The Bay of Fundy between Nova Scotia and New Brunswick has tidal ranges of up to 16 metres — the highest in the world."},
+  {cat:"🧭 Canada",cc:"#c8102e",cb:"#fff5f7",cbr:"#fcc",q:"Who was Canada's first Prime Minister?",opts:["Wilfrid Laurier","Alexander Mackenzie","John A. Macdonald","Robert Borden"],a:2,fact:"Sir John A. Macdonald served as Canada's first PM from 1867 to 1873, then again from 1878 to 1891. He was instrumental in building the Canadian Pacific Railway."}
+];
+
+var LB=[
+  {name:"MapleKing",city:"Toronto",prov:"ON",streak:22,score:3200,av:"MK",ac:"#ede9fe",at:"#6d28d9"},
+  {name:"HockeyOTT",city:"Ottawa",prov:"ON",streak:14,score:2980,av:"HO",ac:"#dbeafe",at:"#1d4ed8"},
+  {name:"TrueNorth_K",city:"Vancouver",prov:"BC",streak:11,score:2870,av:"TN",ac:"#d1fae5",at:"#065f46"},
+  {name:"PoutineQ",city:"Montreal",prov:"QC",streak:9,score:2750,av:"PQ",ac:"#fef3c7",at:"#92400e"},
+  {name:"YYZNorth",city:"Toronto",prov:"ON",streak:7,score:2640,av:"YN",ac:"#ccfbf1",at:"#0f766e"},
+  {name:"CalgaryFan",city:"Calgary",prov:"AB",streak:6,score:2510,av:"CF",ac:"#fee2e2",at:"#991b1b"},
+  {name:"VancCity",city:"Vancouver",prov:"BC",streak:5,score:2390,av:"VC",ac:"#ede9fe",at:"#6d28d9"},
+  {name:"OilTown",city:"Edmonton",prov:"AB",streak:5,score:2350,av:"OT",ac:"#fef3c7",at:"#92400e"},
+  {name:"PegCity",city:"Winnipeg",prov:"MB",streak:4,score:2240,av:"PC",ac:"#dbeafe",at:"#1d4ed8"},
+  {name:"JaysFan6",city:"Toronto",prov:"ON",streak:4,score:2150,av:"JF",ac:"#d1fae5",at:"#065f46"},
+  {name:"HalifaxSt",city:"Halifax",prov:"NS",streak:3,score:1980,av:"HS",ac:"#fef3c7",at:"#92400e"},
+  {name:"SensNation",city:"Ottawa",prov:"ON",streak:2,score:1900,av:"SN",ac:"#fee2e2",at:"#991b1b"}
+];
+
+function go(id){document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active")});document.getElementById(id).classList.add("active");window.scrollTo(0,0)}
+function goLB(){renderLB("National");go("screen-leaderboard")}
+function mockLogin(){
+  var em=document.getElementById("email-inp");
+  var val=em?em.value.trim():"";
+  // basic email shape check; only send if it looks valid
+  if(val&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)){captureEmail(val);}
+  go("screen-username");
+}
+function finishSetup(){
+  var u=document.getElementById("uname").value.trim();
+  var p=document.getElementById("prov").value;
+  if(!u||u.length<2){alert("Please enter a username (at least 2 characters).");return}
+  if(!p){alert("Please select your city.");return}
+  S.username=u;S.city=p;
+  try{localStorage.setItem("tml_registered","1");}catch(e){}
+  saveUser();
+  paintUser();
+  startGame();
+}
+
+function shuffle(arr){var a=arr.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function buildQ(){
+  var f=shuffle(QB.filter(function(q){return q.cat==="⚽ Football"})).slice(0,4);
+  var p=shuffle(QB.filter(function(q){return q.cat==="🎬 Pop Culture"})).slice(0,3);
+  var c=shuffle(QB.filter(function(q){return q.cat==="🧭 Canada"})).slice(0,3);
+  return shuffle(f.concat(p,c));
+}
+
+function startGame(){
+  S.score=0;S.qIndex=0;S.sStreak=0;S.answers=[];S.fast=0;
+  try{var _a=audioCtx();if(_a&&_a.state==="suspended")_a.resume();}catch(e){}
+  document.getElementById("g-pts").textContent="💎 0 pts";
+  var fresh=document.getElementById("q-freshness");
+  if(fresh)fresh.style.display="none";
+  go("screen-game");
+  fetchActiveQuestions().then(function(liveQ){
+    if(liveQ&&liveQ.length>=10){
+      S.questions=shuffle(liveQ).slice(0,10);
+      if(fresh&&lastFetchTime){
+        var mins=Math.round((Date.now()-lastFetchTime.getTime())/60000);
+        fresh.textContent="🔄 "+(mins<1?"just now":mins+"m ago");
+        fresh.style.display="inline-flex";
+      }
+    } else {
+      S.questions=buildQ();
+    }
+    loadQ();
+  });
+}
+
+var LETTERS=["A","B","C","D"];
+function loadQ(){
+  if(S.qIndex>=S.questions.length){endGame();return}
+  var q=S.questions[S.qIndex];
+  S.answered=false;
+  clearInterval(S.timerInt);
+
+  document.getElementById("prog").style.width=(S.qIndex/S.questions.length*100)+"%";
+  document.getElementById("prog-lbl").textContent="Question "+(S.qIndex+1)+" of "+S.questions.length;
+
+  var sl=document.getElementById("streak-live");
+  if(S.sStreak>=2){document.getElementById("sc").textContent=S.sStreak;sl.classList.add("on")}
+  else sl.classList.remove("on");
+
+  var cat=document.getElementById("q-cat");
+  cat.textContent=q.cat;cat.style.color=q.cc;cat.style.background=q.cb;cat.style.borderColor=q.cbr;
+
+  var card=document.getElementById("q-card");
+  card.style.animation="none";void card.offsetWidth;card.style.animation="slideInRight .28s cubic-bezier(.25,.46,.45,.94) forwards";
+  document.getElementById("q-text").textContent=q.q;
+
+  var opts=document.getElementById("opts");
+  opts.innerHTML="";
+  q.opts.forEach(function(o,i){
+    var btn=document.createElement("button");
+    btn.className="opt";
+    btn.innerHTML='<div class="opt-letter">'+LETTERS[i]+'</div><div class="opt-text">'+o+'</div>';
+    btn.onclick=function(){pickAns(i)};
+    opts.appendChild(btn);
+  });
+
+  document.getElementById("fb").className="feedback";document.getElementById("fb").textContent="";
+  document.getElementById("fact").className="fact-card";document.getElementById("fact").textContent="";
+
+  S.timerVal=30;updateTimer();
+  S.timerInt=setInterval(function(){S.timerVal--;updateTimer();if(S.timerVal<=0){clearInterval(S.timerInt);timeOut()}},1000);
+}
+
+function updateTimer(){
+  var t=S.timerVal;
+  document.getElementById("t-num").textContent=t;
+  document.getElementById("t-arc").style.strokeDashoffset=175.9*(1-t/30);
+  var ring=document.getElementById("t-ring");
+  if(t<=7){document.getElementById("t-arc").style.stroke="#E24B4A";document.getElementById("t-num").style.color="#E24B4A";ring.classList.add("urgent")}
+  else{document.getElementById("t-arc").style.stroke="var(--red)";document.getElementById("t-num").style.color="var(--ink)";ring.classList.remove("urgent")}
+}
+
+function pickAns(idx){
+  if(S.answered)return;
+  S.answered=true;clearInterval(S.timerInt);
+  var q=S.questions[S.qIndex];
+  var btns=document.querySelectorAll(".opt");
+  var tb=S.timerVal>=25?100:S.timerVal>=18?50:S.timerVal>=10?25:0;
+  var ok=(idx===q.a);
+  btns.forEach(function(b,i){
+    b.disabled=true;
+    if(i===q.a)b.classList.add("correct");
+    else if(i===idx&&!ok)b.classList.add("wrong");
+  });
+  var fb=document.getElementById("fb");
+  if(ok){
+    var pts=100+tb+(S.streak*10);S.score+=pts;S.sStreak++;
+    if(tb>0)S.fast++;
+    btns[idx].classList.add("c-bounce");
+    var qc=document.getElementById("q-card");if(qc){qc.classList.remove("gold-flash");void qc.offsetWidth;qc.classList.add("gold-flash");}
+    fb.className="feedback fb-ok show";
+    fb.textContent=tb>0?"Correct! +"+pts+" pts (speed bonus +"+tb+")":"Correct! +"+pts+" pts";
+    var gp=document.getElementById("g-pts");
+    gp.textContent="💎 "+S.score+" pts";
+    gp.classList.remove("pts-pop","gold");void gp.offsetWidth;gp.classList.add("pts-pop","gold");
+    floatPts(btns[idx],"+"+pts);
+    sparkleBurst(btns[idx]);
+    playSound("correct",S.sStreak);
+    if(navigator.vibrate)navigator.vibrate(S.sStreak>=3?[15,30,25]:20);
+    launchConfetti(S.sStreak>=3?22:11,true);
+    if(S.sStreak===3)comboToast("🔥 3 in a row!");
+    else if(S.sStreak===5)comboToast("🌟 5 streak — on fire!");
+    else if(S.sStreak>=7)comboToast("👑 "+S.sStreak+" in a row!");
+    else praisePop(S.sStreak);
+  } else {
+    S.sStreak=0;btns[idx].classList.add("shake");
+    fb.className="feedback fb-bad show";
+    fb.textContent="Not quite — the correct answer is highlighted in green.";
+    document.getElementById("streak-live").classList.remove("on");
+    playSound("wrong");if(navigator.vibrate)navigator.vibrate(90);
+  }
+  if(q.fact){var fc=document.getElementById("fact");fc.className="fact-card show";fc.innerHTML="<strong>Did you know?</strong> "+q.fact}
+  S.answers.push(ok);S.qIndex++;
+  setTimeout(function(){
+    var card=document.getElementById("q-card");
+    card.style.transition="opacity .18s,transform .18s";card.style.opacity="0";card.style.transform="translateX(-20px)";
+    setTimeout(loadQ,180);
+  },q.fact?2700:2000);
+}
+
+function timeOut(){
+  if(S.answered)return;
+  S.answered=true;
+  var q=S.questions[S.qIndex];
+  document.querySelectorAll(".opt").forEach(function(b,i){b.disabled=true;if(i===q.a)b.classList.add("reveal")});
+  S.sStreak=0;document.getElementById("streak-live").classList.remove("on");
+  var fb=document.getElementById("fb");fb.className="feedback fb-time show";fb.textContent="Time's up! The correct answer is shown above.";
+  if(q.fact){var fc=document.getElementById("fact");fc.className="fact-card show";fc.innerHTML="<strong>Did you know?</strong> "+q.fact}
+  S.answers.push(false);S.qIndex++;
+  setTimeout(function(){
+    var card=document.getElementById("q-card");
+    card.style.transition="opacity .18s,transform .18s";card.style.opacity="0";card.style.transform="translateX(-20px)";
+    setTimeout(loadQ,180);
+  },2700);
+}
+
+function openQuit(){document.getElementById("quit-overlay").classList.add("open")}
+function quitGame(){clearInterval(S.timerInt);document.getElementById("quit-overlay").classList.remove("open");go("screen-home")}
+
+// ═══ FUN CANADIAN PERSONA — earned from score + speed ═══
+// fast = number of answers that earned a speed bonus.
+function personaFor(correct,fast){
+  if(correct>=10) return {t:"The Maple Moose",e:"🫎",c:"MSE",d:"A flawless run. Legendary, true-north strong."};
+  if(correct>=8)  return fast>=5
+      ? {t:"The Cheetah",e:"🐆",c:"CHE",d:"Lightning fast and razor sharp — blink and you've answered."}
+      : {t:"The Polar Bear",e:"🐻‍❄️",c:"PLR",d:"Cool, calm and quietly dominant."};
+  if(correct>=6)  return {t:"The Busy Beaver",e:"🦫",c:"BVR",d:"Steady, hard-working, building that streak."};
+  if(correct>=4)  return {t:"The Canada Goose",e:"🪿",c:"GSE",d:"Honking along and getting better every round."};
+  return {t:"The Curious Loon",e:"🐦",c:"LON",d:"Every legend starts somewhere. Come back swinging."};
+}
+
+function endGame(){
+  clearInterval(S.timerInt);
+  var correct=S.answers.filter(Boolean).length;
+  if(correct===10)S.score+=500;
+  S.persona=personaFor(correct,S.fast||0);
+  bumpStreak();                 // advance the real daily streak (once per day)
+  S.totalXP+=S.score;           // accumulate lifetime XP (endowment effect)
+  saveUser();
+  var rank=Math.max(1,Math.floor(Math.random()*30)+7);
+  S.lastRank=rank;
+  var move=Math.floor(Math.random()*6)+1;
+  document.getElementById("res-num").textContent=correct;
+  document.getElementById("res-rank").innerHTML="#<span>"+rank+"</span>";
+  document.getElementById("res-prov").textContent="in "+(S.city||"Toronto");
+  document.getElementById("res-move").textContent="↑ Up "+move+" spots this hour";
+  document.getElementById("xp-label").textContent=S.score+" pts";
+  var tag=document.getElementById("res-tag");
+  tag.textContent=correct===10?"Perfect score! 🏆":correct>=8?"Excellent result! 🎉":correct>=6?"Good effort!":"Keep at it!";
+  document.getElementById("persona-em").textContent=S.persona.e;
+  document.getElementById("persona-name").textContent=S.persona.t;
+  document.getElementById("persona-blurb").textContent=S.persona.d;
+  var bds=[];
+  if(correct===10)bds.push("🏆 Perfect!");
+  else if(correct>=8)bds.push("⭐ Great round!");
+  if(S.streak>=3)bds.push("🔥 "+S.streak+"-day streak");
+  if(S.sStreak>=4)bds.push("⚡ "+S.sStreak+" in a row");
+  bds.push("💎 "+S.totalXP.toLocaleString()+" XP total");
+  document.getElementById("badges").innerHTML=bds.map(function(b){return "<div class='badge'>"+b+"</div>"}).join("");
+  document.getElementById("you-rank").textContent="#"+rank;
+  document.getElementById("you-meta").textContent=(S.city||"Toronto")+" · 🔥 "+S.streak+" day streak";
+  go("screen-result");
+  if(correct>=8)playSound("win");
+  var _reg=false;try{_reg=!!localStorage.getItem("tml_registered");}catch(e){}
+  var _ss=document.getElementById("save-streak");
+  if(_ss){if(!_reg){var _d=document.getElementById("ss-days");if(_d)_d.textContent=S.streak+"-day streak";_ss.style.display="flex";}else{_ss.style.display="none";}}
+  setTimeout(function(){document.getElementById("xp-bar").style.width=Math.min(100,correct/10*100)+"%"},300);
+  if(correct>=8)setTimeout(function(){launchConfetti(34,true)},500);
+}
+
+var REDUCE_MOTION = window.matchMedia && matchMedia("(prefers-reduced-motion:reduce)").matches;
+var CF=["#c8102e","#e3b53e","#c8971f","#1a9e6e","#5b8af0","#0f0f0f","#ff6b6b","#f5d76e"];
+var CFG=["#e3b53e","#c8971f","#f5d76e","#ffd966","#c8102e","#fff0c2"];
+function launchConfetti(n,gold){
+  if(REDUCE_MOTION)return;
+  var pal=gold?CFG:CF;
+  for(var i=0;i<n;i++){
+    var p=document.createElement("div");p.className="cf";
+    var sz=Math.random()*8+5;var isCircle=Math.random()>.5;
+    var d=(Math.random()*1.4+.7).toFixed(2);var dl=(Math.random()*.5).toFixed(2);
+    p.style.cssText="left:"+Math.random()*100+"vw;top:0;width:"+sz+"px;height:"+sz+"px;background:"+pal[Math.floor(Math.random()*pal.length)]+";border-radius:"+(isCircle?"50%":"3px")+";--d:"+d+"s;animation-delay:"+dl+"s";
+    document.body.appendChild(p);
+    setTimeout(function(el){el.remove()},(+d+ +dl)*1000+200,p);
+  }
+}
+// Floating "+points" popup that flies up from the chosen answer (dopamine reward).
+function floatPts(el,text){
+  if(!el||!el.getBoundingClientRect)return;
+  var r=el.getBoundingClientRect();
+  var fp=document.createElement("div");fp.className="float-pts";fp.textContent=text;
+  fp.style.left=(r.left+r.width/2)+"px";fp.style.top=(r.top+r.height/2)+"px";
+  document.body.appendChild(fp);
+  setTimeout(function(){fp.remove();},1300);
+}
+// Centered gold milestone toast for answer streaks.
+function comboToast(text){
+  var ct=document.createElement("div");ct.className="combo-toast";ct.textContent=text;
+  document.body.appendChild(ct);
+  setTimeout(function(){ct.remove();},1600);
+}
+var PRAISE=["Nice!","Sweet!","Great!","Awesome!","Brilliant!","Genius!","Unstoppable!"];
+function praisePop(streak){
+  var d=document.createElement("div");d.className="praise";
+  d.textContent=PRAISE[Math.min((streak||1)-1,PRAISE.length-1)];
+  document.body.appendChild(d);setTimeout(function(){d.remove();},900);
+}
+function sparkleBurst(el){
+  if(!el||!el.getBoundingClientRect||REDUCE_MOTION)return;
+  var r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+  var ch=["✦","★","✧","✨"],cols=["#e3b53e","#c8971f","#f5d76e","#c8102e"];
+  for(var i=0;i<12;i++){
+    var sp=document.createElement("div");sp.className="spark";sp.textContent=ch[i%ch.length];
+    var a=Math.random()*6.283,dist=42+Math.random()*72;
+    sp.style.left=cx+"px";sp.style.top=cy+"px";sp.style.color=cols[i%cols.length];
+    sp.style.setProperty("--tx",(Math.cos(a)*dist).toFixed(0)+"px");
+    sp.style.setProperty("--ty",(Math.sin(a)*dist).toFixed(0)+"px");
+    document.body.appendChild(sp);
+    (function(x){setTimeout(function(){x.remove();},760);})(sp);
+  }
+}
+var _AC=null,SOUND=true;
+try{SOUND=localStorage.getItem("tml_sound")!=="0";}catch(e){}
+function audioCtx(){if(!_AC){try{_AC=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}return _AC;}
+function tone(freq,start,dur,type,vol){
+  var a=audioCtx();if(!a)return;
+  var o=a.createOscillator(),g=a.createGain(),t=a.currentTime+start;
+  o.type=type||"sine";o.frequency.value=freq;o.connect(g);g.connect(a.destination);
+  g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol||0.16,t+0.012);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.start(t);o.stop(t+dur+0.02);
+}
+function playSound(kind,streak){
+  if(!SOUND||!kind)return;
+  if(kind==="correct"){var lift=Math.min((streak||1)-1,6)*45;[523,659,784].forEach(function(f,i){tone(f+lift,i*0.06,0.16,"triangle",0.15);});}
+  else if(kind==="wrong"){tone(190,0,0.16,"sawtooth",0.10);tone(120,0.07,0.2,"sawtooth",0.09);}
+  else if(kind==="win"){[523,659,784,1046,1318].forEach(function(f,i){tone(f,i*0.09,0.3,"triangle",0.16);});}
+}
+function toggleSound(){
+  SOUND=!SOUND;try{localStorage.setItem("tml_sound",SOUND?"1":"0");}catch(e){}
+  var b=document.getElementById("snd-btn");if(b)b.textContent=SOUND?"🔊":"🔇";
+  if(SOUND){var a=audioCtx();if(a&&a.state==="suspended")a.resume();playSound("correct",1);}
+}
+function dataURLtoBlob(durl){
+  var p=durl.split(","),mime=(p[0].match(/:(.*?);/)||[])[1]||"image/png",b=atob(p[1]),n=b.length,u=new Uint8Array(n);
+  while(n--)u[n]=b.charCodeAt(n);return new Blob([u],{type:mime});
+}
+function cardFile(){try{return new File([dataURLtoBlob(document.getElementById("share-canvas").toDataURL("image/png"))],"true-maple-leaf-card.png",{type:"image/png"});}catch(e){return null;}}
+
+function filterLB(btn,p){document.querySelectorAll(".lb-tab").forEach(function(t){t.classList.remove("on")});btn.classList.add("on");renderLB(p)}
+function renderLB(f){
+  var d=f==="National"?LB:LB.filter(function(p){return p.city===f});
+  d=d.slice().sort(function(a,b){return b.score-a.score});
+  var m=["🥇","🥈","🥉"];
+  var el=document.getElementById("lb-list");
+  if(!d.length){el.innerHTML="<div style='padding:32px;text-align:center;color:var(--ink3);font-size:14px'>No players from this city yet. Be the first!</div>";return}
+  el.innerHTML=d.map(function(p,i){
+    return "<div class='lb-row"+(i===0?" lb-gold":"")+"'><div class='lb-pos'>"+(i<3?m[i]:i+1)+"</div><div class='lb-av' style='background:"+p.ac+";color:"+p.at+"'>"+p.av+"</div><div class='lb-details'><div class='lb-name'>"+p.name+"</div><div class='lb-meta'>"+p.city+", "+p.prov+" · 🔥 "+p.streak+" day streak</div></div><div class='lb-score'>"+p.score.toLocaleString()+"</div></div>"
+  }).join("");
+}
+
+// rounded-rect path helper
+function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+
+// Derive a FIFA-style OVERALL rating + 6 stats from the player's data.
+// Scaling is intentionally flattering (floors ~40-60) — people share high numbers, not low ones.
+function cardData(){
+  var correct=S.answers.filter(Boolean).length;
+  var fast=S.fast||0, streak=S.streak||0, xp=S.totalXP||0, rank=S.lastRank||18;
+  var per=S.persona||personaFor(correct,fast);
+  var clamp=function(v,lo,hi){return Math.max(lo,Math.min(hi,Math.round(v)));};
+  var ACC=clamp(correct*10,35,99);      // accuracy — correct answers this round
+  var SPD=clamp(45+fast*10,40,99);      // speed — number of fast (bonus) answers
+  var STK=clamp(45+streak*6,40,99);     // streak — consecutive days played
+  var RNK=clamp(101-rank,40,99);        // rank — position in your city (lower # = higher)
+  var XP =clamp(48+xp/120,45,99);       // experience — lifetime points
+  var IQ =clamp((ACC+XP+RNK)/3,40,99);  // Canada IQ — blend of accuracy, experience, rank
+  var stats=[["ACC",ACC],["SPD",SPD],["STK",STK],["RNK",RNK],["XP",XP],["IQ",IQ]];
+  var overall=clamp((ACC+SPD+STK+RNK+XP+IQ)/6,40,99);   // OVERALL = average of the six (FIFA logic)
+  var tier=overall>=85?"ELITE":overall>=70?"GOLD":"RISING";
+  return {correct:correct,streak:streak,rank:rank,per:per,overall:overall,stats:stats,tier:tier,city:S.city||"Toronto"};
+}
+
+function drawQR(ctx,x,y,size,text){
+  if(typeof qrcode==="undefined"){
+    ctx.save();rr(ctx,x,y,size,size,8);ctx.fillStyle="#ffffff";ctx.fill();
+    ctx.fillStyle="#3d2a06";ctx.textAlign="center";ctx.font="600 10px Inter,sans-serif";
+    ctx.fillText("truemapleleaf",x+size/2,y+size/2+3);ctx.restore();return;
+  }
+  try{
+    var qr=qrcode(0,"M");qr.addData(text);qr.make();
+    var n=qr.getModuleCount(),pad=6,cell=(size-pad*2)/n;
+    ctx.save();rr(ctx,x,y,size,size,8);ctx.fillStyle="#ffffff";ctx.fill();
+    ctx.fillStyle="#1a1208";
+    for(var r=0;r<n;r++)for(var c=0;c<n;c++){if(qr.isDark(r,c))ctx.fillRect(x+pad+c*cell,y+pad+r*cell,cell+0.6,cell+0.6);}
+    ctx.restore();
+  }catch(e){}
+}
+function openShare(){
+  var canvas=document.getElementById("share-canvas");
+  var ctx=canvas.getContext("2d");
+  var d=cardData();
+  var W=540,H=760;
+  canvas.width=W*2;canvas.height=H*2;       // hi-res render for crisp social images
+  ctx.setTransform(2,0,0,2,0,0);
+  ctx.clearRect(0,0,W,H);
+  var INK="#3d2a06", INKsoft="rgba(61,42,6,.62)";
+
+  // ── card body: gold luxe gradient ──
+  var g=ctx.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,"#fbeeb6");g.addColorStop(.42,"#edca6d");g.addColorStop(.78,"#d6a83a");g.addColorStop(1,"#b8841d");
+  rr(ctx,14,14,W-28,H-28,42);ctx.fillStyle=g;ctx.fill();
+  // top sheen
+  var sh=ctx.createLinearGradient(0,14,0,270);sh.addColorStop(0,"rgba(255,255,255,.55)");sh.addColorStop(1,"rgba(255,255,255,0)");
+  rr(ctx,14,14,W-28,256,42);ctx.fillStyle=sh;ctx.fill();
+  // inner hairline frame
+  rr(ctx,30,30,W-60,H-60,32);ctx.lineWidth=2;ctx.strokeStyle="rgba(74,50,8,.30)";ctx.stroke();
+  // giant leaf watermark
+
+  // ── tier ribbon (top-right) ──
+  ctx.textAlign="center";
+  var ribbonW=d.tier==="RISING"?122:112, rx=W-40-ribbonW, ry=50;
+  rr(ctx,rx,ry,ribbonW,34,17);
+  ctx.fillStyle=d.tier==="ELITE"?"#c8102e":d.tier==="GOLD"?"#7a5e16":"#5b4a8f";ctx.fill();
+  ctx.fillStyle="#fff";ctx.font="800 16px Inter,sans-serif";
+  ctx.save();ctx.letterSpacing="2px";ctx.fillText(d.tier,rx+ribbonW/2,ry+23);ctx.restore();
+
+  // ── rating block (top-left) ──
+  ctx.textAlign="left";ctx.fillStyle=INK;
+  ctx.font="900 94px Inter,sans-serif";ctx.fillText(String(d.overall),52,152);
+  ctx.font="800 30px Inter,sans-serif";ctx.fillText(d.per.c,56,192);
+  ctx.strokeStyle="rgba(74,50,8,.4)";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(56,208);ctx.lineTo(150,208);ctx.stroke();
+  ctx.fillStyle=INK;ctx.font="700 19px Inter,sans-serif";ctx.fillText(d.city,56,244);
+
+  // ── portrait (persona emoji) ──
+  ctx.textAlign="center";ctx.font="168px serif";ctx.fillText(d.per.e,W/2+72,302);
+
+  // ── persona title + player name ──
+  ctx.fillStyle=INKsoft;ctx.font="700 17px Inter,sans-serif";
+  ctx.save();ctx.letterSpacing="3px";ctx.fillText(d.per.t.toUpperCase(),W/2,392);ctx.restore();
+  ctx.fillStyle=INK;ctx.font="800 40px Inter,sans-serif";
+  ctx.fillText(("@"+S.username).toUpperCase(),W/2,438);
+  var ug=ctx.createLinearGradient(W/2-150,0,W/2+150,0);
+  ug.addColorStop(0,"rgba(74,50,8,0)");ug.addColorStop(.5,"rgba(74,50,8,.55)");ug.addColorStop(1,"rgba(74,50,8,0)");
+  ctx.fillStyle=ug;ctx.fillRect(W/2-150,452,300,2);
+
+  // ── readable stats (plain language) ──
+  var accPct=Math.round(d.correct/10*100);
+  var rows=[
+    ["Accuracy", accPct+"%"],
+    ["City rank", "#"+d.rank+" in "+d.city],
+    ["Day streak", d.streak+(d.streak===1?" day":" days")],
+    ["Total XP", (S.totalXP||0).toLocaleString()+" pts"]
+  ];
+  var ry=502;
+  for(var i=0;i<rows.length;i++){
+    ctx.textAlign="left";ctx.fillStyle=INKsoft;ctx.font="600 17px Inter,sans-serif";ctx.fillText(rows[i][0],62,ry);
+    ctx.textAlign="right";ctx.fillStyle=INK;ctx.font="800 19px Inter,sans-serif";ctx.fillText(rows[i][1],W-62,ry);
+    if(i<rows.length-1){ctx.strokeStyle="rgba(74,50,8,.16)";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(62,ry+14);ctx.lineTo(W-62,ry+14);ctx.stroke();}
+    ry+=42;
+  }
+
+  // ── QR + footer ──
+  drawQR(ctx,W-62-78,648,78,"https://truemapleleaf.com");
+  ctx.textAlign="left";ctx.fillStyle=INK;ctx.font="800 18px Inter,sans-serif";
+  ctx.save();ctx.letterSpacing="2px";ctx.fillText("TRUE MAPLE LEAF",62,684);ctx.restore();
+  ctx.fillStyle=INKsoft;ctx.font="600 13px Inter,sans-serif";
+  ctx.fillText("Scan to play free",62,706);
+  ctx.fillText("truemapleleaf.com",62,726);
+  ctx.textAlign="left";
+
+  document.getElementById("m-title").textContent =
+    d.tier==="ELITE" ? "Elite card unlocked! 🏆" : d.tier==="GOLD" ? "Gold card earned! 🥇" : "Your player card";
+  document.getElementById("share-overlay").classList.add("open");
+}
+
+function shareText(){
+  var d=cardData();
+  return "I'm a "+d.overall+"-rated "+d.per.e+" "+d.per.t+" on True Maple Leaf! Ranked #"+d.rank+" in "+d.city+" · "+d.streak+"-day streak. Can you beat my card?";
+}
+function canvasBlob(){return new Promise(function(res){document.getElementById("share-canvas").toBlob(res,"image/png")});}
+
+// Native share — runs synchronously inside the click so it keeps user-activation
+// (calling share/open inside an async .then() is what browsers block).
+function shareCard(){
+  var txt=shareText(),url="https://truemapleleaf.com",f=cardFile();
+  if(f&&navigator.canShare&&navigator.canShare({files:[f]})){
+    navigator.share({files:[f],text:txt,url:url}).catch(function(){});
+  } else if(navigator.share){
+    navigator.share({text:txt,url:url}).catch(function(){});
+  } else {
+    downloadCard();
+    alert("Card image saved to your device. Open any app and attach it to post.");
+  }
+}
+
+// Per-network share — synchronous so popups/share aren't blocked.
+// Image attachment to X/Facebook/Instagram/WhatsApp is only possible via the device
+// share sheet (mobile). On desktop we open the composer and save the image to attach.
+function shareTo(net){
+  var txt=shareText(),site="https://truemapleleaf.com",f=cardFile();
+  // Instagram & WhatsApp Status accept an image ONLY through the native share sheet.
+  if((net==="instagram"||net==="whatsapp")&&f&&navigator.canShare&&navigator.canShare({files:[f]})){
+    navigator.share({files:[f],text:txt,url:site}).catch(function(){});
+    return;
+  }
+  downloadCard();
+  var t=encodeURIComponent(txt+" "+site),u=encodeURIComponent(site);
+  var dest = net==="x"        ? "https://twitter.com/intent/tweet?text="+t
+           : net==="facebook" ? "https://www.facebook.com/sharer/sharer.php?u="+u+"&quote="+t
+           : net==="whatsapp" ? "https://wa.me/?text="+t
+           : net==="instagram"? "https://www.instagram.com/"
+           : "";
+  if(dest)window.open(dest,"_blank","noopener");
+}
+
+function downloadCard(){var a=document.createElement("a");a.download="true-maple-leaf-card-"+new Date().toISOString().slice(0,10)+".png";a.href=document.getElementById("share-canvas").toDataURL();a.click()}
+
+function acceptCookie(){try{localStorage.setItem("tml_ok","1")}catch(e){}document.getElementById("cookie-bar").style.display="none"}
+function checkCookie(){try{if(!localStorage.getItem("tml_ok"))setTimeout(function(){document.getElementById("cookie-bar").style.display="block"},1400)}catch(e){}}
+
+// ═══════════════════════════════════════════════════════════════
+// SUPABASE CONFIG — fill in when you go live
+// Leave as empty strings for offline / demo mode (uses built-in QB)
+// ═══════════════════════════════════════════════════════════════
+var SUPABASE_URL = "https://leosxdqsetcnocyaixix.supabase.co";
+var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxlb3N4ZHFzZXRjbm9jeWFpeGl4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1NzYwNzQsImV4cCI6MjA5NTE1MjA3NH0.t3MVxxcaqs68fso2ahigisTiMxe6idcCnEgVAuQJVIc";
+var lastFetchTime = null;
+
+// Fetches the hourly active question set pushed by Make.com.
+// Returns array of question objects, or null on any error/not-configured.
+function fetchActiveQuestions(){
+  if(!SUPABASE_URL||SUPABASE_URL.indexOf("YOUR")>-1||SUPABASE_URL==="")
+    return Promise.resolve(null);
+  return fetch(
+    SUPABASE_URL+"/rest/v1/active_challenge?select=questions_json,updated_at&limit=1&order=updated_at.desc",
+    {headers:{
+      "apikey":SUPABASE_ANON_KEY,
+      "Authorization":"Bearer "+SUPABASE_ANON_KEY,
+      "Content-Type":"application/json"
+    }}
+  )
+  .then(function(r){return r.ok?r.json():null;})
+  .then(function(d){
+    if(d&&d.length>0&&d[0].questions_json&&d[0].questions_json.length>=10){
+      lastFetchTime=new Date(d[0].updated_at);
+      return d[0].questions_json;
+    }
+    return null;
+  })
+  .catch(function(){return null;});
+}
+
+// ═══════════════════════════════════════════════════════════════
+// 3D MOUSE TRACKING — question card, category cards, proof cards
+// ═══════════════════════════════════════════════════════════════
+(function init3D(){
+  if(REDUCE_MOTION)return;   // respect reduced-motion: skip all parallax/tilt
+  // Question card tilt (runs on every mouse move while in game)
+  var qcard=document.getElementById("q-card");
+  if(qcard){
+    qcard.addEventListener("mousemove",function(e){
+      var r=this.getBoundingClientRect();
+      var dx=(e.clientX-r.left-r.width/2)/(r.width/2);
+      var dy=(e.clientY-r.top-r.height/2)/(r.height/2);
+      this.style.transform="perspective(700px) rotateY("+(dx*5)+"deg) rotateX("+(-dy*3.5)+"deg) translateZ(8px)";
+      this.style.boxShadow="0 "+(8+dy*4)+"px "+(24+Math.abs(dx)*12)+"px rgba(0,0,0,.12)";
+      this.style.transition="transform .08s ease,box-shadow .08s ease";
+    });
+    qcard.addEventListener("mouseleave",function(){
+      this.style.transform="perspective(700px) rotateY(0) rotateX(0) translateZ(0)";
+      this.style.boxShadow="var(--sh)";
+      this.style.transition="transform .5s ease,box-shadow .5s ease";
+    });
+  }
+
+  // Category cards tilt
+  document.querySelectorAll(".cat-card").forEach(function(c){
+    c.addEventListener("mousemove",function(e){
+      var r=this.getBoundingClientRect();
+      var dx=(e.clientX-r.left-r.width/2)/(r.width/2);
+      var dy=(e.clientY-r.top-r.height/2)/(r.height/2);
+      this.style.transform="perspective(700px) rotateY("+(dx*4)+"deg) rotateX("+(-dy*3)+"deg) translateZ(12px)";
+      this.style.transition="transform .06s ease";
+    });
+    c.addEventListener("mouseleave",function(){
+      this.style.transform="perspective(700px) rotateY(0) rotateX(0) translateZ(0)";
+      this.style.transition="transform .45s ease";
+    });
+  });
+
+  // Proof cards tilt (dark background section)
+  document.querySelectorAll(".proof-card").forEach(function(c){
+    c.addEventListener("mousemove",function(e){
+      var r=this.getBoundingClientRect();
+      var dx=(e.clientX-r.left-r.width/2)/(r.width/2);
+      var dy=(e.clientY-r.top-r.height/2)/(r.height/2);
+      this.style.transform="perspective(500px) rotateY("+(dx*4)+"deg) rotateX("+(-dy*3)+"deg) translateZ(8px)";
+      this.style.transition="transform .06s ease";
+    });
+    c.addEventListener("mouseleave",function(){
+      this.style.transform="";
+      this.style.transition="transform .45s ease";
+    });
+  });
+
+  // Hero parallax — leaf layers move at different depths on scroll
+  var leaf1=document.querySelector(".hero-bg-leaf");
+  var leaf2=document.querySelector(".hero-bg-leaf2");
+  if(leaf1&&leaf2){
+    window.addEventListener("scroll",function(){
+      var y=window.scrollY;
+      leaf1.style.transform="translateY(calc(-50% + "+(y*0.25)+"px))";
+      leaf2.style.transform="translateY("+(-y*0.18)+"px)";
+    },{passive:true});
+  }
+})();
+// ═══════════════════════════════════════════════════════════════
+
+// ═══ Accessibility & keyboard niceties ═══
+// Click the dark backdrop to close any modal.
+document.querySelectorAll(".overlay").forEach(function(ov){
+  ov.addEventListener("click",function(e){if(e.target===ov)ov.classList.remove("open")});
+});
+document.addEventListener("keydown",function(e){
+  // Esc closes open modals
+  if(e.key==="Escape"){document.querySelectorAll(".overlay.open").forEach(function(o){o.classList.remove("open")});return;}
+  // Keys 1-4 (or A-D) answer the current question
+  var gameOn=document.getElementById("screen-game").classList.contains("active");
+  if(!gameOn||S.answered)return;
+  var map={"1":0,"2":1,"3":2,"4":3,"a":0,"b":1,"c":2,"d":3,"A":0,"B":1,"C":2,"D":3};
+  if(e.key in map){
+    var opts=document.querySelectorAll(".opt");
+    if(opts[map[e.key]])opts[map[e.key]].click();
+  }
+});
+
+loadUser();
+renderLB("National");
+checkCookie();
+</script>
+</body>
+</html>
