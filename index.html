@@ -498,6 +498,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
     </div>
     <div class="nav-actions">
       <button class="nav-link" onclick="goLB()">Leaderboard</button>
+      <button class="nav-link" id="nav-signout" onclick="signOut()" style="display:none">Sign out</button>
       <button class="nav-cta" id="nav-auth" onclick="go('screen-signin')">Sign in</button>
     </div>
   </nav>
@@ -951,6 +952,7 @@ function paintUser(){
   // returning player: nav becomes a one-tap play button
   var na=document.getElementById("nav-auth");
   if(na){na.textContent="Play, @"+S.username+" →";na.onclick=function(){startGame()};}
+  var so=document.getElementById("nav-signout");if(so)so.style.display="";
 }
 // Advance the daily streak: +1 on a new day, reset to 1 after a gap.
 function bumpStreak(){
@@ -1011,6 +1013,17 @@ var LB=[
 ];
 
 function go(id){document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active")});document.getElementById(id).classList.add("active");window.scrollTo(0,0)}
+function signOut(){
+  try{['tml_user','tml_registered','tml_email'].forEach(function(k){localStorage.removeItem(k);});}catch(e){}
+  S.username="CanadaFan";S.city="Toronto";S.streak=0;S.totalXP=0;S.bestScore=0;S.lastPlay=null;S.realLB=[];
+  var na=document.getElementById("nav-auth");if(na){na.textContent="Sign in";na.onclick=function(){go("screen-signin");};}
+  var so=document.getElementById("nav-signout");if(so)so.style.display="none";
+  var yn=document.getElementById("you-name");if(yn)yn.textContent="YourName";
+  var ya=document.getElementById("you-av");if(ya)ya.textContent="ME";
+  var ym=document.getElementById("you-meta");if(ym)ym.textContent="Toronto · 🔥 0 day streak";
+  var yr=document.getElementById("you-rank");if(yr)yr.textContent="#—";
+  go("screen-home");
+}
 function goLB(){
   var reg=false;try{reg=!!localStorage.getItem("tml_registered");}catch(e){}
   var f="National",matched=null;
