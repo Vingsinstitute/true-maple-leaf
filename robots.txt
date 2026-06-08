@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://truemapleleaf.com/sitemap.xml

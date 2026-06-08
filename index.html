@@ -9,6 +9,18 @@
 <meta property="og:title" content="True Maple Leaf — Canadian Trivia">
 <meta property="og:description" content="How well do you know Canada? 10 fresh questions every hour. Build your streak, climb your city's leaderboard.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://truemapleleaf.com/">
+<meta property="og:site_name" content="True Maple Leaf">
+<meta property="og:image" content="https://truemapleleaf.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="True Maple Leaf — Canadian Trivia">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="True Maple Leaf — Canadian Trivia">
+<meta name="twitter:description" content="How well do you know Canada? 10 fresh questions every hour. Build your streak, climb your city's leaderboard.">
+<meta name="twitter:image" content="https://truemapleleaf.com/og-image.png">
+<link rel="canonical" href="https://truemapleleaf.com/">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"True Maple Leaf","url":"https://truemapleleaf.com/","description":"The Canadian trivia game made in Canada. 10 fresh questions every hour on Canada, pop culture and sports. Build a streak and climb your city leaderboard.","inLanguage":"en-CA","publisher":{"@type":"Organization","name":"True Maple Leaf"}}</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='15' fill='%23c8102e'/><path d='M32 7 C33.4 26 38 31 57 32 C38 33 33.4 38 32 57 C30.6 38 26 33 7 32 C26 31 30.6 26 32 7 Z' fill='%23f0cf73'/><g transform='rotate(45 32 32)' opacity='0.5'><path d='M32 16 C32.7 28 36 31.3 48 32 C36 32.7 32.7 36 32 48 C31.3 36 28 32.7 16 32 C28 31.3 31.3 28 32 16 Z' fill='%23f0cf73'/></g></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -529,7 +541,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
             <div class="phone-opt"><b>A</b> Calgary</div>
             <div class="phone-opt ok"><b>B</b> Vancouver <span>&#10003;</span></div>
             <div class="phone-opt"><b>C</b> Halifax</div>
-            <div class="phone-opt"><b>D</b> Quebec City</div>
+            <div class="phone-opt"><b>D</b> Winnipeg</div>
           </div>
         </div>
       </div>
@@ -611,22 +623,22 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
   <div class="proof-section">
     <div class="proof-inner">
       <div class="proof-text">
-        <div class="eyebrow">Why people come back</div>
-        <h2 class="section-h2">Built on psychology.<br>Designed for habit.</h2>
-        <p class="section-p">Every detail — the streak, the timer, the city board — is engineered to make you want to return next hour.</p>
+        <div class="eyebrow">Why it's fun to come back</div>
+        <h2 class="section-h2">Fresh every hour.<br>Better every day.</h2>
+        <p class="section-p">New questions every hour, a streak to keep alive, and your city on the board — there's always a reason to come back.</p>
       </div>
       <div class="proof-cards">
         <div class="proof-card">
           <div class="proof-ic">🔥</div>
-          <div><div class="proof-title">Streak psychology</div><div class="proof-sub">Loss aversion keeps you coming back — missing a streak hurts more than winning feels good.</div></div>
+          <div><div class="proof-title">Build your streak</div><div class="proof-sub">Come back daily and watch your run grow. How long can you keep it going?</div></div>
         </div>
         <div class="proof-card">
           <div class="proof-ic">⚡</div>
-          <div><div class="proof-title">Speed bonus</div><div class="proof-sub">Faster answers earn more points — uncertainty about your bonus score creates a dopamine loop.</div></div>
+          <div><div class="proof-title">Beat the clock</div><div class="proof-sub">Faster answers score higher. Quick thinking pays off.</div></div>
         </div>
         <div class="proof-card">
           <div class="proof-ic">🏆</div>
-          <div><div class="proof-title">City rivalry</div><div class="proof-sub">People compete hardest with those closest to them — city boards make competition feel winnable.</div></div>
+          <div><div class="proof-title">Rep your city</div><div class="proof-sub">Climb your local leaderboard and see how your city stacks up across Canada.</div></div>
         </div>
       </div>
     </div>
@@ -695,9 +707,9 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
       <div class="cc"><span id="cc">0</span>/10</div>
       <select class="drop" id="prov">
         <option value="" disabled selected>Select your city</option>
-        <option>Toronto</option><option>Montreal</option><option>Vancouver</option>
-        <option>Calgary</option><option>Edmonton</option><option>Ottawa</option>
-        <option>Winnipeg</option><option>Quebec City</option><option>Hamilton</option>
+        <option>Toronto</option><option>Vancouver</option><option>Calgary</option>
+        <option>Edmonton</option><option>Ottawa</option><option>Winnipeg</option>
+        <option>Hamilton</option>
         <option>Kitchener–Waterloo</option><option>London</option><option>Halifax</option>
         <option>Victoria</option><option>Saskatoon</option><option>Regina</option>
         <option>St. John's</option><option>Mississauga</option><option>Brampton</option>
@@ -826,7 +838,6 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
       <button class="lb-tab on" onclick="filterLB(this,'National')">National</button>
       <button class="lb-tab" onclick="filterLB(this,'Toronto')">Toronto</button>
       <button class="lb-tab" onclick="filterLB(this,'Vancouver')">Vancouver</button>
-      <button class="lb-tab" onclick="filterLB(this,'Montreal')">Montreal</button>
       <button class="lb-tab" onclick="filterLB(this,'Calgary')">Calgary</button>
       <button class="lb-tab" onclick="filterLB(this,'Ottawa')">Ottawa</button>
       <button class="lb-tab" onclick="filterLB(this,'Edmonton')">Edmonton</button>
@@ -856,7 +867,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
   <div class="cookie-in">
     <div class="cookie-copy">
       <strong>We use essential cookies</strong>
-      <span>Session cookies only — no tracking, no ads. <a href="privacy.html" style="color:var(--red)">Learn more</a></span>
+      <span>No ads, no personal tracking — anonymous visit counts only. <a href="privacy.html" style="color:var(--red)">Learn more</a></span>
     </div>
     <div class="cookie-actions">
       <button class="nav-cta" onclick="acceptCookie()">Accept</button>
@@ -1005,7 +1016,7 @@ var LB=[
   {name:"MapleKing",city:"Toronto",prov:"ON",streak:22,score:3200,av:"MK",ac:"#ede9fe",at:"#6d28d9"},
   {name:"HockeyOTT",city:"Ottawa",prov:"ON",streak:14,score:2980,av:"HO",ac:"#dbeafe",at:"#1d4ed8"},
   {name:"TrueNorth_K",city:"Vancouver",prov:"BC",streak:11,score:2870,av:"TN",ac:"#d1fae5",at:"#065f46"},
-  {name:"PoutineQ",city:"Montreal",prov:"QC",streak:9,score:2750,av:"PQ",ac:"#fef3c7",at:"#92400e"},
+  {name:"SteelTownH",city:"Hamilton",prov:"ON",streak:9,score:2750,av:"SH",ac:"#fef3c7",at:"#92400e"},
   {name:"YYZNorth",city:"Toronto",prov:"ON",streak:7,score:2640,av:"YN",ac:"#ccfbf1",at:"#0f766e"},
   {name:"CalgaryFan",city:"Calgary",prov:"AB",streak:6,score:2510,av:"CF",ac:"#fee2e2",at:"#991b1b"},
   {name:"VancCity",city:"Vancouver",prov:"BC",streak:5,score:2390,av:"VC",ac:"#ede9fe",at:"#6d28d9"},
@@ -1692,5 +1703,7 @@ setInterval(function(){
   }
 },30000);
 </script>
+<!-- Anonymous, cookieless visit counts (Cloudflare Web Analytics). No personal data, no cookies, no consent banner needed. Active. -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "0e68f4a92134408bbb8d55c0285e2d6f"}'></script>
 </body>
 </html>
