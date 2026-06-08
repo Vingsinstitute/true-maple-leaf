@@ -483,6 +483,8 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
 .save-streak .ss-txt b{color:#3d2a06}
 .save-streak button{flex-shrink:0;background:var(--red);color:#fff;border:none;border-radius:var(--rx);padding:10px 15px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap}
 .save-streak button:hover{background:var(--red-dk)}
+.lb-row.lb-you{background:var(--red-lt);box-shadow:inset 3px 0 0 var(--red)}
+.lb-row.lb-you .lb-name{color:var(--red)}
 </style>
 </head>
 <body>
@@ -510,7 +512,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
         <p class="hero-desc">Ten new trivia questions every hour — Canadian history, pop culture, and the World Cup. Play on your own, or make it a friendly contest with friends, coworkers, and the table next to you.</p>
         <p class="hero-discreet">Made in Canada · built for every Canadian, ages 16 to 100.</p>
         <div class="hero-cta-wrap">
-          <button class="btn-play" onclick="startGame()"><span>Play this hour's challenge</span><span style="font-size:18px">&rarr;</span></button>
+          <button class="btn-play" onclick="playGate()"><span>Play this hour's challenge</span><span style="font-size:18px">&rarr;</span></button>
           <span class="start-here"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg> Tap to start &mdash; it's free</span>
         </div>
         <p class="hero-help">No sign-up needed to try. Play your first <strong>3 questions free</strong>, then save your streak with a one-tap email login.</p>
@@ -632,7 +634,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
   <div class="cta-band">
     <h2>Ready to prove it?</h2>
     <p>No password. Fresh questions every hour. Free for a limited launch period — Premium coming soon.</p>
-    <button class="btn-wh" onclick="startGame()">Play this hour's challenge →</button>
+    <button class="btn-wh" onclick="playGate()">Play this hour's challenge →</button>
   </div>
 
   <footer>
@@ -812,7 +814,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
       <div class="logo-text">True <span>Maple</span> Leaf</div>
     </div>
     <div class="nav-actions">
-      <button class="nav-cta" onclick="startGame()">Play now →</button>
+      <button class="nav-cta" onclick="playGate()">Play now →</button>
     </div>
   </nav>
   <div class="lb-page">
@@ -929,6 +931,7 @@ function loadUser(){
     S.city=u.city||S.city;
     S.streak=u.streak||0;
     S.totalXP=u.totalXP||0;
+    S.bestScore=u.bestScore||0;
     S.lastPlay=u.lastPlay||null;
     paintUser();
   }catch(e){}
@@ -937,7 +940,7 @@ function saveUser(){
   try{
     localStorage.setItem("tml_user",JSON.stringify({
       username:S.username,city:S.city,streak:S.streak,
-      totalXP:S.totalXP,lastPlay:S.lastPlay
+      totalXP:S.totalXP,bestScore:S.bestScore||0,lastPlay:S.lastPlay
     }));
   }catch(e){}
 }
@@ -1008,7 +1011,15 @@ var LB=[
 ];
 
 function go(id){document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active")});document.getElementById(id).classList.add("active");window.scrollTo(0,0)}
-function goLB(){renderLB("National");go("screen-leaderboard")}
+function goLB(){
+  var reg=false;try{reg=!!localStorage.getItem("tml_registered");}catch(e){}
+  var f="National",matched=null;
+  if(reg&&S.city){document.querySelectorAll(".lb-tab").forEach(function(t){if(t.textContent.trim()===S.city)matched=t;});if(matched)f=S.city;}
+  document.querySelectorAll(".lb-tab").forEach(function(t){t.classList.remove("on")});
+  (matched||document.querySelector(".lb-tab")).classList.add("on");
+  renderLB(f);
+  go("screen-leaderboard");
+}
 function mockLogin(){
   var em=document.getElementById("email-inp");
   var val=em?em.value.trim():"";
@@ -1036,6 +1047,10 @@ function buildQ(){
   return shuffle(f.concat(p,c));
 }
 
+function playGate(){
+  var reg=false;try{reg=!!localStorage.getItem("tml_registered");}catch(e){}
+  if(reg)startGame();else go("screen-signin");
+}
 function startGame(){
   S.score=0;S.qIndex=0;S.sStreak=0;S.answers=[];S.fast=0;
   try{var _a=audioCtx();if(_a&&_a.state==="suspended")_a.resume();}catch(e){}
@@ -1191,8 +1206,10 @@ function endGame(){
   S.persona=personaFor(correct,S.fast||0);
   bumpStreak();                 // advance the real daily streak (once per day)
   S.totalXP+=S.score;           // accumulate lifetime XP (endowment effect)
+  S.bestScore=Math.max(S.bestScore||0,S.score);   // best score drives leaderboard rank
   saveUser();
-  var rank=Math.max(1,Math.floor(Math.random()*30)+7);
+  var _base=(S.city && LB.some(function(p){return p.city===S.city}))?LB.filter(function(p){return p.city===S.city}):LB;
+  var rank=_base.filter(function(p){return p.score>(S.bestScore||0);}).length+1;
   S.lastRank=rank;
   var move=Math.floor(Math.random()*6)+1;
   document.getElementById("res-num").textContent=correct;
@@ -1302,15 +1319,27 @@ function dataURLtoBlob(durl){
 function cardFile(){try{return new File([dataURLtoBlob(document.getElementById("share-canvas").toDataURL("image/png"))],"true-maple-leaf-card.png",{type:"image/png"});}catch(e){return null;}}
 
 function filterLB(btn,p){document.querySelectorAll(".lb-tab").forEach(function(t){t.classList.remove("on")});btn.classList.add("on");renderLB(p)}
+function lbList(f){
+  var base=f==="National"?LB.slice():LB.filter(function(p){return p.city===f});
+  var reg=false;try{reg=!!localStorage.getItem("tml_registered");}catch(e){}
+  if(reg&&(S.bestScore||0)>0&&(f==="National"||S.city===f)){
+    base=base.concat([{name:S.username,city:S.city,prov:"",streak:S.streak,score:S.bestScore,av:(S.username||"ME").substring(0,2).toUpperCase(),ac:"#fff0f0",at:"#c8102e",you:true}]);
+  }
+  return base.sort(function(a,b){return b.score-a.score});
+}
 function renderLB(f){
-  var d=f==="National"?LB:LB.filter(function(p){return p.city===f});
-  d=d.slice().sort(function(a,b){return b.score-a.score});
+  var d=lbList(f);
   var m=["🥇","🥈","🥉"];
   var el=document.getElementById("lb-list");
-  if(!d.length){el.innerHTML="<div style='padding:32px;text-align:center;color:var(--ink3);font-size:14px'>No players from this city yet. Be the first!</div>";return}
+  var yr=document.getElementById("you-rank");
+  if(!d.length){el.innerHTML="<div style='padding:32px;text-align:center;color:var(--ink3);font-size:14px'>No players from this city yet. Be the first!</div>";if(yr)yr.textContent="#—";return}
+  var youRank=0;
   el.innerHTML=d.map(function(p,i){
-    return "<div class='lb-row"+(i===0?" lb-gold":"")+"'><div class='lb-pos'>"+(i<3?m[i]:i+1)+"</div><div class='lb-av' style='background:"+p.ac+";color:"+p.at+"'>"+p.av+"</div><div class='lb-details'><div class='lb-name'>"+p.name+"</div><div class='lb-meta'>"+p.city+", "+p.prov+" · 🔥 "+p.streak+" day streak</div></div><div class='lb-score'>"+p.score.toLocaleString()+"</div></div>"
+    if(p.you)youRank=i+1;
+    var meta=(p.prov?p.city+", "+p.prov:p.city)+" · 🔥 "+p.streak+" day streak";
+    return "<div class='lb-row"+(i===0?" lb-gold":"")+(p.you?" lb-you":"")+"'><div class='lb-pos'>"+(i<3?m[i]:i+1)+"</div><div class='lb-av' style='background:"+p.ac+";color:"+p.at+"'>"+p.av+"</div><div class='lb-details'><div class='lb-name'>"+p.name+(p.you?" (you)":"")+"</div><div class='lb-meta'>"+meta+"</div></div><div class='lb-score'>"+p.score.toLocaleString()+"</div></div>"
   }).join("");
+  if(yr)yr.textContent=youRank?("#"+youRank):"#—";
 }
 
 // rounded-rect path helper
