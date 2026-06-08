@@ -485,6 +485,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
 .save-streak button:hover{background:var(--red-dk)}
 .lb-row.lb-you{background:var(--red-lt);box-shadow:inset 3px 0 0 var(--red)}
 .lb-row.lb-you .lb-name{color:var(--red)}
+.lb-sample{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink4);background:var(--paper2);border:1px solid var(--border);border-radius:10px;padding:1px 6px;margin-left:6px;vertical-align:middle}
 </style>
 </head>
 <body>
@@ -1377,7 +1378,7 @@ function renderLB(f){
   el.innerHTML=d.map(function(p,i){
     if(p.you)youRank=i+1;
     var meta=(p.prov?p.city+", "+p.prov:p.city)+" · 🔥 "+p.streak+" day streak";
-    return "<div class='lb-row"+(i===0?" lb-gold":"")+(p.you?" lb-you":"")+"'><div class='lb-pos'>"+(i<3?m[i]:i+1)+"</div><div class='lb-av' style='background:"+p.ac+";color:"+p.at+"'>"+p.av+"</div><div class='lb-details'><div class='lb-name'>"+p.name+(p.you?" (you)":"")+"</div><div class='lb-meta'>"+meta+"</div></div><div class='lb-score'>"+p.score.toLocaleString()+"</div></div>"
+    return "<div class='lb-row"+(i===0?" lb-gold":"")+(p.you?" lb-you":"")+"'><div class='lb-pos'>"+(i<3?m[i]:i+1)+"</div><div class='lb-av' style='background:"+p.ac+";color:"+p.at+"'>"+p.av+"</div><div class='lb-details'><div class='lb-name'>"+p.name+(p.you?" (you)":"")+(!p.real?" <span class='lb-sample'>sample</span>":"")+"</div><div class='lb-meta'>"+meta+"</div></div><div class='lb-score'>"+p.score.toLocaleString()+"</div></div>"
   }).join("");
   if(yr)yr.textContent=youRank?("#"+youRank):"#—";
 }
@@ -1675,6 +1676,7 @@ document.addEventListener("keydown",function(e){
 loadUser();
 renderLB("National");
 checkCookie();
+document.querySelectorAll(".logo").forEach(function(l){l.style.cursor="pointer";l.addEventListener("click",function(){go("screen-home");});});
 // keep the "updates every 30 seconds" promise honest: refresh real rankings while the board is open
 setInterval(function(){
   var lb=document.getElementById("screen-leaderboard");
