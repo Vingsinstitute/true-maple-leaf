@@ -878,7 +878,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
       <button class="share-ic share-wa" onclick="shareTo('whatsapp')" title="Share on WhatsApp">✆</button>
       <button class="share-ic share-dl" onclick="downloadCard()" title="Download image">⬇</button>
     </div>
-    <div class="share-tip">On your phone, tap <strong>Share my card</strong> to post the image straight to Instagram or WhatsApp Status. On desktop, the image is saved so you can attach it.</div>
+    <div class="share-tip">📱 On your phone, tap <strong>Share my card</strong> to post straight to <strong>Instagram</strong>, your <strong>Instagram Story</strong>, or <strong>WhatsApp Status</strong>. On a computer the image downloads so you can upload it.</div>
     <button class="btn-outline" onclick="document.getElementById('share-overlay').classList.remove('open')">Close</button>
   </div>
 </div>
@@ -1019,6 +1019,7 @@ function goLB(){
   (matched||document.querySelector(".lb-tab")).classList.add("on");
   renderLB(f);
   go("screen-leaderboard");
+  fetchLeaderboard().then(function(rows){S.realLB=rows||[];renderLB(f);});
 }
 function mockLogin(){
   var em=document.getElementById("email-inp");
@@ -1208,6 +1209,7 @@ function endGame(){
   S.totalXP+=S.score;           // accumulate lifetime XP (endowment effect)
   S.bestScore=Math.max(S.bestScore||0,S.score);   // best score drives leaderboard rank
   saveUser();
+  submitScore();
   var _base=(S.city && LB.some(function(p){return p.city===S.city}))?LB.filter(function(p){return p.city===S.city}):LB;
   var rank=_base.filter(function(p){return p.score>(S.bestScore||0);}).length+1;
   S.lastRank=rank;
@@ -1319,13 +1321,38 @@ function dataURLtoBlob(durl){
 function cardFile(){try{return new File([dataURLtoBlob(document.getElementById("share-canvas").toDataURL("image/png"))],"true-maple-leaf-card.png",{type:"image/png"});}catch(e){return null;}}
 
 function filterLB(btn,p){document.querySelectorAll(".lb-tab").forEach(function(t){t.classList.remove("on")});btn.classList.add("on");renderLB(p)}
+var PAL=[["#ede9fe","#6d28d9"],["#dbeafe","#1d4ed8"],["#d1fae5","#065f46"],["#fef3c7","#92400e"],["#ccfbf1","#0f766e"],["#fee2e2","#991b1b"]];
+function avColor(name){var h=0,s=name||"P";for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return PAL[h%PAL.length];}
+function fetchLeaderboard(){
+  if(!SUPABASE_URL)return Promise.resolve([]);
+  return fetch(SUPABASE_URL+"/rest/v1/leaderboard?select=username,city,best_score,streak&order=best_score.desc&limit=200",
+    {headers:{apikey:SUPABASE_ANON_KEY,Authorization:"Bearer "+SUPABASE_ANON_KEY}})
+    .then(function(r){return r.ok?r.json():[];}).catch(function(){return [];});
+}
+function submitScore(){
+  if(!SUPABASE_URL)return;
+  try{fetch(SUPABASE_URL+"/rest/v1/rpc/submit_score",{method:"POST",
+    headers:{apikey:SUPABASE_ANON_KEY,Authorization:"Bearer "+SUPABASE_ANON_KEY,"Content-Type":"application/json"},
+    body:JSON.stringify({p_username:S.username,p_city:S.city,p_score:S.bestScore||S.score||0,p_streak:S.streak||0})}).catch(function(){});
+  }catch(e){}
+}
 function lbList(f){
-  var base=f==="National"?LB.slice():LB.filter(function(p){return p.city===f});
   var reg=false;try{reg=!!localStorage.getItem("tml_registered");}catch(e){}
-  if(reg&&(S.bestScore||0)>0&&(f==="National"||S.city===f)){
-    base=base.concat([{name:S.username,city:S.city,prov:"",streak:S.streak,score:S.bestScore,av:(S.username||"ME").substring(0,2).toUpperCase(),ac:"#fff0f0",at:"#c8102e",you:true}]);
+  var me=reg?S.username:null;
+  var real=(S.realLB||[]).map(function(r){
+    var you=(me&&r.username===me),c=avColor(r.username);
+    return {name:r.username,city:r.city||"",prov:"",streak:r.streak||0,score:r.best_score||0,real:true,you:you,
+            av:(r.username||"P").substring(0,2).toUpperCase(),ac:you?"#fff0f0":c[0],at:you?"#c8102e":c[1]};
+  });
+  if(reg&&(S.bestScore||0)>0&&!real.some(function(p){return p.you;})){
+    real.push({name:S.username,city:S.city,prov:"",streak:S.streak,score:S.bestScore,real:true,you:true,
+               av:(S.username||"ME").substring(0,2).toUpperCase(),ac:"#fff0f0",at:"#c8102e"});
   }
-  return base.sort(function(a,b){return b.score-a.score});
+  var seeds=LB.slice();
+  if(f!=="National"){real=real.filter(function(p){return p.city===f;});seeds=seeds.filter(function(p){return p.city===f;});}
+  real.sort(function(a,b){return b.score-a.score;});
+  seeds.sort(function(a,b){return b.score-a.score;});
+  return real.concat(seeds).slice(0,12);
 }
 function renderLB(f){
   var d=lbList(f);
@@ -1482,17 +1509,21 @@ function shareCard(){
 // share sheet (mobile). On desktop we open the composer and save the image to attach.
 function shareTo(net){
   var txt=shareText(),site="https://truemapleleaf.com",f=cardFile();
-  // Instagram & WhatsApp Status accept an image ONLY through the native share sheet.
+  // Instagram / Instagram Story / WhatsApp Status can ONLY receive the image via the device share sheet (mobile).
   if((net==="instagram"||net==="whatsapp")&&f&&navigator.canShare&&navigator.canShare({files:[f]})){
     navigator.share({files:[f],text:txt,url:site}).catch(function(){});
     return;
   }
   downloadCard();
+  if(net==="instagram"){
+    window.open("https://www.instagram.com/","_blank","noopener");
+    setTimeout(function(){alert("Your card image was downloaded. Instagram only lets you post from your own account, so open Instagram, start a new post or Story, and choose the saved True Maple Leaf card. Tip: on a phone, the \"Share my card\" button sends it to Instagram directly.");},200);
+    return;
+  }
   var t=encodeURIComponent(txt+" "+site),u=encodeURIComponent(site);
   var dest = net==="x"        ? "https://twitter.com/intent/tweet?text="+t
            : net==="facebook" ? "https://www.facebook.com/sharer/sharer.php?u="+u+"&quote="+t
            : net==="whatsapp" ? "https://wa.me/?text="+t
-           : net==="instagram"? "https://www.instagram.com/"
            : "";
   if(dest)window.open(dest,"_blank","noopener");
 }
