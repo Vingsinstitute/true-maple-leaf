@@ -516,7 +516,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
           <button class="btn-play" onclick="playGate()"><span>Play this hour's challenge</span><span style="font-size:18px">&rarr;</span></button>
           <span class="start-here"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg> Tap to start &mdash; it's free</span>
         </div>
-        <p class="hero-help">No sign-up needed to try. Play your first <strong>3 questions free</strong>, then save your streak with a one-tap email login.</p>
+        <p class="hero-help">Free to play — a quick sign-up (just your email, a name, and your city) saves your streak and ranks you on your city's leaderboard.</p>
         <div class="gov-note"><span aria-hidden="true">&#128274;</span><span><b>Independent &amp; unofficial.</b> A privately run game, just for fun &mdash; this is not a government website and is not affiliated with the Government of Canada or any official body.</span></div>
       </div>
       <div class="hero-preview" aria-hidden="true">
@@ -1675,6 +1675,17 @@ document.addEventListener("keydown",function(e){
 loadUser();
 renderLB("National");
 checkCookie();
+// keep the "updates every 30 seconds" promise honest: refresh real rankings while the board is open
+setInterval(function(){
+  var lb=document.getElementById("screen-leaderboard");
+  if(lb&&lb.classList.contains("active")){
+    fetchLeaderboard().then(function(rows){
+      S.realLB=rows||[];
+      var on=document.querySelector(".lb-tab.on");
+      renderLB(on?on.textContent.trim():"National");
+    });
+  }
+},30000);
 </script>
 </body>
 </html>
