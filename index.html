@@ -1406,6 +1406,16 @@ function drawQR(ctx,x,y,size,text){
     ctx.restore();
   }catch(e){}
 }
+function drawLogoBadge(ctx,x,y,size){
+  if(!window.Path2D)return;
+  ctx.save();
+  rr(ctx,x,y,size,size,size*0.23);ctx.fillStyle="#c8102e";ctx.fill();
+  ctx.translate(x,y);ctx.scale(size/64,size/64);ctx.fillStyle="#f0cf73";
+  ctx.fill(new Path2D("M32 7 C33.4 26 38 31 57 32 C38 33 33.4 38 32 57 C30.6 38 26 33 7 32 C26 31 30.6 26 32 7 Z"));
+  ctx.save();ctx.globalAlpha=0.5;ctx.translate(32,32);ctx.rotate(0.7853981634);ctx.translate(-32,-32);
+  ctx.fill(new Path2D("M32 16 C32.7 28 36 31.3 48 32 C36 32.7 32.7 36 32 48 C31.3 36 28 32.7 16 32 C28 31.3 31.3 28 32 16 Z"));ctx.restore();
+  ctx.restore();
+}
 function openShare(){
   var canvas=document.getElementById("share-canvas");
   var ctx=canvas.getContext("2d");
@@ -1425,7 +1435,7 @@ function openShare(){
   rr(ctx,14,14,W-28,256,42);ctx.fillStyle=sh;ctx.fill();
   // inner hairline frame
   rr(ctx,30,30,W-60,H-60,32);ctx.lineWidth=2;ctx.strokeStyle="rgba(74,50,8,.30)";ctx.stroke();
-  // giant leaf watermark
+  drawLogoBadge(ctx,W/2-16,28,32);
 
   // ── tier ribbon (top-right) ──
   ctx.textAlign="center";
