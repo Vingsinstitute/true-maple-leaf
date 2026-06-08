@@ -881,7 +881,10 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
       <button class="share-ic share-dl" onclick="downloadCard()" title="Download image">⬇</button>
     </div>
     <div class="share-tip">📱 On your phone, tap <strong>Share my card</strong> to post straight to <strong>Instagram</strong>, your <strong>Instagram Story</strong>, or <strong>WhatsApp Status</strong>. On a computer the image downloads so you can upload it.</div>
-    <button class="btn-outline" onclick="document.getElementById('share-overlay').classList.remove('open')">Close</button>
+    <div style="display:flex;gap:8px">
+      <button class="btn-outline" style="flex:1;margin-bottom:0" onclick="document.getElementById('share-overlay').classList.remove('open')">Close</button>
+      <button class="btn-outline" style="flex:1;margin-bottom:0" onclick="document.getElementById('share-overlay').classList.remove('open');go('screen-home')">Home</button>
+    </div>
   </div>
 </div>
 
