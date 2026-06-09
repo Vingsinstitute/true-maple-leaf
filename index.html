@@ -893,7 +893,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
       <button class="share-ic share-wa" onclick="shareTo('whatsapp')" title="Share on WhatsApp" aria-label="Share on WhatsApp"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.53 15.26L2 22l4.85-1.43A10 10 0 1 0 12 2Zm5.27 14.13c-.22.62-1.29 1.2-1.78 1.23-.49.04-.95.21-3.2-.67-2.7-1.06-4.42-3.84-4.55-4.02-.13-.18-1.1-1.46-1.1-2.78 0-1.32.69-1.97.94-2.24.25-.27.54-.34.72-.34h.52c.17 0 .4-.06.62.47.22.54.75 1.86.82 2 .07.13.11.29.02.47-.09.18-.13.29-.27.45-.13.16-.28.36-.4.48-.13.13-.27.28-.12.54.15.27.67 1.1 1.43 1.78.98.87 1.8 1.14 2.07 1.27.27.13.42.11.58-.07.16-.18.67-.78.85-1.05.18-.27.36-.22.6-.13.25.09 1.56.74 1.83.87.27.13.45.2.51.31.07.11.07.63-.15 1.25Z"/></svg></button>
       <button class="share-ic share-dl" onclick="downloadCard()" title="Download image" aria-label="Download image"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 21h16"/></svg></button>
     </div>
-    <div class="share-tip">📱 On your phone, tap <strong>Share my card</strong> to post straight to <strong>Instagram</strong>, your <strong>Instagram Story</strong>, or <strong>WhatsApp Status</strong>. On a computer the image downloads so you can upload it.</div>
+    <div class="share-tip"><strong>Best on your phone:</strong> tap <strong>Share my card</strong> to send the card straight to <strong>Instagram</strong>, your <strong>Story</strong>, <strong>Facebook</strong>, or <strong>WhatsApp</strong>. On a computer, Instagram and Facebook don't allow attaching an image from a website, so the card downloads — just upload the saved image to your new post.</div>
     <div style="display:flex;gap:8px">
       <button class="btn-outline" style="flex:1;margin-bottom:0" onclick="document.getElementById('share-overlay').classList.remove('open')">Close</button>
       <button class="btn-outline" style="flex:1;margin-bottom:0" onclick="document.getElementById('share-overlay').classList.remove('open');go('screen-home')">Home</button>
@@ -1565,23 +1565,32 @@ function shareCard(){
 // share sheet (mobile). On desktop we open the composer and save the image to attach.
 function shareTo(net){
   var txt=shareText(),site="https://truemapleleaf.com",f=cardFile();
-  // Instagram / Instagram Story / WhatsApp Status can ONLY receive the image via the device share sheet (mobile).
-  if((net==="instagram"||net==="whatsapp")&&f&&navigator.canShare&&navigator.canShare({files:[f]})){
+  // BEST PATH (especially on phones): the native share sheet attaches the REAL card image
+  // and lets the user pick Instagram, Facebook, WhatsApp, etc. This is the only way to send
+  // your actual card to Instagram or Facebook, because neither lets a website push a custom
+  // image into their own share box.
+  if(f&&navigator.canShare&&navigator.canShare({files:[f]})){
     navigator.share({files:[f],text:txt,url:site}).catch(function(){});
     return;
   }
-  downloadCard();
-  if(net==="instagram"){
-    window.open("https://www.instagram.com/","_blank","noopener");
-    setTimeout(function(){alert("Your card image was downloaded. Instagram only lets you post from your own account, so open Instagram, start a new post or Story, and choose the saved True Maple Leaf card. Tip: on a phone, the \"Share my card\" button sends it to Instagram directly.");},200);
+  // DESKTOP FALLBACK for Instagram & Facebook: they can't accept a custom image from a website,
+  // so we open the app first (keeps the click "live" so it isn't pop-up blocked), save the card,
+  // then tell the user to upload it.
+  if(net==="instagram"||net==="facebook"){
+    var url=net==="instagram"?"https://www.instagram.com/":"https://www.facebook.com/";
+    window.open(url,"_blank","noopener");
+    downloadCard();
+    var where=net==="instagram"?"Instagram":"Facebook";
+    setTimeout(function(){alert("Your True Maple Leaf card was just downloaded. "+where+" doesn't let a website attach a custom image to its share box, so start a new "+where+" post and upload the saved card.\n\nTip: on a phone, tap \"Share my card\" — that sends the card straight to "+where+".");},300);
     return;
   }
-  var t=encodeURIComponent(txt+" "+site),u=encodeURIComponent(site);
+  // X and WhatsApp: share the link + text (these show the site's preview image automatically).
+  var t=encodeURIComponent(txt+" "+site);
   var dest = net==="x"        ? "https://twitter.com/intent/tweet?text="+t
-           : net==="facebook" ? "https://www.facebook.com/sharer/sharer.php?u="+u+"&quote="+t
            : net==="whatsapp" ? "https://wa.me/?text="+t
            : "";
-  if(dest)window.open(dest,"_blank","noopener");
+  if(dest){window.open(dest,"_blank","noopener");}
+  else{downloadCard();}
 }
 
 function downloadCard(){var a=document.createElement("a");a.download="true-maple-leaf-card-"+new Date().toISOString().slice(0,10)+".png";a.href=document.getElementById("share-canvas").toDataURL();a.click()}
