@@ -308,6 +308,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
 /* action buttons */
 .btn-share-big{width:100%;background:var(--red);color:#fff;border:none;border-radius:var(--rx);padding:17px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:9px;transition:all .15s;letter-spacing:-.01em}
 .btn-share-big:hover{background:var(--red-dk);box-shadow:0 6px 20px rgba(200,16,46,.35);transform:translateY(-1px)}
+.share-nudge{background:var(--gold-lt,#fbf3da);border:1px solid var(--gold-br,#e7cf86);color:#8a6a12;font-size:13.5px;font-weight:600;line-height:1.5;border-radius:var(--rx);padding:11px 14px;margin-bottom:10px;text-align:center}
 .btn-outline{width:100%;background:none;border:1px solid var(--border);border-radius:var(--rx);padding:14px;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;color:var(--ink3);margin-bottom:9px;transition:background .15s}
 .btn-outline:hover{background:var(--paper)}
 .result-note{font-size:12px;color:var(--ink4);margin-top:8px}
@@ -811,7 +812,8 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
       <div class="ss-txt">Don't lose your <b id="ss-days">streak</b> — save it with a free one-tap email login.</div>
       <button onclick="go('screen-signin')">Save streak →</button>
     </div>
-    <button class="btn-share-big" onclick="openShare()">Share my card</button>
+    <div class="share-nudge" id="share-nudge">Think your friends can beat this? Send them your card.</div>
+    <button class="btn-share-big" onclick="openShare()">Share my card — show it off</button>
     <button class="btn-outline" onclick="goLB()">View leaderboard</button>
     <button class="btn-outline" onclick="go('screen-home')">Back to home</button>
     <div class="result-note">New questions every hour · come back soon</div>
@@ -883,7 +885,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
   <div class="modal-box">
     <div class="modal-em">🏆</div>
     <div class="modal-title" id="m-title">Great score!</div>
-    <div class="modal-sub">Your premium player card — overall rating, persona and city. Bragging rights only, no prizes. Share it and challenge your city.</div>
+    <div class="modal-sub">This is <strong>your</strong> card — your rating, your rank, your streak. Post it and dare your friends and city to beat it. Bragging rights only, no prizes.</div>
     <canvas id="share-canvas" width="480" height="360"></canvas>
     <button class="btn-main" style="margin-bottom:9px" onclick="shareCard()"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:6px" aria-hidden="true"><path d="M12 16V4m0 0 4 4m-4-4-4 4"/><path d="M5 14v3a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3v-3"/></svg>Share my card</button>
     <div class="share-social">
@@ -1275,6 +1277,11 @@ function endGame(){
   if(S.sStreak>=4)bds.push("⚡ "+S.sStreak+" in a row");
   bds.push("💎 "+S.totalXP.toLocaleString()+" XP total");
   document.getElementById("badges").innerHTML=bds.map(function(b){return "<div class='badge'>"+b+"</div>"}).join("");
+  var sn=document.getElementById("share-nudge");
+  if(sn)sn.textContent = correct===10 ? "A perfect 10 — that earns serious bragging rights. Show your card off!"
+    : correct>=8 ? "Top-tier round. Post your card and dare your friends to beat it."
+    : correct>=6 ? "Solid card — challenge your friends to top it."
+    : "Think your friends can do better? Send them your card and find out.";
   document.getElementById("you-rank").textContent="#"+rank;
   document.getElementById("you-meta").textContent=(S.city||"Toronto")+" · 🔥 "+S.streak+" day streak";
   go("screen-result");
@@ -1536,7 +1543,7 @@ function openShare(){
   ctx.textAlign="left";
 
   document.getElementById("m-title").textContent =
-    d.tier==="ELITE" ? "Elite card unlocked! 🏆" : d.tier==="GOLD" ? "Gold card earned! 🥇" : "Your player card";
+    d.tier==="ELITE" ? "Elite card unlocked! 🏆 Flaunt it." : d.tier==="GOLD" ? "Gold card earned! 🥇 Show it off." : "Your card's ready — challenge your friends!";
   document.getElementById("share-overlay").classList.add("open");
 }
 
