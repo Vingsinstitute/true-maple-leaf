@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data:; connect-src 'self' https://*.supabase.co https://cloudflareinsights.com https://static.cloudflareinsights.com https://*.make.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://static.cloudflareinsights.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data: https://*.googleusercontent.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://cloudflareinsights.com https://static.cloudflareinsights.com https://*.make.com; object-src 'none'; base-uri 'self'; form-action 'self' https://*.supabase.co https://accounts.google.com">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>True Maple Leaf — Canadian Trivia Made in Canada</title>
 <meta name="description" content="True Maple Leaf — the Canadian trivia game made in Canada. 10 fresh questions every hour on Canada, pop culture and football. Build a streak, climb your city leaderboard. Free for a limited launch period.">
@@ -24,6 +24,7 @@
 <link rel="canonical" href="https://truemapleleaf.com/">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"True Maple Leaf","url":"https://truemapleleaf.com/","description":"The Canadian trivia game made in Canada. 10 fresh questions every hour on Canada, pop culture and sports. Build a streak and climb your city leaderboard.","inLanguage":"en-CA","publisher":{"@type":"Organization","name":"True Maple Leaf"}}</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='15' fill='%23c8102e'/><path d='M32 7 C33.4 26 38 31 57 32 C38 33 33.4 38 32 57 C30.6 38 26 33 7 32 C26 31 30.6 26 32 7 Z' fill='%23f0cf73'/><g transform='rotate(45 32 32)' opacity='0.5'><path d='M32 16 C32.7 28 36 31.3 48 32 C36 32.7 32.7 36 32 48 C31.3 36 28 32.7 16 32 C28 31.3 31.3 28 32 16 Z' fill='%23f0cf73'/></g></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -681,13 +682,13 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
       <div class="auth-em">🎯</div>
       <div class="auth-title">Join the challenge</div>
       <div class="auth-sub">No password needed. Sign in with Google or your email — takes 30 seconds.</div>
-      <button class="social-btn" onclick="mockLogin()">
+      <button class="social-btn" onclick="googleLogin()">
         <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
         Continue with Google
       </button>
       <div class="divider">or use your email</div>
       <input class="field" type="email" placeholder="your@email.ca" id="email-inp">
-      <button class="btn-main" onclick="mockLogin()">Send magic link →</button>
+      <button class="btn-main" onclick="mockLogin()">Continue with email →</button>
       <div class="fine">By continuing you agree to our <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a>. We only store your email, username, and city.</div>
     </div>
   </div>
@@ -1721,6 +1722,38 @@ document.addEventListener("keydown",function(e){
     if(opts[map[e.key]])opts[map[e.key]].click();
   }
 });
+
+// ═══════════════════════════════════════════════════════════════
+// REAL GOOGLE SIGN-IN (Supabase Auth). "Continue with Google" sends the
+// player to Google's account chooser; on return we read their VERIFIED
+// email and store it. Requires the Google provider enabled in Supabase.
+// ═══════════════════════════════════════════════════════════════
+var sbAuth=null;
+try{ if(window.supabase&&window.supabase.createClient){ sbAuth=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}); } }catch(e){}
+function googleLogin(){
+  if(!sbAuth){ alert("Sign-in is still loading — please try again in a moment."); return; }
+  sbAuth.auth.signInWithOAuth({provider:"google",options:{redirectTo:location.origin+"/"}}).then(function(r){
+    if(r&&r.error){ alert("Google sign-in isn't connected yet. Please use the email option for now."); }
+  });
+}
+var _authedHandled=false;
+function handleAuthedUser(user){
+  if(!user||!user.email||_authedHandled)return;
+  _authedHandled=true;
+  var email=user.email;
+  try{localStorage.setItem("tml_email",email);}catch(e){}
+  var reg=false;try{reg=!!localStorage.getItem("tml_registered");}catch(e){}
+  if(reg){ captureEmail(email,S.username,S.city); }
+  else { captureEmail(email); go("screen-username"); }
+}
+if(sbAuth){
+  sbAuth.auth.getSession().then(function(res){
+    var s=res&&res.data&&res.data.session; if(s&&s.user)handleAuthedUser(s.user);
+  }).catch(function(){});
+  sbAuth.auth.onAuthStateChange(function(ev,session){
+    if(ev==="SIGNED_IN"&&session&&session.user)handleAuthedUser(session.user);
+  });
+}
 
 loadUser();
 renderLB("National");
