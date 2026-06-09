@@ -885,11 +885,11 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
     <canvas id="share-canvas" width="480" height="360"></canvas>
     <button class="btn-main" style="margin-bottom:9px" onclick="shareCard()">📲 Share my card</button>
     <div class="share-social">
-      <button class="share-ic share-x" onclick="shareTo('x')" title="Share on X">𝕏</button>
-      <button class="share-ic share-fb" onclick="shareTo('facebook')" title="Share on Facebook">f</button>
-      <button class="share-ic share-ig" onclick="shareTo('instagram')" title="Share on Instagram">◎</button>
-      <button class="share-ic share-wa" onclick="shareTo('whatsapp')" title="Share on WhatsApp">✆</button>
-      <button class="share-ic share-dl" onclick="downloadCard()" title="Download image">⬇</button>
+      <button class="share-ic share-x" onclick="shareTo('x')" title="Share on X" aria-label="Share on X"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25h6.83l4.713 6.231 5.447-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"/></svg></button>
+      <button class="share-ic share-fb" onclick="shareTo('facebook')" title="Share on Facebook" aria-label="Share on Facebook"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M13.5 21v-7.05h2.37l.36-2.75H13.5V9.44c0-.8.22-1.34 1.36-1.34h1.46V5.64c-.25-.03-1.12-.11-2.13-.11-2.11 0-3.55 1.29-3.55 3.65v2.02H8.25v2.75h2.4V21h2.85Z"/></svg></button>
+      <button class="share-ic share-ig" onclick="shareTo('instagram')" title="Share on Instagram" aria-label="Share on Instagram"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg></button>
+      <button class="share-ic share-wa" onclick="shareTo('whatsapp')" title="Share on WhatsApp" aria-label="Share on WhatsApp"><svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.53 15.26L2 22l4.85-1.43A10 10 0 1 0 12 2Zm5.27 14.13c-.22.62-1.29 1.2-1.78 1.23-.49.04-.95.21-3.2-.67-2.7-1.06-4.42-3.84-4.55-4.02-.13-.18-1.1-1.46-1.1-2.78 0-1.32.69-1.97.94-2.24.25-.27.54-.34.72-.34h.52c.17 0 .4-.06.62.47.22.54.75 1.86.82 2 .07.13.11.29.02.47-.09.18-.13.29-.27.45-.13.16-.28.36-.4.48-.13.13-.27.28-.12.54.15.27.67 1.1 1.43 1.78.98.87 1.8 1.14 2.07 1.27.27.13.42.11.58-.07.16-.18.67-.78.85-1.05.18-.27.36-.22.6-.13.25.09 1.56.74 1.83.87.27.13.45.2.51.31.07.11.07.63-.15 1.25Z"/></svg></button>
+      <button class="share-ic share-dl" onclick="downloadCard()" title="Download image" aria-label="Download image"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 21h16"/></svg></button>
     </div>
     <div class="share-tip">📱 On your phone, tap <strong>Share my card</strong> to post straight to <strong>Instagram</strong>, your <strong>Instagram Story</strong>, or <strong>WhatsApp Status</strong>. On a computer the image downloads so you can upload it.</div>
     <div style="display:flex;gap:8px">
@@ -921,19 +921,30 @@ var S = {
 // Paste the webhook URL from your Make "Custom webhook" trigger here.
 // Leave "" to skip sending (the site still works in demo mode).
 var MAKE_WEBHOOK_URL = "";
-function captureEmail(email){
+function captureEmail(email, username, city){
   try{ localStorage.setItem("tml_email", email); }catch(e){}
-  if(!MAKE_WEBHOOK_URL) return Promise.resolve();
-  return fetch(MAKE_WEBHOOK_URL,{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({
-      email:email,
-      source:"truemapleleaf.com",
-      consent_notifications:false,
-      signed_up_at:new Date().toISOString()
-    })
-  }).catch(function(){});
+  // Store centrally in Supabase in a PRIVATE table (email_signups), kept separate from the
+  // public leaderboard. Written only via the capture_email RPC; the table is not publicly readable.
+  if(SUPABASE_URL){
+    try{
+      fetch(SUPABASE_URL+"/rest/v1/rpc/capture_email",{
+        method:"POST",
+        headers:{apikey:SUPABASE_ANON_KEY,Authorization:"Bearer "+SUPABASE_ANON_KEY,"Content-Type":"application/json"},
+        body:JSON.stringify({p_email:email,p_username:username||null,p_city:city||null})
+      }).catch(function(){});
+    }catch(e){}
+  }
+  // Optional legacy Make webhook (only if a URL is configured).
+  if(MAKE_WEBHOOK_URL){
+    try{
+      fetch(MAKE_WEBHOOK_URL,{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({email:email,username:username||null,city:city||null,source:"truemapleleaf.com",consent_notifications:false,signed_up_at:new Date().toISOString()})
+      }).catch(function(){});
+    }catch(e){}
+  }
+  return Promise.resolve();
 }
 
 // ═══ PERSISTENT LOGIN + STREAK (localStorage) ═══
@@ -1063,6 +1074,9 @@ function finishSetup(){
   if(!p){alert("Please select your city.");return}
   S.username=u;S.city=p;
   try{localStorage.setItem("tml_registered","1");}catch(e){}
+  // Enrich the stored email signup with the chosen username + city.
+  var em2="";try{em2=localStorage.getItem("tml_email")||"";}catch(e){}
+  if(em2)captureEmail(em2,u,p);
   saveUser();
   paintUser();
   startGame();
