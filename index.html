@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data:; connect-src 'self' https://*.supabase.co https://cloudflareinsights.com https://static.cloudflareinsights.com https://*.make.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>True Maple Leaf — Canadian Trivia Made in Canada</title>
 <meta name="description" content="True Maple Leaf — the Canadian trivia game made in Canada. 10 fresh questions every hour on Canada, pop culture and football. Build a streak, climb your city leaderboard. Free for a limited launch period.">
 <meta name="theme-color" content="#c8102e">
@@ -1396,6 +1398,8 @@ function lbList(f){
   seeds.sort(function(a,b){return b.score-a.score;});
   return real.concat(seeds).slice(0,12);
 }
+// HTML-escape any player-supplied text before inserting into innerHTML (prevents stored XSS via usernames/cities).
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
 function renderLB(f){
   var d=lbList(f);
   var m=["🥇","🥈","🥉"];
@@ -1405,8 +1409,8 @@ function renderLB(f){
   var youRank=0;
   el.innerHTML=d.map(function(p,i){
     if(p.you)youRank=i+1;
-    var meta=(p.prov?p.city+", "+p.prov:p.city)+" · 🔥 "+p.streak+" day streak";
-    return "<div class='lb-row"+(i===0?" lb-gold":"")+(p.you?" lb-you":"")+"'><div class='lb-pos'>"+(i<3?m[i]:i+1)+"</div><div class='lb-av' style='background:"+p.ac+";color:"+p.at+"'>"+p.av+"</div><div class='lb-details'><div class='lb-name'>"+p.name+(p.you?" (you)":"")+(!p.real?" <span class='lb-sample'>sample</span>":"")+"</div><div class='lb-meta'>"+meta+"</div></div><div class='lb-score'>"+p.score.toLocaleString()+"</div></div>"
+    var meta=(p.prov?esc(p.city)+", "+esc(p.prov):esc(p.city))+" · 🔥 "+(parseInt(p.streak,10)||0)+" day streak";
+    return "<div class='lb-row"+(i===0?" lb-gold":"")+(p.you?" lb-you":"")+"'><div class='lb-pos'>"+(i<3?m[i]:i+1)+"</div><div class='lb-av' style='background:"+esc(p.ac)+";color:"+esc(p.at)+"'>"+esc(p.av)+"</div><div class='lb-details'><div class='lb-name'>"+esc(p.name)+(p.you?" (you)":"")+(!p.real?" <span class='lb-sample'>sample</span>":"")+"</div><div class='lb-meta'>"+meta+"</div></div><div class='lb-score'>"+(parseInt(p.score,10)||0).toLocaleString()+"</div></div>"
   }).join("");
   if(yr)yr.textContent=youRank?("#"+youRank):"#—";
 }
