@@ -1548,16 +1548,20 @@ function canvasBlob(){return new Promise(function(res){document.getElementById("
 
 // Native share — runs synchronously inside the click so it keeps user-activation
 // (calling share/open inside an async .then() is what browsers block).
+// Is this an actual phone/tablet? Only there does the share sheet include Instagram/Facebook
+// and let us attach the card image. On desktop the share sheet has no IG/FB, so we don't use it.
+function isMobileDevice(){
+  return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (navigator.maxTouchPoints>1 && /Macintosh/.test(navigator.userAgent));
+}
 function shareCard(){
   var txt=shareText(),url="https://truemapleleaf.com",f=cardFile();
-  if(f&&navigator.canShare&&navigator.canShare({files:[f]})){
+  if(isMobileDevice()&&f&&navigator.canShare&&navigator.canShare({files:[f]})){
     navigator.share({files:[f],text:txt,url:url}).catch(function(){});
-  } else if(navigator.share){
-    navigator.share({text:txt,url:url}).catch(function(){});
-  } else {
-    downloadCard();
-    alert("Card image saved to your device. Open any app and attach it to post.");
+    return;
   }
+  // Desktop: save the card so it can be uploaded anywhere.
+  downloadCard();
+  alert("Your True Maple Leaf card was downloaded. You can upload it to Instagram, Facebook, or anywhere you like.\n\n(On a phone, this button shares the card straight to your apps.)");
 }
 
 // Per-network share — synchronous so popups/share aren't blocked.
@@ -1565,32 +1569,21 @@ function shareCard(){
 // share sheet (mobile). On desktop we open the composer and save the image to attach.
 function shareTo(net){
   var txt=shareText(),site="https://truemapleleaf.com",f=cardFile();
-  // BEST PATH (especially on phones): the native share sheet attaches the REAL card image
-  // and lets the user pick Instagram, Facebook, WhatsApp, etc. This is the only way to send
-  // your actual card to Instagram or Facebook, because neither lets a website push a custom
-  // image into their own share box.
-  if(f&&navigator.canShare&&navigator.canShare({files:[f]})){
+  // X and WhatsApp work via direct links on EVERY device (they auto-show the link preview image).
+  if(net==="x"){window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(txt+" "+site),"_blank","noopener");return;}
+  if(net==="whatsapp"){window.open("https://wa.me/?text="+encodeURIComponent(txt+" "+site),"_blank","noopener");return;}
+  // Instagram & Facebook on a PHONE: the share sheet lists these apps and attaches the real card.
+  if(isMobileDevice()&&f&&navigator.canShare&&navigator.canShare({files:[f]})){
     navigator.share({files:[f],text:txt,url:site}).catch(function(){});
     return;
   }
-  // DESKTOP FALLBACK for Instagram & Facebook: they can't accept a custom image from a website,
-  // so we open the app first (keeps the click "live" so it isn't pop-up blocked), save the card,
-  // then tell the user to upload it.
-  if(net==="instagram"||net==="facebook"){
-    var url=net==="instagram"?"https://www.instagram.com/":"https://www.facebook.com/";
-    window.open(url,"_blank","noopener");
-    downloadCard();
-    var where=net==="instagram"?"Instagram":"Facebook";
-    setTimeout(function(){alert("Your True Maple Leaf card was just downloaded. "+where+" doesn't let a website attach a custom image to its share box, so start a new "+where+" post and upload the saved card.\n\nTip: on a phone, tap \"Share my card\" — that sends the card straight to "+where+".");},300);
-    return;
-  }
-  // X and WhatsApp: share the link + text (these show the site's preview image automatically).
-  var t=encodeURIComponent(txt+" "+site);
-  var dest = net==="x"        ? "https://twitter.com/intent/tweet?text="+t
-           : net==="whatsapp" ? "https://wa.me/?text="+t
-           : "";
-  if(dest){window.open(dest,"_blank","noopener");}
-  else{downloadCard();}
+  // Instagram & Facebook on a COMPUTER: neither lets a website attach an image, so open the app
+  // first (keeps the click live so it isn't pop-up blocked), save the card, then prompt to upload.
+  var url=net==="instagram"?"https://www.instagram.com/":"https://www.facebook.com/";
+  window.open(url,"_blank","noopener");
+  downloadCard();
+  var where=net==="instagram"?"Instagram":"Facebook";
+  setTimeout(function(){alert("Your True Maple Leaf card was downloaded. "+where+" doesn't let a website attach an image, so start a new "+where+" post and upload the saved card.\n\nTip: on a phone, tap \"Share my card\" to send it straight to "+where+".");},300);
 }
 
 function downloadCard(){var a=document.createElement("a");a.download="true-maple-leaf-card-"+new Date().toISOString().slice(0,10)+".png";a.href=document.getElementById("share-canvas").toDataURL();a.click()}
