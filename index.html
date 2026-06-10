@@ -314,6 +314,8 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
 .res-col-b{align-items:stretch;justify-content:center}
 .res-col-b .btn-outline{width:100%}
 @media(min-width:860px){.result-page{grid-template-columns:1.05fr 1fr;gap:44px;align-items:center}}
+.result-card{width:100%;max-width:262px;height:auto;display:block;margin:14px auto 16px;border-radius:18px;box-shadow:0 14px 34px rgba(140,100,20,.32);cursor:pointer;transition:transform .15s}
+.result-card:hover{transform:translateY(-3px)}
 .result-top-tag{font-size:11px;font-weight:700;color:var(--gold-dk);letter-spacing:.12em;text-transform:uppercase;margin-bottom:18px}
 .result-maple{font-size:72px;animation:bigPop .7s cubic-bezier(.34,1.56,.64,1) forwards;display:block;margin-bottom:6px}
 @keyframes bigPop{from{transform:scale(0) rotate(-15deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
@@ -861,17 +863,12 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
   <div class="result-page">
     <div class="res-col res-col-a">
       <div class="result-top-tag" id="res-tag">Your result</div>
-      <span class="result-maple">🎯</span>
       <div class="result-num-row">
         <span class="result-big-num" id="res-num">0</span>
         <span class="result-denom">/10</span>
       </div>
       <div class="result-sub">questions correct</div>
-      <div class="persona-chip" id="persona">
-        <span class="persona-em" id="persona-em">🎯</span>
-        <span class="persona-txt">You play like <strong id="persona-name">a true Canadian</strong></span>
-      </div>
-      <div class="persona-blurb" id="persona-blurb"></div>
+      <canvas id="result-card" class="result-card" width="540" height="760" onclick="openShare()" title="Tap to share your card" aria-label="Your shareable result card"></canvas>
       <div class="share-nudge" id="share-nudge">Think your friends can beat this? Send them your card.</div>
       <button class="btn-share-big" onclick="openShare()">Share my card — show it off 🍁</button>
       <div class="share-micro" style="font-size:12.5px;color:var(--ink3);text-align:center;margin:2px 0 0">Your own gold card · one tap · about 5 seconds</div>
@@ -1391,9 +1388,9 @@ function endGame(){
   document.getElementById("xp-label").textContent=S.score+" pts";
   var tag=document.getElementById("res-tag");
   tag.textContent=correct===10?"Perfect score! 🏆":correct>=8?"Excellent result! 🎉":correct>=6?"Good effort!":"Keep at it!";
-  document.getElementById("persona-em").textContent=S.persona.e;
-  document.getElementById("persona-name").textContent=S.persona.t;
-  document.getElementById("persona-blurb").textContent=S.persona.d;
+  var _pe=document.getElementById("persona-em");if(_pe)_pe.textContent=S.persona.e;
+  var _pn=document.getElementById("persona-name");if(_pn)_pn.textContent=S.persona.t;
+  var _pb=document.getElementById("persona-blurb");if(_pb)_pb.textContent=S.persona.d;
   var bds=[];
   if(correct===10)bds.push("🏆 Perfect!");
   else if(correct>=8)bds.push("⭐ Great round!");
@@ -1409,6 +1406,7 @@ function endGame(){
   document.getElementById("you-rank").textContent="#"+rank;
   document.getElementById("you-meta").textContent=(S.city||"Toronto")+" · 🔥 "+S.streak+" day streak";
   go("screen-result");
+  try{drawShareCard(document.getElementById("result-card"));}catch(e){}
   if(correct>=8)playSound("win");
   var _ss=document.getElementById("save-streak");
   if(_ss){if(!_reg){var _d=document.getElementById("ss-days");if(_d)_d.textContent=S.streak+"-day streak";_ss.style.display="flex";}else{_ss.style.display="none";}}
@@ -1599,8 +1597,8 @@ function drawLogoBadge(ctx,x,y,size){
   ctx.fill(new Path2D("M32 16 C32.7 28 36 31.3 48 32 C36 32.7 32.7 36 32 48 C31.3 36 28 32.7 16 32 C28 31.3 31.3 28 32 16 Z"));ctx.restore();
   ctx.restore();
 }
-function openShare(){
-  var canvas=document.getElementById("share-canvas");
+function drawShareCard(canvas){
+  if(!canvas)return null;
   var ctx=canvas.getContext("2d");
   var d=cardData();
   var W=540,H=760;
@@ -1671,7 +1669,11 @@ function openShare(){
   ctx.fillText("Scan to play free",62,706);
   ctx.fillText("truemapleleaf.com",62,726);
   ctx.textAlign="left";
-
+  return d;
+}
+function openShare(){
+  var d=drawShareCard(document.getElementById("share-canvas"));
+  if(!d)return;
   document.getElementById("m-title").textContent =
     d.tier==="ELITE" ? "Elite card unlocked! 🏆 Flaunt it." : d.tier==="GOLD" ? "Gold card earned! 🥇 Show it off." : "Your card's ready — challenge your friends!";
   document.getElementById("share-overlay").classList.add("open");
