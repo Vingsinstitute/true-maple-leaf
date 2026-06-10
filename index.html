@@ -1127,7 +1127,8 @@ var LB=[
 
 function go(id){document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active")});document.getElementById(id).classList.add("active");window.scrollTo(0,0)}
 function signOut(){
-  try{['tml_user','tml_registered','tml_email','tml_pending_score','tml_claim'].forEach(function(k){localStorage.removeItem(k);});}catch(e){}
+  try{ if(sbAuth&&sbAuth.auth&&sbAuth.auth.signOut) sbAuth.auth.signOut(); }catch(e){}
+  try{['tml_user','tml_registered','tml_email','tml_pending_score','tml_claim','tml_oauth_pending'].forEach(function(k){localStorage.removeItem(k);});}catch(e){}
   S.username="CanadaFan";S.city="Toronto";S.streak=0;S.totalXP=0;S.bestScore=0;S.lastPlay=null;S.realLB=[];
   var na=document.getElementById("nav-auth");if(na){na.textContent="Sign in";na.onclick=function(){go("screen-signin");};}
   var so=document.getElementById("nav-signout");if(so)so.style.display="none";
@@ -1843,8 +1844,11 @@ var sbAuth=null;
 try{ if(window.supabase&&window.supabase.createClient){ sbAuth=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}); } }catch(e){}
 function googleLogin(){
   if(!sbAuth){ alert("Sign-in is still loading — please try again in a moment."); return; }
+  // Mark that the NEXT load is a deliberate sign-in, so we only route to the name screen then
+  // (not on every passive visit where a session happens to still be alive).
+  try{localStorage.setItem("tml_oauth_pending","1");}catch(e){}
   sbAuth.auth.signInWithOAuth({provider:"google",options:{redirectTo:location.origin+"/"}}).then(function(r){
-    if(r&&r.error){ alert("Google sign-in isn't connected yet. Please use the email option for now."); }
+    if(r&&r.error){ try{localStorage.removeItem("tml_oauth_pending");}catch(e){} alert("Google sign-in isn't connected yet. Please use the email option for now."); }
   });
 }
 var _authedHandled=false;
@@ -1854,10 +1858,12 @@ function handleAuthedUser(user){
   var email=user.email;
   try{localStorage.setItem("tml_email",email);}catch(e){}
   var claim=null;try{claim=JSON.parse(localStorage.getItem("tml_claim")||"null");}catch(e){}
+  var fresh=false;try{fresh=!!localStorage.getItem("tml_oauth_pending");localStorage.removeItem("tml_oauth_pending");}catch(e){}
   var reg=false;try{reg=!!localStorage.getItem("tml_registered");}catch(e){}
-  if(reg){ captureEmail(email,S.username,S.city); }
-  else if(claim&&claim.u){
-    // they typed a game name then chose Google on the claim screen — finish the claim for them
+  // Already set up → just refresh their email link; NEVER change the screen. (Keeps the home page on screen.)
+  if(reg){ captureEmail(email,S.username,S.city); return; }
+  // They typed a game name then chose Google on the claim screen — finish the claim for them.
+  if(claim&&claim.u){
     S.username=claim.u;S.city=claim.p;
     try{localStorage.setItem("tml_registered","1");localStorage.setItem("tml_consent",claim.c?"1":"0");localStorage.removeItem("tml_claim");}catch(e){}
     captureEmail(email,claim.u,claim.p,claim.c);
@@ -1865,9 +1871,12 @@ function handleAuthedUser(user){
     var pend=false;try{pend=!!localStorage.getItem("tml_pending_score");}catch(e){}
     if(pend){submitScore();try{localStorage.removeItem("tml_pending_score");}catch(e){}}
     var _ss=document.getElementById("save-streak");if(_ss)_ss.style.display="none";
-    goLB();
+    goLB();return;
   }
-  else { captureEmail(email); go("screen-username"); }
+  // Fresh, deliberate Google sign-in → set up a game name once.
+  if(fresh){ captureEmail(email); go("screen-username"); return; }
+  // Passive session restore on a normal visit → capture the email quietly and STAY on the home page.
+  captureEmail(email);
 }
 if(sbAuth){
   sbAuth.auth.getSession().then(function(res){
