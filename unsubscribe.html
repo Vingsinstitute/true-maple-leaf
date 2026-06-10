@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src https://*.supabase.co; base-uri 'self'; form-action 'self'">
+<meta name="robots" content="noindex">
+<title>Unsubscribe — True Maple Leaf</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='15' fill='%23c8102e'/><path d='M32 7 C33.4 26 38 31 57 32 C38 33 33.4 38 32 57 C30.6 38 26 33 7 32 C26 31 30.6 26 32 7 Z' fill='%23f0cf73'/></svg>">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:#faf7f2;color:#1a1208;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+  .card{background:#fff;border:1px solid #ece6db;border-radius:18px;padding:40px 32px;max-width:440px;width:100%;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.06)}
+  .logo{display:inline-flex;align-items:center;gap:9px;margin-bottom:22px}
+  .logo .mark{width:34px;height:34px;border-radius:9px;background:#c8102e;display:flex;align-items:center;justify-content:center}
+  .logo .mark svg{width:22px;height:22px}
+  .logo .txt{font-size:17px;font-weight:800;letter-spacing:-.01em}
+  .logo .txt span{color:#c8102e}
+  h1{font-size:21px;font-weight:800;margin-bottom:10px}
+  p{font-size:14.5px;color:#5f5848;line-height:1.6;margin-bottom:8px}
+  .status{margin:18px 0;font-size:15px;font-weight:600}
+  .ok{color:#1a6b2e}.err{color:#a32d2d}.muted{color:#8a8270}
+  a.btn{display:inline-block;margin-top:18px;background:#c8102e;color:#fff;text-decoration:none;padding:12px 22px;border-radius:11px;font-weight:700;font-size:14px}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">
+      <span class="mark"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 7 C33.4 26 38 31 57 32 C38 33 33.4 38 32 57 C30.6 38 26 33 7 32 C26 31 30.6 26 32 7 Z" fill="#f0cf73"/></svg></span>
+      <span class="txt">True <span>Maple</span> Leaf</span>
+    </div>
+    <h1>Unsubscribe</h1>
+    <p>Manage your streak-reminder emails.</p>
+    <div class="status muted" id="status">Processing your request…</div>
+    <p style="font-size:13px;color:#8a8270">You can re-enable reminders any time by signing in and ticking the box again.</p>
+    <a class="btn" href="https://truemapleleaf.com/">Back to True Maple Leaf</a>
+  </div>
+<script>
+  var SUPABASE_URL="https://leosxdqsetcnocyaixix.supabase.co";
+  var SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxlb3N4ZHFzZXRjbm9jeWFpeGl4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1NzYwNzQsImV4cCI6MjA5NTE1MjA3NH0.t3MVxxcaqs68fso2ahigisTiMxe6idcCnEgVAuQJVIc";
+  function q(name){var m=new RegExp("[?&]"+name+"=([^&]+)").exec(location.search);return m?decodeURIComponent(m[1]):"";}
+  var el=document.getElementById("status");
+  var token=q("token");
+  var uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  if(!token||!uuid.test(token)){
+    el.className="status err";el.textContent="This unsubscribe link looks invalid or incomplete.";
+  } else {
+    fetch(SUPABASE_URL+"/rest/v1/rpc/unsubscribe_email",{
+      method:"POST",
+      headers:{apikey:SUPABASE_ANON_KEY,Authorization:"Bearer "+SUPABASE_ANON_KEY,"Content-Type":"application/json"},
+      body:JSON.stringify({p_token:token})
+    }).then(function(r){return r.ok?r.json():Promise.reject();})
+      .then(function(found){
+        if(found){el.className="status ok";el.textContent="✓ Done — you've been unsubscribed from streak reminders.";}
+        else{el.className="status muted";el.textContent="You're already unsubscribed (or this link was already used).";}
+      })
+      .catch(function(){el.className="status err";el.textContent="Something went wrong. Please try again, or email truemapleleaf.can@gmail.com.";});
+  }
+</script>
+</body>
+</html>

@@ -926,8 +926,10 @@ var S = {
 // Paste the webhook URL from your Make "Custom webhook" trigger here.
 // Leave "" to skip sending (the site still works in demo mode).
 var MAKE_WEBHOOK_URL = "";
-function captureEmail(email, username, city){
+function captureEmail(email, username, city, consent){
   try{ localStorage.setItem("tml_email", email); }catch(e){}
+  // consent: true/false = explicit CASL opt-in for streak-reminder emails; undefined = leave unchanged.
+  var pConsent = (consent===true||consent===false) ? consent : null;
   // Store centrally in Supabase in a PRIVATE table (email_signups), kept separate from the
   // public leaderboard. Written only via the capture_email RPC; the table is not publicly readable.
   if(SUPABASE_URL){
@@ -935,7 +937,7 @@ function captureEmail(email, username, city){
       fetch(SUPABASE_URL+"/rest/v1/rpc/capture_email",{
         method:"POST",
         headers:{apikey:SUPABASE_ANON_KEY,Authorization:"Bearer "+SUPABASE_ANON_KEY,"Content-Type":"application/json"},
-        body:JSON.stringify({p_email:email,p_username:username||null,p_city:city||null})
+        body:JSON.stringify({p_email:email,p_username:username||null,p_city:city||null,p_consent:pConsent})
       }).catch(function(){});
     }catch(e){}
   }
@@ -945,7 +947,7 @@ function captureEmail(email, username, city){
       fetch(MAKE_WEBHOOK_URL,{
         method:"POST",
         headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({email:email,username:username||null,city:city||null,source:"truemapleleaf.com",consent_notifications:false,signed_up_at:new Date().toISOString()})
+        body:JSON.stringify({email:email,username:username||null,city:city||null,source:"truemapleleaf.com",consent_notifications:(pConsent===true),signed_up_at:new Date().toISOString()})
       }).catch(function(){});
     }catch(e){}
   }
@@ -1079,9 +1081,11 @@ function finishSetup(){
   if(!p){alert("Please select your city.");return}
   S.username=u;S.city=p;
   try{localStorage.setItem("tml_registered","1");}catch(e){}
-  // Enrich the stored email signup with the chosen username + city.
+  // Enrich the stored email signup with username + city + the CASL streak-reminder opt-in choice.
+  var nb=document.getElementById("notif");var consent=!!(nb&&nb.checked);
+  try{localStorage.setItem("tml_consent",consent?"1":"0");}catch(e){}
   var em2="";try{em2=localStorage.getItem("tml_email")||"";}catch(e){}
-  if(em2)captureEmail(em2,u,p);
+  if(em2)captureEmail(em2,u,p,consent);
   saveUser();
   paintUser();
   startGame();
