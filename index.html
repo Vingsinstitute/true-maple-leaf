@@ -308,7 +308,12 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
 
 /* ─── RESULT ─── */
 #screen-result{background:var(--paper2)}
-.result-page{flex:1;max-width:540px;margin:0 auto;width:100%;padding:36px 28px 48px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.result-page{flex:1;max-width:920px;margin:0 auto;width:100%;padding:36px 28px 48px;display:grid;grid-template-columns:1fr;gap:18px}
+.res-col{display:flex;flex-direction:column;min-width:0}
+.res-col-a{align-items:center;text-align:center}
+.res-col-b{align-items:stretch;justify-content:center}
+.res-col-b .btn-outline{width:100%}
+@media(min-width:860px){.result-page{grid-template-columns:1.05fr 1fr;gap:44px;align-items:center}}
 .result-top-tag{font-size:11px;font-weight:700;color:var(--gold-dk);letter-spacing:.12em;text-transform:uppercase;margin-bottom:18px}
 .result-maple{font-size:72px;animation:bigPop .7s cubic-bezier(.34,1.56,.64,1) forwards;display:block;margin-bottom:6px}
 @keyframes bigPop{from{transform:scale(0) rotate(-15deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
@@ -854,40 +859,44 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
     </div>
   </nav>
   <div class="result-page">
-    <div class="result-top-tag" id="res-tag">Your result</div>
-    <span class="result-maple">🎯</span>
-    <div class="result-num-row">
-      <span class="result-big-num" id="res-num">0</span>
-      <span class="result-denom">/10</span>
+    <div class="res-col res-col-a">
+      <div class="result-top-tag" id="res-tag">Your result</div>
+      <span class="result-maple">🎯</span>
+      <div class="result-num-row">
+        <span class="result-big-num" id="res-num">0</span>
+        <span class="result-denom">/10</span>
+      </div>
+      <div class="result-sub">questions correct</div>
+      <div class="persona-chip" id="persona">
+        <span class="persona-em" id="persona-em">🎯</span>
+        <span class="persona-txt">You play like <strong id="persona-name">a true Canadian</strong></span>
+      </div>
+      <div class="persona-blurb" id="persona-blurb"></div>
+      <div class="share-nudge" id="share-nudge">Think your friends can beat this? Send them your card.</div>
+      <button class="btn-share-big" onclick="openShare()">Share my card — show it off 🍁</button>
+      <div class="share-micro" style="font-size:12.5px;color:var(--ink3);text-align:center;margin:2px 0 0">Your own gold card · one tap · about 5 seconds</div>
     </div>
-    <div class="result-sub">questions correct</div>
-    <div class="persona-chip" id="persona">
-      <span class="persona-em" id="persona-em">🎯</span>
-      <span class="persona-txt">You play like <strong id="persona-name">a true Canadian</strong></span>
+    <div class="res-col res-col-b">
+      <div class="rank-block">
+        <div class="rank-label">Your rank</div>
+        <div class="rank-num" id="res-rank">#<span>—</span></div>
+        <div class="rank-province" id="res-prov">in Toronto</div>
+        <div class="rank-move" id="res-move">↑ Up 3 spots this hour</div>
+      </div>
+      <div class="save-streak" id="save-streak" style="display:none">
+        <span style="font-size:22px" aria-hidden="true">🏆</span>
+        <div class="ss-txt">Pick a game name to claim your score, <b id="ss-days">streak</b> and leaderboard spot — free, no login needed.</div>
+        <button onclick="go('screen-username')">Claim my spot →</button>
+      </div>
+      <div class="xp-section">
+        <div class="xp-top"><span>XP earned today</span><span id="xp-label">0 pts</span></div>
+        <div class="xp-track"><div class="xp-bar" id="xp-bar"></div></div>
+      </div>
+      <div class="badge-row" id="badges"></div>
+      <button class="btn-outline" onclick="goLB()">View leaderboard</button>
+      <button class="btn-outline" onclick="go('screen-home')">Back to home</button>
+      <div class="result-note">New questions every hour · come back soon</div>
     </div>
-    <div class="persona-blurb" id="persona-blurb"></div>
-    <div class="share-nudge" id="share-nudge">Think your friends can beat this? Send them your card.</div>
-    <button class="btn-share-big" onclick="openShare()">Share my card — show it off 🍁</button>
-    <div class="share-micro" style="font-size:12.5px;color:var(--ink3);text-align:center;margin:2px 0 16px">Your own gold card · one tap · about 5 seconds</div>
-    <div class="rank-block">
-      <div class="rank-label">Your rank</div>
-      <div class="rank-num" id="res-rank">#<span>—</span></div>
-      <div class="rank-province" id="res-prov">in Toronto</div>
-      <div class="rank-move" id="res-move">↑ Up 3 spots this hour</div>
-    </div>
-    <div class="save-streak" id="save-streak" style="display:none">
-      <span style="font-size:22px" aria-hidden="true">🏆</span>
-      <div class="ss-txt">Pick a game name to claim your score, <b id="ss-days">streak</b> and leaderboard spot — free, no login needed.</div>
-      <button onclick="go('screen-username')">Claim my spot →</button>
-    </div>
-    <div class="xp-section">
-      <div class="xp-top"><span>XP earned today</span><span id="xp-label">0 pts</span></div>
-      <div class="xp-track"><div class="xp-bar" id="xp-bar"></div></div>
-    </div>
-    <div class="badge-row" id="badges"></div>
-    <button class="btn-outline" onclick="goLB()">View leaderboard</button>
-    <button class="btn-outline" onclick="go('screen-home')">Back to home</button>
-    <div class="result-note">New questions every hour · come back soon</div>
   </div>
   <footer>
     <div class="footer-brand">True Maple Leaf</div>
