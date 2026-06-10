@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://static.cloudflareinsights.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com data:; img-src 'self' data: https://*.googleusercontent.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://cloudflareinsights.com https://static.cloudflareinsights.com https://*.make.com; object-src 'none'; base-uri 'self'; form-action 'self' https://*.supabase.co https://accounts.google.com">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>True Maple Leaf — Canadian Trivia Made in Canada</title>
-<meta name="description" content="True Maple Leaf — the Canadian trivia game made in Canada. 10 fresh questions every hour on Canada, pop culture and football. Build a streak, climb your city leaderboard. Free for a limited launch period.">
+<meta name="description" content="True Maple Leaf — the Canadian trivia game made in Canada. 10 fresh questions every hour on Canada, pop culture and football. Build a streak, climb your city leaderboard. Free to play, no sign-up needed to start.">
 <meta name="theme-color" content="#c8102e">
 <meta property="og:title" content="True Maple Leaf — Canadian Trivia">
 <meta property="og:description" content="How well do you know Canada? 10 fresh questions every hour. Build your streak, climb your city's leaderboard.">
@@ -81,9 +81,11 @@ h1.hero-headline em{font-style:normal;color:var(--red)}
 .hero-desc{font-size:17px;color:var(--ink2);max-width:490px;line-height:1.6;margin-bottom:12px;font-weight:400}
 .hero-discreet{font-size:12.5px;color:var(--ink3);margin-bottom:24px}
 .hero-cta-wrap{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:12px}
-.btn-play{background:var(--red);color:#fff;border:none;border-radius:var(--rx);padding:16px 30px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:-.01em;transition:all .2s;display:inline-flex;align-items:center;gap:9px;box-shadow:0 6px 20px rgba(200,16,46,.28)}
-.btn-play:hover{background:var(--red-dk);transform:translateY(-2px);box-shadow:0 10px 30px rgba(200,16,46,.4)}
+.btn-play{background:var(--red);color:#fff;border:none;border-radius:var(--rx);padding:16px 30px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:-.01em;transition:all .2s;display:inline-flex;align-items:center;gap:9px;box-shadow:0 6px 20px rgba(200,16,46,.28);animation:playPulse 2.4s ease-in-out infinite}
+@keyframes playPulse{0%,100%{box-shadow:0 6px 20px rgba(200,16,46,.28),0 0 0 0 rgba(200,16,46,.34)}50%{box-shadow:0 10px 30px rgba(200,16,46,.45),0 0 0 9px rgba(200,16,46,0),0 0 26px rgba(200,16,46,.42)}}
+.btn-play:hover{background:var(--red-dk);transform:translateY(-2px);box-shadow:0 10px 30px rgba(200,16,46,.4);animation:none}
 .btn-play:active{transform:scale(.98)}
+@media(prefers-reduced-motion:reduce){.btn-play{animation:none}}
 .btn-ghost-inv{background:var(--paper);color:var(--ink);border:1px solid var(--border2);border-radius:var(--rx);padding:15px 26px;font-size:15px;font-weight:500;cursor:pointer;font-family:inherit;transition:all .15s}
 .btn-ghost-inv:hover{background:var(--paper2);border-color:var(--ink3)}
 .start-here{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--red);white-space:nowrap}
@@ -117,6 +119,41 @@ h1.hero-headline em{font-style:normal;color:var(--red)}
   .hero-preview{order:-1;max-width:340px}
   .hero-left{max-width:none}
 }
+
+/* ─── HERO PREVIEW: auto-flips question → real gold result card ─── */
+.flipdeck{position:relative;width:100%}
+.flipdeck .phone{position:absolute;top:50%;left:0;right:0;margin:0 auto;animation:deckQ 9s ease-in-out infinite}
+@keyframes deckQ{0%,38%{opacity:1;transform:translate(0,-50%) scale(1)}48%,92%{opacity:0;transform:translate(-26px,-50%) scale(.95)}100%{opacity:1;transform:translate(0,-50%) scale(1)}}
+.flipdeck .rcard{opacity:0;animation:deckR 9s ease-in-out infinite}
+@keyframes deckR{0%,38%{opacity:0;transform:translateX(24px) scale(.96)}48%,92%{opacity:1;transform:translateX(0) scale(1)}100%{opacity:0;transform:translateX(24px) scale(.96)}}
+@media(prefers-reduced-motion:reduce){.flipdeck .phone{animation:none;opacity:0}.flipdeck .rcard{animation:none;opacity:1}}
+
+/* faithful CSS replica of the shareable gold card */
+.rcard{position:relative;border-radius:26px;padding:20px 22px 18px;color:#3d2a06;background:linear-gradient(180deg,#fbeeb6 0%,#edca6d 42%,#d6a83a 78%,#b8841d 100%);box-shadow:0 20px 46px rgba(140,100,20,.34);overflow:hidden}
+.rcard::before{content:"";position:absolute;inset:11px;border:1.5px solid rgba(74,50,8,.28);border-radius:18px;pointer-events:none;z-index:2}
+.rcard::after{content:"";position:absolute;left:0;right:0;top:0;height:46%;background:linear-gradient(180deg,rgba(255,255,255,.5),rgba(255,255,255,0));pointer-events:none}
+.rcard>*{position:relative;z-index:1}
+.rc-badge{position:absolute;top:13px;left:50%;transform:translateX(-50%);width:26px;height:26px;border-radius:7px;background:#c8102e;display:flex;align-items:center;justify-content:center}
+.rc-badge svg{width:17px;height:17px}
+.rc-tier{position:absolute;top:13px;right:16px;background:#7a5e16;color:#fff;font-size:12px;font-weight:800;letter-spacing:2px;border-radius:16px;padding:5px 13px}
+.rc-num{font-size:58px;font-weight:900;line-height:.9;letter-spacing:-.03em;margin-top:20px}
+.rc-code{font-size:22px;font-weight:800;margin-top:3px}
+.rc-rule{width:84px;height:2px;background:rgba(74,50,8,.4);margin:8px 0}
+.rc-city{font-size:15px;font-weight:700}
+.rc-emoji{position:absolute;top:74px;right:26px;font-size:92px;line-height:1;z-index:1}
+.rc-persona{text-align:center;font-size:12px;font-weight:700;letter-spacing:3px;color:rgba(61,42,6,.62);margin-top:16px}
+.rc-handle{text-align:center;font-size:30px;font-weight:800;letter-spacing:-.01em;margin-top:3px}
+.rc-hr{height:2px;width:62%;margin:9px auto 0;background:linear-gradient(90deg,rgba(74,50,8,0),rgba(74,50,8,.5),rgba(74,50,8,0))}
+.rc-rows{margin-top:12px}
+.rc-row{display:flex;justify-content:space-between;align-items:center;padding:8px 4px;font-size:14px}
+.rc-row+.rc-row{border-top:1px solid rgba(74,50,8,.16)}
+.rc-row span{color:rgba(61,42,6,.62);font-weight:600}
+.rc-row b{font-weight:800}
+.rc-foot{display:flex;justify-content:space-between;align-items:flex-end;margin-top:14px}
+.rc-brand{font-size:15px;font-weight:800;letter-spacing:1.5px;line-height:1.45}
+.rc-brand small{display:block;font-size:11px;font-weight:600;letter-spacing:0;color:rgba(61,42,6,.62)}
+.rc-qr{width:62px;height:62px;border-radius:9px;background:#fff;padding:6px;flex-shrink:0}
+.rc-qr svg{display:block;width:100%;height:100%}
 
 /* ─── CATEGORIES SECTION ─── */
 .section{padding:80px 40px}
@@ -524,10 +561,10 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
   <div class="hero">
     <div class="hero-grid">
       <div class="hero-left">
-        <div class="hero-kicker"><span></span> Fresh questions every hour</div>
-        <div class="hero-gold"><span aria-hidden="true">★</span> Premium experience · free for a limited launch period</div>
+        <div class="hero-kicker"><span></span> Soccer's biggest summer is here</div>
+        <div class="hero-gold"><span aria-hidden="true">★</span> Free to play during our launch</div>
         <h1 class="hero-headline">How well do you really know <em>Canada</em>?</h1>
-        <p class="hero-desc">Ten new trivia questions every hour — Canadian history, pop culture, and the World Cup. Play on your own, or make it a friendly contest with friends, coworkers, and the table next to you.</p>
+        <p class="hero-desc">Ten fresh trivia questions every hour — Canadian history, pop culture, and plenty of soccer while the whole country's watching. Play on your own, or make it a friendly contest with friends, coworkers, and the table next to you.</p>
         <p class="hero-discreet">Made in Canada · built for every Canadian, ages 16 to 100.</p>
         <div class="hero-cta-wrap">
           <button class="btn-play" onclick="playGate()"><span>Play this hour's challenge</span><span style="font-size:18px">&rarr;</span></button>
@@ -537,15 +574,39 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
         <div class="gov-note"><span aria-hidden="true">&#128274;</span><span><b>Independent &amp; unofficial.</b> A privately run game, just for fun &mdash; this is not a government website and is not affiliated with the Government of Canada or any official body.</span></div>
       </div>
       <div class="hero-preview" aria-hidden="true">
-        <div class="phone">
-          <div class="phone-bar"><span class="phone-dot"></span><small>Question 3 of 10</small><span class="phone-timer">&#9201; 24</span></div>
-          <div class="phone-body">
-            <span class="phone-cat">&#9917; Football</span>
-            <div class="phone-q">Which Canadian city is hosting FIFA World Cup 2026 matches?</div>
-            <div class="phone-opt"><b>A</b> Calgary</div>
-            <div class="phone-opt ok"><b>B</b> Vancouver <span>&#10003;</span></div>
-            <div class="phone-opt"><b>C</b> Halifax</div>
-            <div class="phone-opt"><b>D</b> Winnipeg</div>
+        <div class="flipdeck">
+          <div class="rcard">
+            <span class="rc-badge"><svg viewBox="0 0 64 64"><path d="M32 7 C33.4 26 38 31 57 32 C38 33 33.4 38 32 57 C30.6 38 26 33 7 32 C26 31 30.6 26 32 7 Z" fill="#f0cf73"/></svg></span>
+            <span class="rc-tier">GOLD</span>
+            <div class="rc-num">87</div>
+            <div class="rc-code">CHE</div>
+            <div class="rc-rule"></div>
+            <div class="rc-city">Toronto</div>
+            <div class="rc-emoji">🐆</div>
+            <div class="rc-persona">THE CHEETAH</div>
+            <div class="rc-handle">@MAPLE</div>
+            <div class="rc-hr"></div>
+            <div class="rc-rows">
+              <div class="rc-row"><span>Accuracy</span><b>90%</b></div>
+              <div class="rc-row"><span>City rank</span><b>#2 in Toronto</b></div>
+              <div class="rc-row"><span>Day streak</span><b>7 days</b></div>
+              <div class="rc-row"><span>Total XP</span><b>3,260 pts</b></div>
+            </div>
+            <div class="rc-foot">
+              <div class="rc-brand">TRUE MAPLE LEAF<small>Scan to play free</small><small>truemapleleaf.com</small></div>
+              <div class="rc-qr"><svg viewBox="0 0 29 29" shape-rendering="crispEdges"><path fill="#1a1208" fill-rule="evenodd" d="M0 0h7v7h-7zM1 1v5h5v-5zM22 0h7v7h-7zM23 1v5h5v-5zM0 22h7v7h-7zM1 23v5h5v-5z"/><path fill="#1a1208" d="M2 2h3v3h-3zM24 2h3v3h-3zM2 24h3v3h-3zM9 1h1v1H9zM11 2h1v1h-1zM13 1h1v1h-1zM15 3h1v1h-1zM17 2h1v1h-1zM19 4h1v1h-1zM8 4h1v1H8zM10 5h1v1h-1zM2 9h1v1H2zM4 11h1v1H4zM6 13h1v1H6zM9 9h1v1H9zM11 11h1v1h-1zM13 9h1v1h-1zM15 11h1v1h-1zM17 13h1v1h-1zM19 9h1v1h-1zM21 11h1v1h-1zM23 13h1v1h-1zM25 9h1v1h-1zM10 17h1v1h-1zM13 19h1v1h-1zM16 21h1v1h-1zM24 17h1v1h-1z"/></svg></div>
+            </div>
+          </div>
+          <div class="phone">
+            <div class="phone-bar"><span class="phone-dot"></span><small>Question 3 of 10</small><span class="phone-timer">&#9201; 24</span></div>
+            <div class="phone-body">
+              <span class="phone-cat">&#9917; Football</span>
+              <div class="phone-q">Which Canadian city is hosting FIFA World Cup 2026 matches?</div>
+              <div class="phone-opt"><b>A</b> Calgary</div>
+              <div class="phone-opt ok"><b>B</b> Vancouver <span>&#10003;</span></div>
+              <div class="phone-opt"><b>C</b> Halifax</div>
+              <div class="phone-opt"><b>D</b> Winnipeg</div>
+            </div>
           </div>
         </div>
       </div>
@@ -570,9 +631,9 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
       <div class="cat-grid">
         <div class="cat-card">
           <span class="cat-emoji">⚽</span>
-          <div class="cat-badge">World Cup 2026 — Live 🔥</div>
+          <div class="cat-badge">Soccer season — Live 🔥</div>
           <div class="cat-title">Football</div>
-          <p class="cat-body">FIFA World Cup 2026 is happening now with games in Toronto and Vancouver. Goals, legends, records, and history.</p>
+          <p class="cat-body">The world's biggest soccer tournament is on right now, with games in Toronto and Vancouver. Goals, legends, records, and history.</p>
           <span class="cat-arrow">→</span>
         </div>
         <div class="cat-card">
@@ -651,7 +712,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
   <!-- CTA band -->
   <div class="cta-band">
     <h2>Ready to prove it?</h2>
-    <p>No password. Fresh questions every hour. Free for a limited launch period — Premium coming soon.</p>
+    <p>No password, no catch. Fresh questions every hour — free to play during our launch.</p>
     <button class="btn-wh" onclick="playGate()">Play this hour's challenge →</button>
   </div>
 
@@ -704,9 +765,9 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
   </nav>
   <div class="auth-page">
     <div class="auth-box">
-      <div class="auth-em">👤</div>
-      <div class="auth-title">Pick your name</div>
-      <div class="auth-sub">Shown on the leaderboard. Max 10 characters — make it memorable.</div>
+      <div class="auth-em">🏆</div>
+      <div class="auth-title">Claim your spot</div>
+      <div class="auth-sub">Pick a <b>game name</b> — this is what shows on the leaderboard. Max 10 characters, never your real name.</div>
       <input class="field" type="text" placeholder="e.g. MapleKing" id="uname" maxlength="10" oninput="document.getElementById('cc').textContent=this.value.length">
       <div class="cc"><span id="cc">0</span>/10</div>
       <select class="drop" id="prov">
@@ -717,14 +778,22 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
         <option>Kitchener–Waterloo</option><option>London</option><option>Halifax</option>
         <option>Victoria</option><option>Saskatoon</option><option>Regina</option>
         <option>St. John's</option><option>Mississauga</option><option>Brampton</option>
-        <option>Surrey</option><option>Other city in Canada</option>
+        <option>Surrey</option><option>Other</option>
       </select>
-      <div class="notif-row">
-        <input type="checkbox" id="notif">
-        <label for="notif">Send me a daily streak reminder — I can unsubscribe any time</label>
+      <button class="btn-main" onclick="finishSetup()">Claim my spot →</button>
+      <div class="opt-save" style="margin-top:18px;padding:15px 16px;border:1px solid var(--border);border-radius:14px;background:var(--paper2)">
+        <div style="font-size:11px;font-weight:700;color:var(--ink3);margin-bottom:11px;text-transform:uppercase;letter-spacing:.05em">Optional — save your streak &amp; get reminders</div>
+        <input class="field" type="email" placeholder="your@email.ca (optional)" id="uemail">
+        <div class="notif-row">
+          <input type="checkbox" id="notif">
+          <label for="notif">Email me a daily streak reminder — unsubscribe any time</label>
+        </div>
+        <button class="social-btn" onclick="claimWithGoogle()">
+          <svg width="18" height="18" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z"/><path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z"/></svg>
+          Save with Google instead
+        </button>
       </div>
-      <button class="btn-main" onclick="finishSetup()">Let's play →</button>
-      <div class="fine">We only collect your email, username, and city. <a href="privacy.html">Privacy Policy</a></div>
+      <div class="fine">Your game name + city rank you on the board. Email is optional — only used for streak reminders. <a href="privacy.html">Privacy Policy</a></div>
     </div>
   </div>
 </div>
@@ -809,9 +878,9 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
       <div class="rank-move" id="res-move">↑ Up 3 spots this hour</div>
     </div>
     <div class="save-streak" id="save-streak" style="display:none">
-      <span style="font-size:22px" aria-hidden="true">🔥</span>
-      <div class="ss-txt">Don't lose your <b id="ss-days">streak</b> — save it with a free one-tap email login.</div>
-      <button onclick="go('screen-signin')">Save streak →</button>
+      <span style="font-size:22px" aria-hidden="true">🏆</span>
+      <div class="ss-txt">Pick a game name to claim your score, <b id="ss-days">streak</b> and leaderboard spot — free, no login needed.</div>
+      <button onclick="go('screen-username')">Claim my spot →</button>
     </div>
     <div class="share-nudge" id="share-nudge">Think your friends can beat this? Send them your card.</div>
     <button class="btn-share-big" onclick="openShare()">Share my card — show it off</button>
@@ -842,12 +911,23 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
     <div class="lb-tabs">
       <button class="lb-tab on" onclick="filterLB(this,'National')">National</button>
       <button class="lb-tab" onclick="filterLB(this,'Toronto')">Toronto</button>
+      <button class="lb-tab" onclick="filterLB(this,'Mississauga')">Mississauga</button>
+      <button class="lb-tab" onclick="filterLB(this,'Brampton')">Brampton</button>
       <button class="lb-tab" onclick="filterLB(this,'Vancouver')">Vancouver</button>
+      <button class="lb-tab" onclick="filterLB(this,'Surrey')">Surrey</button>
       <button class="lb-tab" onclick="filterLB(this,'Calgary')">Calgary</button>
-      <button class="lb-tab" onclick="filterLB(this,'Ottawa')">Ottawa</button>
       <button class="lb-tab" onclick="filterLB(this,'Edmonton')">Edmonton</button>
+      <button class="lb-tab" onclick="filterLB(this,'Ottawa')">Ottawa</button>
       <button class="lb-tab" onclick="filterLB(this,'Winnipeg')">Winnipeg</button>
+      <button class="lb-tab" onclick="filterLB(this,'Hamilton')">Hamilton</button>
+      <button class="lb-tab" onclick="filterLB(this,'Kitchener–Waterloo')">Kitchener–Waterloo</button>
+      <button class="lb-tab" onclick="filterLB(this,'London')">London</button>
       <button class="lb-tab" onclick="filterLB(this,'Halifax')">Halifax</button>
+      <button class="lb-tab" onclick="filterLB(this,'Victoria')">Victoria</button>
+      <button class="lb-tab" onclick="filterLB(this,'Saskatoon')">Saskatoon</button>
+      <button class="lb-tab" onclick="filterLB(this,'Regina')">Regina</button>
+      <button class="lb-tab" onclick="filterLB(this,&quot;St. John's&quot;)">St. John's</button>
+      <button class="lb-tab" onclick="filterLB(this,'Other')">Other</button>
     </div>
     <div class="lb-table" id="lb-list"></div>
     <div class="you-row">
@@ -1047,7 +1127,7 @@ var LB=[
 
 function go(id){document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active")});document.getElementById(id).classList.add("active");window.scrollTo(0,0)}
 function signOut(){
-  try{['tml_user','tml_registered','tml_email'].forEach(function(k){localStorage.removeItem(k);});}catch(e){}
+  try{['tml_user','tml_registered','tml_email','tml_pending_score','tml_claim'].forEach(function(k){localStorage.removeItem(k);});}catch(e){}
   S.username="CanadaFan";S.city="Toronto";S.streak=0;S.totalXP=0;S.bestScore=0;S.lastPlay=null;S.realLB=[];
   var na=document.getElementById("nav-auth");if(na){na.textContent="Sign in";na.onclick=function(){go("screen-signin");};}
   var so=document.getElementById("nav-signout");if(so)so.style.display="none";
@@ -1077,20 +1157,43 @@ function mockLogin(){
 function finishSetup(){
   var u=document.getElementById("uname").value.trim();
   var p=document.getElementById("prov").value;
-  if(!u||u.length<2){alert("Please enter a username (at least 2 characters).");return}
+  if(!u||u.length<2){alert("Please enter a game name (at least 2 characters).");return}
   if(!p){alert("Please select your city.");return}
   S.username=u;S.city=p;
   try{localStorage.setItem("tml_registered","1");}catch(e){}
-  // Enrich the stored email signup with username + city + the CASL streak-reminder opt-in choice.
+  // Email is OPTIONAL. A game name + city is all that's needed to rank.
   var nb=document.getElementById("notif");var consent=!!(nb&&nb.checked);
   try{localStorage.setItem("tml_consent",consent?"1":"0");}catch(e){}
+  // Use an email from a prior Google/email sign-in, or the optional field on this screen.
   var em2="";try{em2=localStorage.getItem("tml_email")||"";}catch(e){}
+  if(!em2){var fld=document.getElementById("uemail");var typed=fld?fld.value.trim():"";
+    if(typed&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(typed))em2=typed;}
   if(em2)captureEmail(em2,u,p,consent);
   saveUser();
   paintUser();
-  startGame();
+  // If they played as a guest first, save that round to the leaderboard now and show their rank.
+  var pending=false;try{pending=!!localStorage.getItem("tml_pending_score");}catch(e){}
+  if(pending){
+    submitScore();
+    try{localStorage.removeItem("tml_pending_score");}catch(e){}
+    var _ss=document.getElementById("save-streak");if(_ss)_ss.style.display="none";
+    goLB();
+  } else {
+    startGame();
+  }
 }
 
+// Optional path: they typed a game name then chose Google. Persist the typed name/city/consent
+// (so the OAuth page-reload doesn't lose it), then start Google sign-in.
+function claimWithGoogle(){
+  var u=document.getElementById("uname").value.trim();
+  var p=document.getElementById("prov").value;
+  if(!u||u.length<2){alert("Please enter a game name first (at least 2 characters).");return}
+  if(!p){alert("Please select your city first.");return}
+  var nb=document.getElementById("notif");
+  try{localStorage.setItem("tml_claim",JSON.stringify({u:u,p:p,c:!!(nb&&nb.checked)}));}catch(e){}
+  googleLogin();
+}
 function shuffle(arr){var a=arr.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
 function buildQ(){
   var f=shuffle(QB.filter(function(q){return q.cat==="⚽ Football"})).slice(0,4);
@@ -1100,8 +1203,9 @@ function buildQ(){
 }
 
 function playGate(){
-  var reg=false;try{reg=!!localStorage.getItem("tml_registered");}catch(e){}
-  if(reg)startGame();else go("screen-signin");
+  // Play-first: anyone can play right away. We ask them to sign up at the result
+  // screen to save their score, streak and leaderboard spot.
+  startGame();
 }
 function startGame(){
   S.score=0;S.qIndex=0;S.sStreak=0;S.answers=[];S.fast=0;
@@ -1260,7 +1364,11 @@ function endGame(){
   S.totalXP+=S.score;           // accumulate lifetime XP (endowment effect)
   S.bestScore=Math.max(S.bestScore||0,S.score);   // best score drives leaderboard rank
   saveUser();
-  submitScore();
+  var _reg=false;try{_reg=!!localStorage.getItem("tml_registered");}catch(e){}
+  // Play-first: only registered players post to the public leaderboard. A guest's round is
+  // held (flagged) and submitted the moment they sign up at the result screen.
+  if(_reg){submitScore();try{localStorage.removeItem("tml_pending_score");}catch(e){}}
+  else{try{localStorage.setItem("tml_pending_score","1");}catch(e){}}
   var _base=(S.city && LB.some(function(p){return p.city===S.city}))?LB.filter(function(p){return p.city===S.city}):LB;
   var rank=_base.filter(function(p){return p.score>(S.bestScore||0);}).length+1;
   S.lastRank=rank;
@@ -1291,7 +1399,6 @@ function endGame(){
   document.getElementById("you-meta").textContent=(S.city||"Toronto")+" · 🔥 "+S.streak+" day streak";
   go("screen-result");
   if(correct>=8)playSound("win");
-  var _reg=false;try{_reg=!!localStorage.getItem("tml_registered");}catch(e){}
   var _ss=document.getElementById("save-streak");
   if(_ss){if(!_reg){var _d=document.getElementById("ss-days");if(_d)_d.textContent=S.streak+"-day streak";_ss.style.display="flex";}else{_ss.style.display="none";}}
   setTimeout(function(){document.getElementById("xp-bar").style.width=Math.min(100,correct/10*100)+"%"},300);
@@ -1746,8 +1853,20 @@ function handleAuthedUser(user){
   _authedHandled=true;
   var email=user.email;
   try{localStorage.setItem("tml_email",email);}catch(e){}
+  var claim=null;try{claim=JSON.parse(localStorage.getItem("tml_claim")||"null");}catch(e){}
   var reg=false;try{reg=!!localStorage.getItem("tml_registered");}catch(e){}
   if(reg){ captureEmail(email,S.username,S.city); }
+  else if(claim&&claim.u){
+    // they typed a game name then chose Google on the claim screen — finish the claim for them
+    S.username=claim.u;S.city=claim.p;
+    try{localStorage.setItem("tml_registered","1");localStorage.setItem("tml_consent",claim.c?"1":"0");localStorage.removeItem("tml_claim");}catch(e){}
+    captureEmail(email,claim.u,claim.p,claim.c);
+    saveUser();paintUser();
+    var pend=false;try{pend=!!localStorage.getItem("tml_pending_score");}catch(e){}
+    if(pend){submitScore();try{localStorage.removeItem("tml_pending_score");}catch(e){}}
+    var _ss=document.getElementById("save-streak");if(_ss)_ss.style.display="none";
+    goLB();
+  }
   else { captureEmail(email); go("screen-username"); }
 }
 if(sbAuth){
