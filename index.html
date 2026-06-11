@@ -568,10 +568,10 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
   <div class="hero">
     <div class="hero-grid">
       <div class="hero-left">
-        <div class="hero-kicker"><span></span> Soccer's biggest summer is here</div>
+        <div class="hero-kicker"><span></span> Fresh questions every hour</div>
         <div class="hero-gold"><span aria-hidden="true">★</span> Free to play during our launch</div>
-        <h1 class="hero-headline">How well do you really know <em>Canada</em>?</h1>
-        <p class="hero-desc">Ten fresh trivia questions every hour — Canadian history, pop culture, and plenty of soccer while the whole country's watching. Play on your own, or make it a friendly contest with friends, coworkers, and the table next to you.</p>
+        <h1 class="hero-headline">Soccer's biggest summer <em>is here</em>.</h1>
+        <p class="hero-desc">How well do you really know the beautiful game — and Canada's part in it? Ten fresh trivia questions every hour. Play on your own, or make it a friendly contest with friends, coworkers, and the table next to you.</p>
         <p class="hero-discreet">Made in Canada · built for every Canadian, ages 16 to 100.</p>
         <div class="hero-cta-wrap">
           <button class="btn-play" onclick="playGate()"><span>Play this hour's challenge</span><span style="font-size:18px">&rarr;</span></button>
@@ -1204,10 +1204,10 @@ function claimWithGoogle(){
 }
 function shuffle(arr){var a=arr.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
 function buildQ(){
-  var f=shuffle(QB.filter(function(q){return q.cat==="⚽ Football"})).slice(0,4);
+  var c=shuffle(QB.filter(function(q){return q.cat==="🧭 Canada"})).slice(0,4);
   var p=shuffle(QB.filter(function(q){return q.cat==="🎬 Pop Culture"})).slice(0,3);
-  var c=shuffle(QB.filter(function(q){return q.cat==="🧭 Canada"})).slice(0,3);
-  return shuffle(f.concat(p,c));
+  var f=shuffle(QB.filter(function(q){return q.cat==="⚽ Football"})).slice(0,3);
+  return shuffle(c.concat(p,f));
 }
 
 function playGate(){
