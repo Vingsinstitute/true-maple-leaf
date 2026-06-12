@@ -2121,8 +2121,13 @@ setInterval(function(){
   if(addBtn)addBtn.onclick=function(){
     if(deferred){ deferred.prompt(); deferred.userChoice.then(function(){ if(banner)banner.style.display="none"; deferred=null; }); }
     else if(isIOS()){ alert("To add True Maple Leaf to your home screen:\n\n1. Tap the Share button at the bottom of Safari (a square with an up arrow).\n2. Scroll down and tap “Add to Home Screen”.\n3. Tap “Add”. Now it’s one tap away to keep your streak alive!"); }
-    else { alert("Open your browser menu and choose “Add to Home screen” or “Install app”."); }
+    // On Android we never instruct the manual "Add to Home screen" route — that creates a
+    // legacy shortcut that triggers Android's "older version" warning. We only ever offer
+    // Chrome's clean one-tap install (above); if it isn't available, just dismiss quietly.
+    else { if(banner)banner.style.display="none"; try{localStorage.setItem("tml_pin_dismiss","1");}catch(e){} }
   };
+  // Android: only show the banner when Chrome's clean install is actually available
+  // (the beforeinstallprompt handler calls show()). iOS has no such warning, so we guide it.
   if(isIOS()&&!standalone()){ if(txt)txt.textContent="Add True Maple Leaf to your home screen — tap Add to see how."; show(); }
   window.addEventListener("appinstalled",function(){ if(banner)banner.style.display="none"; try{localStorage.setItem("tml_pin_dismiss","1");}catch(e){} });
 })();
