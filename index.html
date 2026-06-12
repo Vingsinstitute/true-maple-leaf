@@ -1441,13 +1441,17 @@ function quitGame(){clearInterval(S.timerInt);document.getElementById("quit-over
 // ═══ FUN CANADIAN PERSONA — earned from score + speed ═══
 // fast = number of answers that earned a speed bonus.
 function personaFor(correct,fast){
-  if(correct>=10) return {t:"The Maple Moose",e:"🫎",c:"MSE",d:"A flawless run. Legendary, true-north strong."};
-  if(correct>=8)  return fast>=5
+  if(correct>=10) return {t:"The Maple Moose",e:"🫎",c:"MSE",d:"A flawless 10 out of 10. Legendary — true-north strong."};
+  if(correct===9) return {t:"The Snowy Owl",e:"🦉",c:"OWL",d:"Wise and razor-sharp — a near-perfect run."};
+  if(correct===8) return fast>=5
       ? {t:"The Cheetah",e:"🐆",c:"CHE",d:"Lightning fast and razor sharp — blink and you've answered."}
       : {t:"The Polar Bear",e:"🐻‍❄️",c:"PLR",d:"Cool, calm and quietly dominant."};
-  if(correct>=6)  return {t:"The Busy Beaver",e:"🦫",c:"BVR",d:"Steady, hard-working, building that streak."};
-  if(correct>=4)  return {t:"The Canada Goose",e:"🪿",c:"GSE",d:"Honking along and getting better every round."};
-  return {t:"The Curious Loon",e:"🐦",c:"LON",d:"Every legend starts somewhere. Come back swinging."};
+  if(correct===7) return {t:"The Grizzly Bear",e:"🐻",c:"GRZ",d:"Strong and commanding — a real force on the board."};
+  if(correct===6) return {t:"The Busy Beaver",e:"🦫",c:"BVR",d:"Steady, hard-working, building that streak."};
+  if(correct===5) return {t:"The Red Fox",e:"🦊",c:"FOX",d:"Clever and quick — climbing fast."};
+  if(correct===4) return {t:"The Canada Goose",e:"🪿",c:"GSE",d:"Honking along and getting sharper every round."};
+  if(correct===3) return {t:"The Raccoon",e:"🦝",c:"RAC",d:"Crafty and curious — better every game."};
+  return {t:"The Curious Loon",e:"🐦",c:"LON",d:"Every legend starts here. Come back swinging."};
 }
 
 function endGame(){
@@ -1803,7 +1807,7 @@ function openShare(){
 
 function shareText(){
   var d=cardData();
-  return "I'm a "+d.overall+"-rated "+d.per.e+" "+d.per.t+" on True Maple Leaf! Ranked #"+d.rank+" in "+d.city+" · "+d.streak+"-day streak. Can you beat my card?";
+  return "I just earned a "+d.tier+" "+d.overall+"-rated "+d.per.e+" "+d.per.t+" card on True Maple Leaf! Ranked #"+d.rank+" in "+d.city+" · "+d.streak+"-day streak. Think you can beat it?";
 }
 function canvasBlob(){return new Promise(function(res){document.getElementById("share-canvas").toBlob(res,"image/png")});}
 
