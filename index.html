@@ -1359,6 +1359,7 @@ function loadQ(){
   cat.textContent=q.cat;cat.style.color=q.cc;cat.style.background=q.cb;cat.style.borderColor=q.cbr;
 
   var card=document.getElementById("q-card");
+  card.style.transition="none";card.style.opacity="";card.style.transform="";
   card.style.animation="none";void card.offsetWidth;card.style.animation="slideInRight .28s cubic-bezier(.25,.46,.45,.94) forwards";
   document.getElementById("q-text").textContent=q.q;
 
@@ -1372,8 +1373,12 @@ function loadQ(){
     opts.appendChild(btn);
   });
 
-  document.getElementById("fb").className="feedback";document.getElementById("fb").textContent="";
-  document.getElementById("fact").className="fact-card";document.getElementById("fact").textContent="";
+  // Clear answer feedback INSTANTLY (transition off) so the previous question's
+  // red/green bar never lingers or fades over the next question.
+  var _fb=document.getElementById("fb"),_fc=document.getElementById("fact");
+  _fb.style.transition="none";_fb.className="feedback";_fb.textContent="";
+  _fc.style.transition="none";_fc.className="fact-card";_fc.textContent="";
+  void _fb.offsetWidth;_fb.style.transition="";_fc.style.transition="";
 
   S.timerVal=30;updateTimer();
   S.timerInt=setInterval(function(){S.timerVal--;updateTimer();if(S.timerVal<=0){clearInterval(S.timerInt);timeOut()}},1000);
