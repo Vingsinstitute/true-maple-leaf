@@ -8,6 +8,29 @@
 <title>True Maple Leaf — Canadian Trivia Made in Canada</title>
 <meta name="description" content="True Maple Leaf — the Canadian trivia game made in Canada. 10 fresh questions every hour on Canada, pop culture and football. Build a streak, climb your city leaderboard. Free to play, no sign-up needed to start.">
 <meta name="theme-color" content="#c8102e">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Maple Leaf">
+<style>
+.pin-banner{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #ecd9a4;box-shadow:0 6px 22px rgba(180,140,20,.10);border-radius:14px;padding:10px 12px;margin-bottom:18px;max-width:520px}
+.pin-banner .pin-ico{width:30px;height:30px;flex:0 0 30px;border-radius:8px;background:#c8102e;color:#f0cf73;display:flex;align-items:center;justify-content:center;font-size:15px}
+.pin-banner .pin-txt{flex:1;font-size:13px;line-height:1.35;color:#3d2a06}
+.pin-banner .pin-add{flex:0 0 auto;background:#c8102e;color:#fff;border:none;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.pin-banner .pin-add:hover{background:#a50d24}
+.pin-banner .pin-x{flex:0 0 auto;background:none;border:none;color:#9b8a5e;font-size:20px;line-height:1;cursor:pointer;padding:2px 4px}
+.streak-home{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#fff8e6,#f6e7bd);border:1px solid #ecd9a4;border-radius:18px;padding:14px 16px;margin-bottom:20px;max-width:520px;box-shadow:0 10px 30px rgba(180,140,20,.12)}
+.streak-home .sh-flame{position:relative;width:54px;height:54px;flex:0 0 54px;border-radius:50%;background:radial-gradient(circle at 50% 35%,#ffe9a8,#e9b53f);display:flex;align-items:center;justify-content:center;color:#7a4d00;font-weight:800;font-size:22px;box-shadow:inset 0 0 0 2px rgba(255,255,255,.4)}
+.streak-home .sh-flame small{position:absolute;bottom:-3px;right:-3px;font-size:17px}
+.streak-home .sh-body{flex:1;display:flex;flex-direction:column;gap:2px}
+.streak-home .sh-body b{font-size:16px;color:#3d2a06}
+.streak-home .sh-body span{font-size:12.5px;color:#7a5e22}
+.streak-home .sh-go{flex:0 0 auto;background:#c8102e;color:#fff;border:none;border-radius:12px;padding:11px 16px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit}
+.streak-home .sh-go:hover{background:#a50d24}
+@media(max-width:640px){.streak-home,.pin-banner{max-width:none}}
+</style>
 <meta property="og:title" content="True Maple Leaf — Canadian Trivia">
 <meta property="og:description" content="How well do you know Canada? 10 fresh questions every hour. Build your streak, climb your city's leaderboard.">
 <meta property="og:type" content="website">
@@ -568,6 +591,17 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
   <div class="hero">
     <div class="hero-grid">
       <div class="hero-left">
+        <div class="pin-banner" id="pin-banner" style="display:none">
+          <span class="pin-ico" aria-hidden="true">★</span>
+          <span class="pin-txt" id="pin-txt">Add True Maple Leaf to your home screen — one tap to keep your streak alive.</span>
+          <button class="pin-add" id="pin-add">Add</button>
+          <button class="pin-x" id="pin-x" aria-label="Dismiss">&times;</button>
+        </div>
+        <div class="streak-home" id="home-streak" style="display:none">
+          <div class="sh-flame"><span id="home-streak-num">0</span><small aria-hidden="true">🔥</small></div>
+          <div class="sh-body"><b id="home-streak-title">Start your streak</b><span id="home-streak-sub">Play one round today to begin.</span></div>
+          <button class="sh-go" onclick="startGame()">Play &rarr;</button>
+        </div>
         <div class="hero-kicker"><span></span> Fresh questions every hour</div>
         <div class="hero-gold"><span aria-hidden="true">★</span> Free to play during our launch</div>
         <h1 class="hero-headline">Soccer's biggest summer <em>is here</em>.</h1>
@@ -1073,6 +1107,20 @@ function paintUser(){
   var na=document.getElementById("nav-auth");
   if(na){na.textContent="Play, @"+S.username+" →";na.onclick=function(){startGame()};}
   var so=document.getElementById("nav-signout");if(so)so.style.display="";
+  try{updateHomeStreak();}catch(e){}
+}
+// Branded home-screen streak card — shown to registered players in our own gold style.
+function updateHomeStreak(){
+  var el=document.getElementById("home-streak"); if(!el) return;
+  var reg=false; try{reg=!!localStorage.getItem("tml_registered");}catch(e){}
+  if(!reg){ el.style.display="none"; return; }
+  var n=parseInt(S.streak,10)||0;
+  var num=document.getElementById("home-streak-num"); if(num)num.textContent=n;
+  var t=document.getElementById("home-streak-title");
+  var s=document.getElementById("home-streak-sub");
+  if(n>=1){ if(t)t.textContent=n+"-day streak"; if(s)s.textContent="Play today to keep it alive."; }
+  else { if(t)t.textContent="Start your streak"; if(s)s.textContent="Play one round today to begin."; }
+  el.style.display="flex";
 }
 // Advance the daily streak: +1 on a new day, reset to 1 after a gap.
 function bumpStreak(){
@@ -1143,6 +1191,7 @@ function signOut(){
   var ya=document.getElementById("you-av");if(ya)ya.textContent="ME";
   var ym=document.getElementById("you-meta");if(ym)ym.textContent="Toronto · 🔥 0 day streak";
   var yr=document.getElementById("you-rank");if(yr)yr.textContent="#—";
+  try{updateHomeStreak();}catch(e){}
   go("screen-home");
 }
 function goLB(){
@@ -1522,6 +1571,7 @@ function submitScore(){
       if(!isNaN(sv)){
         S.streak=sv;S.lastPlay=todayKey();saveUser();
         var ym=document.getElementById("you-meta");if(ym)ym.textContent=(S.city||"Toronto")+" · 🔥 "+S.streak+" day streak";
+        try{updateHomeStreak();}catch(e){}
       }
     }).catch(function(){});
   }catch(e){}
@@ -1979,5 +2029,26 @@ setInterval(function(){
 </script>
 <!-- Anonymous, cookieless visit counts (Cloudflare Web Analytics). No personal data, no cookies, no consent banner needed. Active. -->
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "0e68f4a92134408bbb8d55c0285e2d6f"}'></script>
+<!-- Install to home screen (PWA) + service worker -->
+<script>
+(function(){
+  if("serviceWorker" in navigator){ window.addEventListener("load",function(){ navigator.serviceWorker.register("/sw.js").catch(function(){}); }); }
+  var banner=document.getElementById("pin-banner"),addBtn=document.getElementById("pin-add"),xBtn=document.getElementById("pin-x"),txt=document.getElementById("pin-txt");
+  var deferred=null;
+  function dismissed(){try{return localStorage.getItem("tml_pin_dismiss")==="1";}catch(e){return false;}}
+  function standalone(){return (window.matchMedia&&window.matchMedia("(display-mode: standalone)").matches)||window.navigator.standalone===true;}
+  function isIOS(){return /iphone|ipad|ipod/i.test(navigator.userAgent);}
+  function show(){ if(banner&&!dismissed()&&!standalone()) banner.style.display="flex"; }
+  if(xBtn)xBtn.onclick=function(){ if(banner)banner.style.display="none"; try{localStorage.setItem("tml_pin_dismiss","1");}catch(e){} };
+  window.addEventListener("beforeinstallprompt",function(e){ e.preventDefault(); deferred=e; if(addBtn)addBtn.textContent="Add"; show(); });
+  if(addBtn)addBtn.onclick=function(){
+    if(deferred){ deferred.prompt(); deferred.userChoice.then(function(){ if(banner)banner.style.display="none"; deferred=null; }); }
+    else if(isIOS()){ alert("To add True Maple Leaf to your home screen:\n\n1. Tap the Share button at the bottom of Safari (a square with an up arrow).\n2. Scroll down and tap “Add to Home Screen”.\n3. Tap “Add”. Now it’s one tap away to keep your streak alive!"); }
+    else { alert("Open your browser menu and choose “Add to Home screen” or “Install app”."); }
+  };
+  if(isIOS()&&!standalone()){ if(txt)txt.textContent="Add True Maple Leaf to your home screen — tap Add to see how."; show(); }
+  window.addEventListener("appinstalled",function(){ if(banner)banner.style.display="none"; try{localStorage.setItem("tml_pin_dismiss","1");}catch(e){} });
+})();
+</script>
 </body>
 </html>
