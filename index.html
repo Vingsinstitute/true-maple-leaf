@@ -145,11 +145,16 @@ h1.hero-headline em{font-style:normal;color:var(--red)}
 
 /* ─── HERO PREVIEW: auto-flips question → real gold result card ─── */
 .flipdeck{position:relative;width:100%}
-.flipdeck .phone{position:absolute;top:50%;left:0;right:0;margin:0 auto;animation:deckQ 9s ease-in-out infinite}
-@keyframes deckQ{0%,38%{opacity:1;transform:translate(0,-50%) scale(1)}48%,92%{opacity:0;transform:translate(-26px,-50%) scale(.95)}100%{opacity:1;transform:translate(0,-50%) scale(1)}}
-.flipdeck .rcard{opacity:0;animation:deckR 9s ease-in-out infinite}
-@keyframes deckR{0%,38%{opacity:0;transform:translateX(24px) scale(.96)}48%,92%{opacity:1;transform:translateX(0) scale(1)}100%{opacity:0;transform:translateX(24px) scale(.96)}}
-@media(prefers-reduced-motion:reduce){.flipdeck .phone{animation:none;opacity:0}.flipdeck .rcard{animation:none;opacity:1}}
+.flipdeck .s1{position:relative;animation:deckS1 16s ease-in-out infinite}
+.flipdeck .s2,.flipdeck .s3,.flipdeck .s4{position:absolute;top:50%;left:0;right:0;margin:0 auto;opacity:0}
+.flipdeck .s2{animation:deckS2 16s ease-in-out infinite}
+.flipdeck .s3{animation:deckS3 16s ease-in-out infinite}
+.flipdeck .s4{animation:deckS4 16s ease-in-out infinite}
+@keyframes deckS1{0%{opacity:1;transform:translateX(0) scale(1)}22%{opacity:1;transform:translateX(0) scale(1)}27%{opacity:0;transform:translateX(-22px) scale(.95)}95%{opacity:0;transform:translateX(22px) scale(.95)}100%{opacity:1;transform:translateX(0) scale(1)}}
+@keyframes deckS2{0%{opacity:0;transform:translateY(-50%) translateX(22px) scale(.95)}22%{opacity:0;transform:translateY(-50%) translateX(22px) scale(.95)}27%{opacity:1;transform:translateY(-50%) translateX(0) scale(1)}47%{opacity:1;transform:translateY(-50%) translateX(0) scale(1)}52%{opacity:0;transform:translateY(-50%) translateX(-22px) scale(.95)}100%{opacity:0;transform:translateY(-50%) translateX(-22px) scale(.95)}}
+@keyframes deckS3{0%{opacity:0;transform:translateY(-50%) translateX(22px) scale(.95)}47%{opacity:0;transform:translateY(-50%) translateX(22px) scale(.95)}52%{opacity:1;transform:translateY(-50%) translateX(0) scale(1)}72%{opacity:1;transform:translateY(-50%) translateX(0) scale(1)}77%{opacity:0;transform:translateY(-50%) translateX(-22px) scale(.95)}100%{opacity:0;transform:translateY(-50%) translateX(-22px) scale(.95)}}
+@keyframes deckS4{0%{opacity:0;transform:translateY(-50%) translateX(22px) scale(.95)}72%{opacity:0;transform:translateY(-50%) translateX(22px) scale(.95)}77%{opacity:1;transform:translateY(-50%) translateX(0) scale(1)}97%{opacity:1;transform:translateY(-50%) translateX(0) scale(1)}100%{opacity:0;transform:translateY(-50%) translateX(-22px) scale(.95)}}
+@media(prefers-reduced-motion:reduce){.flipdeck .s1{animation:none;opacity:1}.flipdeck .s2,.flipdeck .s3,.flipdeck .s4{animation:none;opacity:0}}
 
 /* faithful CSS replica of the shareable gold card */
 .rcard{position:relative;border-radius:26px;padding:20px 22px 18px;color:#3d2a06;background:linear-gradient(180deg,#fbeeb6 0%,#edca6d 42%,#d6a83a 78%,#b8841d 100%);box-shadow:0 20px 46px rgba(140,100,20,.34);overflow:hidden}
@@ -616,7 +621,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
       </div>
       <div class="hero-preview" aria-hidden="true">
         <div class="flipdeck">
-          <div class="rcard">
+          <div class="rcard s1">
             <span class="rc-badge"><svg viewBox="0 0 64 64"><path d="M32 7 C33.4 26 38 31 57 32 C38 33 33.4 38 32 57 C30.6 38 26 33 7 32 C26 31 30.6 26 32 7 Z" fill="#f0cf73"/></svg></span>
             <span class="rc-tier">GOLD</span>
             <div class="rc-num">87</div>
@@ -638,7 +643,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
               <div class="rc-qr"><svg viewBox="0 0 29 29" shape-rendering="crispEdges"><path fill="#1a1208" fill-rule="evenodd" d="M0 0h7v7h-7zM1 1v5h5v-5zM22 0h7v7h-7zM23 1v5h5v-5zM0 22h7v7h-7zM1 23v5h5v-5z"/><path fill="#1a1208" d="M2 2h3v3h-3zM24 2h3v3h-3zM2 24h3v3h-3zM9 1h1v1H9zM11 2h1v1h-1zM13 1h1v1h-1zM15 3h1v1h-1zM17 2h1v1h-1zM19 4h1v1h-1zM8 4h1v1H8zM10 5h1v1h-1zM2 9h1v1H2zM4 11h1v1H4zM6 13h1v1H6zM9 9h1v1H9zM11 11h1v1h-1zM13 9h1v1h-1zM15 11h1v1h-1zM17 13h1v1h-1zM19 9h1v1h-1zM21 11h1v1h-1zM23 13h1v1h-1zM25 9h1v1h-1zM10 17h1v1h-1zM13 19h1v1h-1zM16 21h1v1h-1zM24 17h1v1h-1z"/></svg></div>
             </div>
           </div>
-          <div class="phone">
+          <div class="phone s2">
             <div class="phone-bar"><span class="phone-dot"></span><small>Question 3 of 10</small><span class="phone-timer">&#9201; 24</span></div>
             <div class="phone-body">
               <span class="phone-cat">&#9917; Football</span>
@@ -647,6 +652,39 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
               <div class="phone-opt ok"><b>B</b> Vancouver <span>&#10003;</span></div>
               <div class="phone-opt"><b>C</b> Halifax</div>
               <div class="phone-opt"><b>D</b> Winnipeg</div>
+            </div>
+          </div>
+          <div class="rcard s3">
+            <span class="rc-badge"><svg viewBox="0 0 64 64"><path d="M32 7 C33.4 26 38 31 57 32 C38 33 33.4 38 32 57 C30.6 38 26 33 7 32 C26 31 30.6 26 32 7 Z" fill="#f0cf73"/></svg></span>
+            <span class="rc-tier">GOLD</span>
+            <div class="rc-num">92</div>
+            <div class="rc-code">BVR</div>
+            <div class="rc-rule"></div>
+            <div class="rc-city">Vancouver</div>
+            <div class="rc-emoji">🦫</div>
+            <div class="rc-persona">THE BEAVER</div>
+            <div class="rc-handle">@TRUENORTH</div>
+            <div class="rc-hr"></div>
+            <div class="rc-rows">
+              <div class="rc-row"><span>Accuracy</span><b>100%</b></div>
+              <div class="rc-row"><span>City rank</span><b>#1 in Vancouver</b></div>
+              <div class="rc-row"><span>Day streak</span><b>12 days</b></div>
+              <div class="rc-row"><span>Total XP</span><b>4,180 pts</b></div>
+            </div>
+            <div class="rc-foot">
+              <div class="rc-brand">TRUE MAPLE LEAF<small>Scan to play free</small><small>truemapleleaf.com</small></div>
+              <div class="rc-qr"><svg viewBox="0 0 29 29" shape-rendering="crispEdges"><path fill="#1a1208" fill-rule="evenodd" d="M0 0h7v7h-7zM1 1v5h5v-5zM22 0h7v7h-7zM23 1v5h5v-5zM0 22h7v7h-7zM1 23v5h5v-5z"/><path fill="#1a1208" d="M2 2h3v3h-3zM24 2h3v3h-3zM2 24h3v3h-3zM9 1h1v1H9zM11 2h1v1h-1zM13 1h1v1h-1zM15 3h1v1h-1zM17 2h1v1h-1zM19 4h1v1h-1zM8 4h1v1H8zM10 5h1v1h-1zM2 9h1v1H2zM4 11h1v1H4zM6 13h1v1H6zM9 9h1v1H9zM11 11h1v1h-1zM13 9h1v1h-1zM15 11h1v1h-1zM17 13h1v1h-1zM19 9h1v1h-1zM21 11h1v1h-1zM23 13h1v1h-1zM25 9h1v1h-1zM10 17h1v1h-1zM13 19h1v1h-1zM16 21h1v1h-1zM24 17h1v1h-1z"/></svg></div>
+            </div>
+          </div>
+          <div class="phone s4">
+            <div class="phone-bar"><span class="phone-dot"></span><small>Question 7 of 10</small><span class="phone-timer">&#9201; 18</span></div>
+            <div class="phone-body">
+              <span class="phone-cat" style="color:#c8102e;background:#fff5f7;border-color:#fcc">&#129517; Canada</span>
+              <div class="phone-q">Which city is the capital of Canada?</div>
+              <div class="phone-opt"><b>A</b> Toronto</div>
+              <div class="phone-opt ok"><b>B</b> Ottawa <span>&#10003;</span></div>
+              <div class="phone-opt"><b>C</b> Vancouver</div>
+              <div class="phone-opt"><b>D</b> Montreal</div>
             </div>
           </div>
         </div>
