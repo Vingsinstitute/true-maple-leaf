@@ -1,6 +1,6 @@
 {
   "name": "True Maple Leaf — Canadian Trivia",
-  "short_name": "Maple Leaf",
+  "short_name": "Maple Trivia",
   "description": "Ten fresh Canadian trivia questions every hour. Build your streak and climb your city's leaderboard.",
   "start_url": "/?src=pwa",
   "scope": "/",
