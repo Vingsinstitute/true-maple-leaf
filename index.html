@@ -197,7 +197,7 @@ h1.hero-headline em{font-style:normal;color:var(--red)}
 .section-p{font-size:15px;color:var(--ink3);margin-top:10px;max-width:420px;line-height:1.65}
 
 .cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden}
-.cat-card{background:var(--paper);padding:32px 28px;cursor:pointer;transition:background .15s;position:relative;overflow:hidden}
+.cat-card{background:var(--paper);padding:32px 28px;cursor:default;transition:background .15s;position:relative;overflow:hidden}
 .cat-card::before{content:"";position:absolute;inset:0;background:var(--red);opacity:0;transition:opacity .15s}
 .cat-card:hover::before{opacity:.04}
 .cat-card:hover .cat-arrow{opacity:1;transform:translateX(0)}
@@ -311,8 +311,10 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
 .opts-grid{display:flex;flex-direction:column;gap:8px;padding:0 28px;margin-top:14px;padding-bottom:28px}
 .opt{background:var(--paper);border:1.5px solid var(--border);border-radius:var(--rl);padding:15px 20px 15px 16px;font-size:14px;font-weight:500;color:var(--ink);cursor:pointer;text-align:left;font-family:inherit;transition:border-color .12s,background .12s,transform .08s;line-height:1.4;display:flex;align-items:center;gap:12px;position:relative}
 .opt-letter{width:26px;height:26px;border-radius:8px;background:var(--paper2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--ink3);flex-shrink:0;transition:all .12s}
+@media(hover:hover) and (pointer:fine){
 .opt:hover:not(:disabled){border-color:var(--red);transform:translateX(3px)}
 .opt:hover:not(:disabled) .opt-letter{background:var(--red-lt);border-color:rgba(200,16,46,.3);color:var(--red)}
+}
 .opt:disabled{cursor:default}
 .opt.correct{background:var(--glt);border-color:var(--green)}
 .opt.correct .opt-letter{background:var(--green);border-color:var(--green);color:#fff}
@@ -424,9 +426,11 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
 .cookie-actions{display:flex;gap:8px;flex-shrink:0}
 
 /* ─── MODALS ─── */
-.overlay{display:none;position:fixed;inset:0;background:rgba(15,15,15,.6);z-index:600;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(6px)}
+.overlay{display:none;position:fixed;inset:0;background:rgba(15,15,15,.6);z-index:600;align-items:flex-start;justify-content:center;padding:24px;backdrop-filter:blur(6px);overflow-y:auto}
 .overlay.open{display:flex}
-.modal-box{background:var(--paper);border-radius:var(--r2x);padding:36px 32px;max-width:400px;width:100%;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,.25);animation:modalIn .3s cubic-bezier(.34,1.3,.64,1)}
+.modal-box{background:var(--paper);border-radius:var(--r2x);padding:36px 32px;max-width:400px;width:100%;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,.25);animation:modalIn .3s cubic-bezier(.34,1.3,.64,1);position:relative;margin:auto}
+.modal-x{position:absolute;top:10px;right:12px;width:36px;height:36px;border-radius:50%;border:none;background:rgba(0,0,0,.06);color:var(--ink3,#666);font-size:22px;line-height:1;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;z-index:2}
+.modal-x:hover{background:rgba(0,0,0,.12)}
 @keyframes modalIn{from{transform:scale(.9) translateY(16px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
 .modal-em{font-size:40px;margin-bottom:14px}
 .modal-title{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
@@ -546,11 +550,14 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
   border-radius:20px;padding:2px 9px;letter-spacing:.02em
 }
 
-/* Option 3D hover push */
+/* Option 3D hover push — only for real mouse pointers, so touch taps don't leave a
+   "stuck" red hover on the next question's same-position option. */
+@media(hover:hover) and (pointer:fine){
 .opt:hover:not(:disabled){
   border-color:var(--red);
   transform:translateX(3px) perspective(300px) rotateX(-1.5deg);
   box-shadow:0 4px 12px rgba(200,16,46,.12)
+}
 }
 .float-pts{position:fixed;transform:translate(-50%,-50%);z-index:998;pointer-events:none;font-size:26px;font-weight:900;color:var(--gold-dk);text-shadow:0 1px 0 #fff,0 0 14px rgba(227,181,62,.6);animation:floatUp 1.2s cubic-bezier(.25,.8,.3,1) forwards}
 @keyframes floatUp{0%{opacity:0;transform:translate(-50%,-40%) scale(.6)}18%{opacity:1;transform:translate(-50%,-62%) scale(1.18)}100%{opacity:0;transform:translate(-50%,-185%) scale(1)}}
@@ -730,21 +737,18 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
           <div class="cat-badge">Soccer season — Live 🔥</div>
           <div class="cat-title">Football</div>
           <p class="cat-body">The world's biggest soccer tournament is here, with games in Toronto and Vancouver. Goals, legends, records, and history.</p>
-          <span class="cat-arrow">→</span>
         </div>
         <div class="cat-card">
           <span class="cat-emoji">🎬</span>
           <div class="cat-badge">Movies · Music · TV 🎬</div>
           <div class="cat-title">Pop Culture</div>
           <p class="cat-body">Movies, music, TV, celebrities — the category everyone thinks they will ace. Canadian artists, global hits, iconic films.</p>
-          <span class="cat-arrow">→</span>
         </div>
         <div class="cat-card">
           <span class="cat-emoji">🧭</span>
           <div class="cat-badge">Our Identity</div>
           <div class="cat-title">Canada</div>
           <p class="cat-body">History, geography, culture, food, famous Canadians — how well do you really know the country you call home?</p>
-          <span class="cat-arrow">→</span>
         </div>
       </div>
     </div>
@@ -1060,6 +1064,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
 <!-- ════ SHARE MODAL ════ -->
 <div class="overlay" id="share-overlay">
   <div class="modal-box">
+    <button class="modal-x" aria-label="Close" onclick="document.getElementById('share-overlay').classList.remove('open')">&times;</button>
     <div class="modal-em">🏆</div>
     <div class="modal-title" id="m-title">Great score!</div>
     <div class="modal-sub">This is <strong>your</strong> card — your rating, your rank, your streak. Post it and dare your friends and city to beat it. Bragging rights only, no prizes.</div>
@@ -1262,24 +1267,46 @@ function goLB(){
 function mockLogin(){
   var em=document.getElementById("email-inp");
   var val=em?em.value.trim():"";
-  // basic email shape check; only send if it looks valid
-  if(val&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)){captureEmail(val);}
+  // Validate the optional email; block obviously-wrong entries (blank is fine).
+  if(val&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)){alert("That email doesn't look right. Please enter a valid email address, or leave it blank.");return;}
+  if(val)captureEmail(val);
   go("screen-username");
+}
+function emailLooksValid(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);}
+// Check the leaderboard for an existing player with this game name (case-insensitive),
+// so two different players can't end up sharing one leaderboard row. Network errors
+// don't block sign-up (cb(false)).
+function nameIsTaken(name,cb){
+  if(!SUPABASE_URL){cb(false);return;}
+  try{
+    fetch(SUPABASE_URL+"/rest/v1/leaderboard?select=username&limit=1&username=ilike."+encodeURIComponent(name),
+      {headers:{apikey:SUPABASE_ANON_KEY,Authorization:"Bearer "+SUPABASE_ANON_KEY}})
+      .then(function(r){return r.ok?r.json():[];})
+      .then(function(rows){cb(!!(rows&&rows.length));})
+      .catch(function(){cb(false);});
+  }catch(e){cb(false);}
 }
 function finishSetup(){
   var u=document.getElementById("uname").value.trim();
   var p=document.getElementById("prov").value;
   if(!u||u.length<2){alert("Please enter a game name (at least 2 characters).");return}
   if(!p){alert("Please select your city.");return}
+  var fld=document.getElementById("uemail");var typedEmail=fld?fld.value.trim():"";
+  if(typedEmail&&!emailLooksValid(typedEmail)){alert("That email doesn't look right. Please enter a valid email address, or leave it blank.");return}
+  nameIsTaken(u,function(taken){
+    if(taken){alert("The game name \""+u+"\" is already taken — please choose a different one.\n\nIf this is your own account, use “Continue with Google” to recover it instead.");return;}
+    finalizeSetup(u,p,typedEmail);
+  });
+}
+function finalizeSetup(u,p,typedEmail){
   S.username=u;S.city=p;
   try{localStorage.setItem("tml_registered","1");}catch(e){}
   // Email is OPTIONAL. A game name + city is all that's needed to rank.
   var nb=document.getElementById("notif");var consent=!!(nb&&nb.checked);
   try{localStorage.setItem("tml_consent",consent?"1":"0");}catch(e){}
-  // Use an email from a prior Google/email sign-in, or the optional field on this screen.
+  // Use an email from a prior Google/email sign-in, or the optional (validated) field here.
   var em2="";try{em2=localStorage.getItem("tml_email")||"";}catch(e){}
-  if(!em2){var fld=document.getElementById("uemail");var typed=fld?fld.value.trim():"";
-    if(typed&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(typed))em2=typed;}
+  if(!em2&&typedEmail)em2=typedEmail;
   if(em2)captureEmail(em2,u,p,consent);
   saveUser();
   paintUser();
@@ -1295,16 +1322,19 @@ function finishSetup(){
   }
 }
 
-// Optional path: they typed a game name then chose Google. Persist the typed name/city/consent
-// (so the OAuth page-reload doesn't lose it), then start Google sign-in.
+// Optional path: they typed a game name then chose Google. Check the name is free,
+// persist the typed name/city/consent (so the OAuth reload doesn't lose it), then sign in.
 function claimWithGoogle(){
   var u=document.getElementById("uname").value.trim();
   var p=document.getElementById("prov").value;
   if(!u||u.length<2){alert("Please enter a game name first (at least 2 characters).");return}
   if(!p){alert("Please select your city first.");return}
-  var nb=document.getElementById("notif");
-  try{localStorage.setItem("tml_claim",JSON.stringify({u:u,p:p,c:!!(nb&&nb.checked)}));}catch(e){}
-  googleLogin();
+  nameIsTaken(u,function(taken){
+    if(taken){alert("The game name \""+u+"\" is already taken — please choose a different one.");return;}
+    var nb=document.getElementById("notif");
+    try{localStorage.setItem("tml_claim",JSON.stringify({u:u,p:p,c:!!(nb&&nb.checked)}));}catch(e){}
+    googleLogin();
+  });
 }
 function shuffle(arr){var a=arr.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
 function buildQ(){
