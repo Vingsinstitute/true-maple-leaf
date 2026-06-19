@@ -9,7 +9,7 @@
 <meta name="description" content="True Maple Leaf — the Canadian trivia game made in Canada. 10 fresh questions every hour on Canada, pop culture and football. Build a streak, climb your city leaderboard. Free to play, no sign-up needed to start.">
 <meta name="theme-color" content="#c8102e">
 <link rel="manifest" href="/manifest.webmanifest">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png"
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -1647,7 +1647,7 @@ var PAL=[["#ede9fe","#6d28d9"],["#dbeafe","#1d4ed8"],["#d1fae5","#065f46"],["#fe
 function avColor(name){var h=0,s=name||"P";for(var i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return PAL[h%PAL.length];}
 function fetchLeaderboard(){
   if(!SUPABASE_URL)return Promise.resolve([]);
-  return fetch(SUPABASE_URL+"/rest/v1/leaderboard?select=username,city,best_score,streak&order=best_score.desc&limit=200",
+  return fetch(SUPABASE_URL+"/rest/v1/leaderboard?select=username,city,total_score,streak&order=total_score.desc&limit=200",
     {headers:{apikey:SUPABASE_ANON_KEY,Authorization:"Bearer "+SUPABASE_ANON_KEY}})
     .then(function(r){return r.ok?r.json():[];}).catch(function(){return [];});
 }
@@ -1698,7 +1698,7 @@ function lbList(f){
   var me=reg?S.username:null;
   var real=(S.realLB||[]).map(function(r){
     var you=(me&&r.username===me),c=avColor(r.username);
-    return {name:r.username,city:r.city||"",prov:"",streak:r.streak||0,score:r.best_score||0,real:true,you:you,
+    return {name:r.username,city:r.city||"",prov:"",streak:r.streak||0,score:r.total_score||0,real:true,you:you,
             av:(r.username||"P").substring(0,2).toUpperCase(),ac:you?"#fff0f0":c[0],at:you?"#c8102e":c[1]};
   });
   if(reg&&(S.bestScore||0)>0&&!real.some(function(p){return p.you;})){
