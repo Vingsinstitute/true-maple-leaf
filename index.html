@@ -46,9 +46,13 @@
 <meta name="twitter:image" content="https://truemapleleaf.com/og-image.png">
 <link rel="canonical" href="https://truemapleleaf.com/">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"True Maple Leaf","url":"https://truemapleleaf.com/","description":"The Canadian trivia game made in Canada. 10 fresh questions every hour on Canada, pop culture and sports. Build a streak and climb your city leaderboard.","inLanguage":"en-CA","publisher":{"@type":"Organization","name":"True Maple Leaf"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"True Maple Leaf","url":"https://truemapleleaf.com/","logo":"https://truemapleleaf.com/icon-512.png","description":"Independent Canadian trivia game — 10 fresh questions every hour on Canada, pop culture and football."}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is True Maple Leaf free to play?","acceptedAnswer":{"@type":"Answer","text":"Yes. It's free to play during our launch, and you can start instantly with no sign-up."}},{"@type":"Question","name":"How often do new questions appear?","acceptedAnswer":{"@type":"Answer","text":"Ten fresh trivia questions every hour — the same set for every player, so you can compete head-to-head."}},{"@type":"Question","name":"Do I need an account?","acceptedAnswer":{"@type":"Answer","text":"No. You can play right away. Picking a game name (and optionally an email) saves your streak and ranks you on your city's leaderboard."}},{"@type":"Question","name":"What topics does the trivia cover?","acceptedAnswer":{"@type":"Answer","text":"Three categories every round: Canada, pop culture, and football (soccer)."}},{"@type":"Question","name":"Is True Maple Leaf affiliated with the Government of Canada?","acceptedAnswer":{"@type":"Answer","text":"No. It's an independent, privately run game made in Canada, just for fun — not affiliated with any government body, league, or broadcaster."}}]}</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='15' fill='%23c8102e'/><path d='M32 7 C33.4 26 38 31 57 32 C38 33 33.4 38 32 57 C30.6 38 26 33 7 32 C26 31 30.6 26 32 7 Z' fill='%23f0cf73'/><g transform='rotate(45 32 32)' opacity='0.5'><path d='M32 16 C32.7 28 36 31.3 48 32 C36 32.7 32.7 36 32 48 C31.3 36 28 32.7 16 32 C28 31.3 31.3 28 32 16 Z' fill='%23f0cf73'/></g></svg>">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://leosxdqsetcnocyaixix.supabase.co">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -835,6 +839,12 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
       <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:26px">
         <button class="btn-play" onclick="playGate()"><span>Start this hour's round</span><span style="font-size:18px">&rarr;</span></button>
         <button type="button" id="invite-btn" style="background:var(--paper);color:var(--red);border:1.5px solid var(--red);border-radius:var(--rx);padding:16px 26px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit" onclick="inviteTable(this)">Invite your table</button>
+        <button type="button" id="tableqr-btn" style="background:var(--paper);color:var(--ink2);border:1.5px solid var(--border2);border-radius:var(--rx);padding:16px 26px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit" onclick="toggleTableQR()" aria-expanded="false" aria-controls="table-qr">Show table QR</button>
+      </div>
+      <div id="table-qr" hidden style="margin:22px auto 0;max-width:280px;background:var(--paper);border:1px solid var(--border);border-radius:var(--rx);padding:20px 20px 16px;box-shadow:var(--sh)">
+        <img id="table-qr-img" alt="QR code linking to truemapleleaf.com" width="200" height="200" style="display:block;margin:0 auto;width:200px;height:200px">
+        <div style="font-size:13px;font-weight:700;color:var(--ink);margin-top:12px">Everyone scans → same 10 questions</div>
+        <div style="font-size:12px;color:var(--ink3);margin-top:4px">Pass your phone around the table, then compare scores. truemapleleaf.com</div>
       </div>
       <p class="hero-discreet" style="margin-top:14px">Perfect for dinners, road trips, classrooms, and office breaks.</p>
     </div>
@@ -1486,6 +1496,26 @@ function inviteTable(btn){
     navigator.clipboard.writeText(url).then(done).catch(function(){window.prompt("Copy this link to invite your table:",url);});
   } else {
     window.prompt("Copy this link to invite your table:",url);
+  }
+}
+function toggleTableQR(){
+  var box=document.getElementById("table-qr"),btn=document.getElementById("tableqr-btn");
+  if(!box)return;
+  var show=box.hasAttribute("hidden");
+  if(show){
+    var img=document.getElementById("table-qr-img");
+    if(img&&!img.src){
+      try{
+        var qr=qrcode(0,"M");qr.addData(location.origin+"/");qr.make();
+        img.src=qr.createDataURL(6,8);
+      }catch(e){}
+    }
+    box.removeAttribute("hidden");
+    if(btn){btn.setAttribute("aria-expanded","true");btn.textContent="Hide table QR";}
+    box.scrollIntoView({behavior:"smooth",block:"nearest"});
+  } else {
+    box.setAttribute("hidden","");
+    if(btn){btn.setAttribute("aria-expanded","false");btn.textContent="Show table QR";}
   }
 }
 function startGame(){
