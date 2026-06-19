@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-CA">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +9,7 @@
 <meta name="description" content="True Maple Leaf — the Canadian trivia game made in Canada. 10 fresh questions every hour on Canada, pop culture and football. Build a streak, climb your city leaderboard. Free to play, no sign-up needed to start.">
 <meta name="theme-color" content="#c8102e">
 <link rel="manifest" href="/manifest.webmanifest">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png"
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -54,7 +54,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --red:#c8102e;--red-dk:#a00d24;--red-lt:#fff1f3;--red-mid:#e8102a;
-  --ink:#0f0f0f;--ink2:#3a3a3a;--ink3:#7a7a7a;--ink4:#b0b0b0;
+  --ink:#0f0f0f;--ink2:#3a3a3a;--ink3:#6a6a6a;--ink4:#767676;
   --paper:#fffef9;--paper2:#f7f5ef;--paper3:#eeece4;
   --border:#e2dfd6;--border2:#ccc9bf;
   --green:#1a9e6e;--glt:#effaf4;--gbr:#a8e0c4;
@@ -586,6 +586,49 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
 .lb-row.lb-you{background:var(--red-lt);box-shadow:inset 3px 0 0 var(--red)}
 .lb-row.lb-you .lb-name{color:var(--red)}
 .lb-sample{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink4);background:var(--paper2);border:1px solid var(--border);border-radius:10px;padding:1px 6px;margin-left:6px;vertical-align:middle}
+
+/* ─── G1 DRIVING PRACTICE SECTION ─── */
+.driving-section{padding:80px 40px;background:var(--paper)}
+.driving-inner{max-width:760px;margin:0 auto}
+.driving-disclaimer{display:flex;align-items:flex-start;gap:10px;background:#fff8e6;border:1.5px solid #e9c85a;border-radius:14px;padding:14px 18px;font-size:13px;color:#5a4200;line-height:1.6;margin-bottom:32px}
+.driving-disclaimer strong{color:#3d2a06;font-weight:700}
+.driving-disclaimer a{color:var(--red);font-weight:600;text-decoration:underline;text-underline-offset:2px}
+.driving-quiz{background:var(--paper);border:1.5px solid var(--border);border-radius:var(--r2x);padding:32px;box-shadow:var(--sh)}
+.dq-start-wrap{display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center;padding:24px 0}
+.dq-province-label{font-size:13px;font-weight:600;color:var(--ink3);margin-bottom:4px}
+.dq-province-select{font-size:14px;font-weight:600;border:1.5px solid var(--border2);border-radius:12px;padding:10px 16px;background:var(--paper2);color:var(--ink);font-family:inherit;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7a7a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;min-width:220px}
+.dq-start-meta{font-size:13px;color:var(--ink3);display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center}
+.dq-start-meta span{display:flex;align-items:center;gap:5px}
+.dq-progress-wrap{height:4px;background:var(--paper3);border-radius:4px;margin-bottom:22px;overflow:hidden}
+.dq-progress-bar{height:100%;background:var(--red);border-radius:4px;transition:width .4s ease}
+.dq-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+.dq-qnum{font-size:12px;font-weight:700;color:var(--ink3);letter-spacing:.04em;text-transform:uppercase}
+.dq-cat-chip{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--red);background:var(--red-lt);border:1px solid rgba(200,16,46,.18);border-radius:20px;padding:4px 12px}
+.dq-qtext{font-size:17px;font-weight:700;color:var(--ink);line-height:1.45;margin-bottom:22px}
+.dq-opts{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.dq-opt{display:flex;align-items:flex-start;gap:12px;border:1.5px solid var(--border);border-radius:14px;padding:13px 16px;font-size:14px;color:var(--ink2);cursor:pointer;background:var(--paper);transition:border-color .15s,background .15s;text-align:left;font-family:inherit;width:100%}
+.dq-opt:hover:not(:disabled){border-color:var(--red);background:var(--red-lt)}
+.dq-opt .dq-opt-letter{width:26px;height:26px;min-width:26px;border-radius:8px;background:var(--paper2);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--ink3);transition:all .15s}
+.dq-opt.correct{border-color:var(--green);background:var(--glt)}
+.dq-opt.correct .dq-opt-letter{background:var(--green);border-color:var(--green);color:#fff}
+.dq-opt.wrong{border-color:#e04545;background:#fff5f5}
+.dq-opt.wrong .dq-opt-letter{background:#e04545;border-color:#e04545;color:#fff}
+.dq-opt.dimmed{opacity:.45}
+.dq-opt:disabled{cursor:default}
+.dq-explanation{background:var(--paper2);border:1px solid var(--border);border-radius:12px;padding:13px 16px;font-size:13.5px;color:var(--ink2);line-height:1.6;margin-bottom:18px}
+.dq-explanation strong{color:var(--ink);font-weight:700}
+.dq-next{background:var(--red);color:#fff;border:none;border-radius:var(--rx);padding:13px 28px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s;width:100%}
+.dq-next:hover{background:var(--red-dk)}
+.dq-result-wrap{display:flex;flex-direction:column;align-items:center;text-align:center;padding:20px 0;gap:16px}
+.dq-score-circle{width:110px;height:110px;border-radius:50%;background:linear-gradient(135deg,var(--red),var(--red-dk));display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;box-shadow:0 8px 28px rgba(200,16,46,.35)}
+.dq-score-circle span{font-size:40px;font-weight:900;line-height:1}
+.dq-score-circle small{font-size:14px;font-weight:600;opacity:.8}
+.dq-result-title{font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.02em}
+.dq-result-msg{font-size:14px;color:var(--ink3);max-width:340px;line-height:1.55}
+.dq-result-note{font-size:12px;color:var(--ink4);background:var(--paper2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;max-width:400px;line-height:1.55}
+.dq-retry{background:var(--red);color:#fff;border:none;border-radius:var(--rx);padding:13px 30px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
+.dq-retry:hover{background:var(--red-dk)}
+@media(max-width:640px){.driving-section{padding:56px 20px}.driving-quiz{padding:22px 16px}.dq-qtext{font-size:15px}}
 </style>
 </head>
 <body>
@@ -626,7 +669,6 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
         <p class="hero-discreet">Made in Canada · built for every Canadian, ages 16 to 100.</p>
         <div class="hero-cta-wrap">
           <button class="btn-play" onclick="playGate()"><span>Play this hour's challenge</span><span style="font-size:18px">&rarr;</span></button>
-          <span class="start-here"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg> Tap to start &mdash; it's free</span>
         </div>
         <p class="hero-help">Free to play — a quick sign-up (just your email, a name, and your city) saves your streak and ranks you on your city's leaderboard.</p>
         <div class="gov-note"><span aria-hidden="true">&#128274;</span><span><b>Independent &amp; unofficial.</b> A privately run game, just for fun &mdash; this is not a government website and is not affiliated with the Government of Canada or any official body.</span></div>
@@ -784,6 +826,20 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
     </div>
   </div>
 
+  <!-- Play together -->
+  <div class="section" style="background:var(--paper)">
+    <div class="section-inner" style="text-align:center">
+      <div class="eyebrow">Play together</div>
+      <h2 class="section-h2">Same questions.<br>Whole table.</h2>
+      <p class="section-p" style="margin:10px auto 0">Every Canadian gets the exact same 10 questions each hour — so you, your friends, your coworkers, and the table next to you can all play the same set and settle who really knows their stuff.</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:26px">
+        <button class="btn-play" onclick="playGate()"><span>Start this hour's round</span><span style="font-size:18px">&rarr;</span></button>
+        <button type="button" id="invite-btn" style="background:var(--paper);color:var(--red);border:1.5px solid var(--red);border-radius:var(--rx);padding:16px 26px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit" onclick="inviteTable(this)">Invite your table</button>
+      </div>
+      <p class="hero-discreet" style="margin-top:14px">Perfect for dinners, road trips, classrooms, and office breaks.</p>
+    </div>
+  </div>
+
   <!-- Social proof -->
   <div class="proof-section">
     <div class="proof-inner">
@@ -809,6 +865,67 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
     </div>
   </div>
 
+  <!-- ════ G1 DRIVING PRACTICE ════ -->
+  <div class="driving-section" id="driving-section">
+    <div class="driving-inner">
+      <div class="section-header">
+        <div class="eyebrow">Practice Tests · Free</div>
+        <h2 class="section-h2">Ontario G1 Practice Test 🚗</h2>
+        <p class="section-p">Brush up on Ontario road rules before your exam. 10 questions per round, instant feedback, no sign-up needed.</p>
+      </div>
+
+      <!-- Legal disclaimer — required -->
+      <div class="driving-disclaimer">
+        <span style="font-size:18px;flex-shrink:0">⚠️</span>
+        <div><strong>Practice tool only — not an official test.</strong> These questions were written independently by True Maple Leaf for study purposes. This quiz is not affiliated with, endorsed by, or connected to the Government of Ontario, the Ministry of Transportation (MTO), or any official licensing authority. Road rules may vary and change over time. Always study the <a href="https://www.ontario.ca/document/official-mto-drivers-handbook" target="_blank" rel="noopener noreferrer">official MTO Driver's Handbook</a> and visit an official <a href="https://drivetest.ca" target="_blank" rel="noopener noreferrer">DriveTest centre</a> for your actual exam.</div>
+      </div>
+
+      <!-- Quiz widget -->
+      <div class="driving-quiz">
+
+        <!-- Start screen -->
+        <div id="dq-start" class="dq-start-wrap">
+          <div>
+            <div class="dq-province-label">Province</div>
+            <select class="dq-province-select" id="dq-province" disabled>
+              <option value="on">Ontario — G1 Knowledge Test</option>
+            </select>
+          </div>
+          <div class="dq-start-meta">
+            <span>📋 10 questions</span>
+            <span>✅ Multiple choice</span>
+            <span>💡 Instant explanations</span>
+          </div>
+          <button class="btn-play" style="animation:none" onclick="startDrivingQuiz()">Start Practice Test →</button>
+          <p style="font-size:12px;color:var(--ink4);max-width:380px;line-height:1.55">Questions are selected randomly from our bank. More provinces coming soon.</p>
+        </div>
+
+        <!-- Question screen -->
+        <div id="dq-question" style="display:none">
+          <div class="dq-progress-wrap"><div class="dq-progress-bar" id="dq-bar" style="width:0%"></div></div>
+          <div class="dq-header">
+            <span class="dq-qnum" id="dq-qnum">Question 1 of 10</span>
+            <span class="dq-cat-chip" id="dq-cat">Road Signs</span>
+          </div>
+          <div class="dq-qtext" id="dq-qtext"></div>
+          <div class="dq-opts" id="dq-opts"></div>
+          <div class="dq-explanation" id="dq-explanation" style="display:none"></div>
+          <button class="dq-next" id="dq-next" style="display:none" onclick="drivingNext()">Next Question →</button>
+        </div>
+
+        <!-- Result screen -->
+        <div id="dq-result" style="display:none" class="dq-result-wrap">
+          <div class="dq-score-circle"><span id="dq-final-num">0</span><small id="dq-final-denom">/ 10</small></div>
+          <div class="dq-result-title" id="dq-result-title">Well done!</div>
+          <div class="dq-result-msg" id="dq-result-msg"></div>
+          <div class="dq-result-note">📚 Remember: this is a practice tool only. For the real exam, study the <a href="https://www.ontario.ca/document/official-mto-drivers-handbook" target="_blank" rel="noopener noreferrer" style="color:var(--red);font-weight:600">official MTO Driver's Handbook</a>.</div>
+          <button class="dq-retry" onclick="restartDrivingQuiz()">Try Again →</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <!-- CTA band -->
   <div class="cta-band">
     <h2>Ready to prove it?</h2>
@@ -830,7 +947,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
 <!-- ════ SIGN IN ════ -->
 <div id="screen-signin" class="screen">
   <nav>
-    <div class="logo" onclick="go('screen-home')" style="cursor:pointer">
+    <div class="logo" role="button" tabindex="0" aria-label="True Maple Leaf — go to home" onclick="go('screen-home')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();go('screen-home')}" style="cursor:pointer">
       <div class="logo-mark"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 7 C33.4 26 38 31 57 32 C38 33 33.4 38 32 57 C30.6 38 26 33 7 32 C26 31 30.6 26 32 7 Z" fill="#f0cf73"/><g transform="rotate(45 32 32)" opacity="0.5"><path d="M32 16 C32.7 28 36 31.3 48 32 C36 32.7 32.7 36 32 48 C31.3 36 28 32.7 16 32 C28 31.3 31.3 28 32 16 Z" fill="#f0cf73"/></g></svg></div>
       <div class="logo-text">True <span>Maple</span> Leaf</div>
     </div>
@@ -848,7 +965,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
         Continue with Google
       </button>
       <div class="divider">or use your email</div>
-      <input class="field" type="email" placeholder="your@email.ca" id="email-inp">
+      <input class="field" type="email" placeholder="your@email.ca" id="email-inp" aria-label="Email address">
       <button class="btn-main" onclick="mockLogin()">Continue with email →</button>
       <div class="fine">By continuing you agree to our <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a>. We only store your email, username, and city.</div>
     </div>
@@ -868,9 +985,9 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
       <div class="auth-em">🏆</div>
       <div class="auth-title">Claim your spot</div>
       <div class="auth-sub">Pick a <b>game name</b> — this is what shows on the leaderboard. Max 10 characters, never your real name.</div>
-      <input class="field" type="text" placeholder="e.g. MapleKing" id="uname" maxlength="10" oninput="document.getElementById('cc').textContent=this.value.length">
+      <input class="field" type="text" placeholder="e.g. MapleKing" id="uname" maxlength="10" aria-label="Game name (shown on the leaderboard, max 10 characters)" oninput="document.getElementById('cc').textContent=this.value.length">
       <div class="cc"><span id="cc">0</span>/10</div>
-      <select class="drop" id="prov">
+      <select class="drop" id="prov" aria-label="Select your city">
         <option value="" disabled selected>Select your city</option>
         <option>Toronto</option><option>Vancouver</option><option>Calgary</option>
         <option>Edmonton</option><option>Ottawa</option><option>Winnipeg</option>
@@ -883,7 +1000,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
       <button class="btn-main" onclick="finishSetup()">Claim my spot →</button>
       <div class="opt-save" style="margin-top:18px;padding:15px 16px;border:1px solid var(--border);border-radius:14px;background:var(--paper2)">
         <div style="font-size:11px;font-weight:700;color:var(--ink3);margin-bottom:11px;text-transform:uppercase;letter-spacing:.05em">Optional — save your streak &amp; get reminders</div>
-        <input class="field" type="email" placeholder="your@email.ca (optional)" id="uemail">
+        <input class="field" type="email" placeholder="your@email.ca (optional)" id="uemail" aria-label="Email address (optional, for streak reminders)">
         <div class="notif-row">
           <input type="checkbox" id="notif">
           <label for="notif">Email me a daily streak reminder — unsubscribe any time</label>
@@ -908,7 +1025,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
           True Maple Leaf
         </div>
         <button class="btn-exit" onclick="openQuit()">✕ Quit</button>
-        <button class="btn-exit" id="snd-btn" onclick="toggleSound()" title="Sound on/off" style="margin-left:4px">🔊</button>
+        <button class="btn-exit" id="snd-btn" onclick="toggleSound()" title="Sound on/off" aria-label="Toggle sound on or off" style="margin-left:4px">🔊</button>
         <div class="g-pts" id="g-pts">💎 0 pts</div>
       </div>
       <div class="prog-wrap">
@@ -923,8 +1040,8 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
 
     <div id="game-content" style="flex:1;overflow-y:auto">
       <div class="timer-stage">
-        <div class="timer-ring" id="t-ring">
-          <svg width="72" height="72" viewBox="0 0 72 72">
+        <div class="timer-ring" id="t-ring" role="timer" aria-live="polite" aria-atomic="true" aria-label="Seconds remaining to answer">
+          <svg width="72" height="72" viewBox="0 0 72 72" aria-hidden="true">
             <circle class="tr-bg" cx="36" cy="36" r="28"/>
             <circle class="tr-arc" id="t-arc" cx="36" cy="36" r="28" stroke-dasharray="175.9" stroke-dashoffset="0"/>
           </svg>
@@ -997,7 +1114,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
 <!-- ════ LEADERBOARD ════ -->
 <div id="screen-leaderboard" class="screen">
   <nav>
-    <div class="logo" onclick="go('screen-home')" style="cursor:pointer">
+    <div class="logo" role="button" tabindex="0" aria-label="True Maple Leaf — go to home" onclick="go('screen-home')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();go('screen-home')}" style="cursor:pointer">
       <div class="logo-mark"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 7 C33.4 26 38 31 57 32 C38 33 33.4 38 32 57 C30.6 38 26 33 7 32 C26 31 30.6 26 32 7 Z" fill="#f0cf73"/><g transform="rotate(45 32 32)" opacity="0.5"><path d="M32 16 C32.7 28 36 31.3 48 32 C36 32.7 32.7 36 32 48 C31.3 36 28 32.7 16 32 C28 31.3 31.3 28 32 16 Z" fill="#f0cf73"/></g></svg></div>
       <div class="logo-text">True <span>Maple</span> Leaf</div>
     </div>
@@ -1349,6 +1466,20 @@ function playGate(){
   // screen to save their score, streak and leaderboard spot.
   startGame();
 }
+function inviteTable(btn){
+  var url=location.origin+"/";
+  var msg="Play this hour's Canadian trivia with me — same 10 questions for everyone. Lowest score buys the next round 🍁";
+  if(navigator.share){
+    navigator.share({title:"True Maple Leaf",text:msg,url:url}).catch(function(){});
+    return;
+  }
+  var done=function(){if(btn){var o=btn.textContent;btn.textContent="Link copied ✓";setTimeout(function(){btn.textContent=o;},2200);}};
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(url).then(done).catch(function(){window.prompt("Copy this link to invite your table:",url);});
+  } else {
+    window.prompt("Copy this link to invite your table:",url);
+  }
+}
 function startGame(){
   S.score=0;S.qIndex=0;S.sStreak=0;S.answers=[];S.fast=0;
   try{var _a=audioCtx();if(_a&&_a.state==="suspended")_a.resume();}catch(e){}
@@ -1361,7 +1492,7 @@ function startGame(){
       S.questions=shuffle(liveQ).slice(0,10);
       if(fresh&&lastFetchTime){
         var mins=Math.round((Date.now()-lastFetchTime.getTime())/60000);
-        fresh.textContent="🔄 "+(mins<1?"just now":mins+"m ago");
+        fresh.textContent="🔄 This hour's set · "+(mins<1?"just now":"refreshed "+mins+"m ago");
         fresh.style.display="inline-flex";
       }
     } else {
@@ -1521,7 +1652,7 @@ function endGame(){
   if(_reg){submitScore();try{localStorage.removeItem("tml_pending_score");}catch(e){}}
   else{try{localStorage.setItem("tml_pending_score","1");}catch(e){}}
   var _base=(S.city && LB.some(function(p){return p.city===S.city}))?LB.filter(function(p){return p.city===S.city}):LB;
-  var rank=_base.filter(function(p){return p.score>(S.bestScore||0);}).length+1;
+  var rank=_base.filter(function(p){return p.score>(S.totalXP||0);}).length+1;
   S.lastRank=rank;
   var move=Math.floor(Math.random()*6)+1;
   document.getElementById("res-num").textContent=correct;
@@ -1658,7 +1789,7 @@ function submitScore(){
   // streak accurate across devices/browsers and stops the count being faked client-side.
   try{fetch(SUPABASE_URL+"/rest/v1/rpc/submit_score_v2",{method:"POST",
     headers:{apikey:SUPABASE_ANON_KEY,Authorization:"Bearer "+SUPABASE_ANON_KEY,"Content-Type":"application/json"},
-    body:JSON.stringify({p_username:S.username,p_city:S.city,p_score:S.bestScore||S.score||0,p_today:todayKey()})})
+    body:JSON.stringify({p_username:S.username,p_city:S.city,p_score:S.score||0,p_today:todayKey()})})
     .then(function(r){return r.ok?r.json():null;})
     .then(function(srv){
       var sv=parseInt(srv,10);
@@ -2133,6 +2264,134 @@ setInterval(function(){
     });
   }
 },30000);
+
+// ═══════════════════════════════════════════════════════════════
+// G1 DRIVING PRACTICE QUIZ
+// All questions written independently by True Maple Leaf.
+// Based on publicly available Ontario road rules (Highway Traffic Act).
+// Not affiliated with the Government of Ontario or the MTO.
+// ═══════════════════════════════════════════════════════════════
+var DQ = {
+  bank: [
+    {id:1,cat:"Road Signs",q:"You see an eight-sided red sign at an intersection. What must you do?",opts:["Slow down and proceed if the road is clear","Come to a complete stop, then go when it is safe","Yield to traffic on the right only","Flash your headlights before proceeding"],ans:1,exp:"A red octagon (stop sign) requires a full stop before the stop line or crosswalk. You may only proceed once it is safe to do so."},
+    {id:2,cat:"Road Signs",q:"A yellow diamond-shaped sign with a curving arrow is posted ahead. What does it warn you about?",opts:["A railroad crossing is nearby","The road curves ahead and you should adjust your speed","Construction workers are present","The lane ends and you must merge"],ans:1,exp:"Yellow diamond signs are warning signs. A curving arrow tells drivers the road ahead bends — reduce speed before reaching the curve."},
+    {id:3,cat:"Speed Limits",q:"You are driving on a road in a built-up area with no posted speed limit sign. What is the maximum speed you are allowed to travel?",opts:["60 km/h","70 km/h","50 km/h","40 km/h"],ans:2,exp:"In Ontario, the default speed limit in a built-up area is 50 km/h under the Highway Traffic Act, unless a posted sign says otherwise."},
+    {id:4,cat:"Speed Limits",q:"You are driving on a provincial road outside of a built-up area in Ontario and there is no speed limit sign posted. What is the maximum speed permitted?",opts:["90 km/h","100 km/h","110 km/h","80 km/h"],ans:3,exp:"Under Ontario's Highway Traffic Act, the default maximum speed outside a built-up area where no sign is posted is 80 km/h. Major freeways are always posted with their own signs."},
+    {id:5,cat:"Right of Way",q:"You arrive at a four-way stop at the same time as a driver on your right. Who goes first?",opts:["You do, because you arrived first","The driver on your right goes first","The larger vehicle goes first","Both vehicles proceed at the same time"],ans:1,exp:"When two vehicles arrive at a four-way stop simultaneously, the driver on the right has the right of way. You must yield to them before proceeding."},
+    {id:6,cat:"Right of Way",q:"You want to turn left at a green light. There is oncoming traffic moving straight through the intersection. What should you do?",opts:["Turn left quickly before the traffic reaches you","Wait for oncoming traffic to clear before turning","Sound your horn and proceed","Turn left only if the intersection is wide enough"],ans:1,exp:"A driver turning left must always yield to oncoming traffic going straight, even on a green light. Wait until the way is completely clear before completing your turn."},
+    {id:7,cat:"Following Distance",q:"How far behind the vehicle ahead should you stay when driving at highway speeds in good conditions?",opts:["At least 1 second","At least 2 seconds","At least 3 seconds","At least 5 seconds"],ans:2,exp:"Ontario recommends a minimum following distance of 3 seconds in good conditions. Increase this in poor weather, construction zones, or when following large trucks."},
+    {id:8,cat:"Alcohol & Drugs",q:"You hold a G1 licence. What blood alcohol concentration (BAC) are you legally allowed to have while driving?",opts:["0.05 (50 mg per 100 ml of blood)","0.08 (80 mg per 100 ml of blood)","0.02 (20 mg per 100 ml of blood)","Zero — your BAC must be 0.00"],ans:3,exp:"G1 and G2 licence holders in Ontario must have a BAC of exactly zero while driving. Any amount of alcohol is illegal for novice drivers."},
+    {id:9,cat:"Alcohol & Drugs",q:"A fully licensed driver in Ontario faces criminal impairment charges if their blood alcohol concentration reaches what level?",opts:["0.05","0.08","0.10","0.06"],ans:1,exp:"Under Ontario law, a BAC of 0.08 or above is a criminal offence and results in immediate licence suspension. Drivers in the 'warn range' of 0.05–0.079 also face a roadside suspension and penalties."},
+    {id:10,cat:"Passing",q:"Under which of the following conditions is it illegal to pass another vehicle in Ontario?",opts:["On a straight two-lane road with a broken yellow centre line","When a solid yellow line is on your side of the centre line","On a road with three lanes where you are in the centre lane","On a one-way street with two lanes"],ans:1,exp:"A solid yellow line on your side of the road means passing is not permitted. It is placed where sight lines are poor or conditions make passing dangerous."},
+    {id:11,cat:"Pedestrians",q:"You are approaching a crosswalk and a pedestrian steps off the curb to cross. What must you do?",opts:["Sound your horn to warn them and proceed","Slow down and proceed if you can pass safely behind them","Stop and let the pedestrian cross completely before moving","Flash your lights and wait only if it is a school zone"],ans:2,exp:"Pedestrians in a crosswalk always have the right of way. You must stop and wait until the pedestrian has fully crossed the road before you move forward."},
+    {id:12,cat:"School Zones",q:"You are driving past a school between 8 a.m. and 5 p.m. on a school day. What is the default speed limit in Ontario unless another limit is posted?",opts:["30 km/h","40 km/h","25 km/h","50 km/h"],ans:1,exp:"Under Ontario's Highway Traffic Act, the default speed limit in a school zone during school hours is 40 km/h. Some municipalities such as Toronto have lowered this to 30 km/h — always watch for posted signs."},
+    {id:13,cat:"Emergency Vehicles",q:"You hear a siren and see flashing lights from an emergency vehicle approaching from behind. What should you do?",opts:["Speed up to clear the road quickly","Pull over to the right side of the road and stop","Stay in your lane and maintain your speed","Pull over to the left if it is the nearest curb"],ans:1,exp:"When an emergency vehicle approaches with lights and siren active, you must pull over to the right as far as safely possible and stop until the vehicle has passed."},
+    {id:14,cat:"Emergency Vehicles",q:"You are approaching a stopped emergency vehicle on the roadside with its lights flashing. What does Ontario's Move Over law require?",opts:["Slow down by 20 km/h as you pass","Move into a lane farther away if you safely can, or slow down significantly if you cannot","Come to a complete stop until the vehicle moves","Flash your headlights as a courtesy and maintain speed"],ans:1,exp:"Ontario's Move Over law requires you to move into a lane away from a stopped emergency or tow truck with flashing lights when safe to do so. If changing lanes is not possible, slow down to a safe speed."},
+    {id:15,cat:"Lane Use",q:"You are driving on a highway with three lanes going in the same direction. Which lane should you use for normal travel when the road is not congested?",opts:["The left lane, as it is the fastest","The centre lane at all times","The right lane, moving to other lanes only to pass","Any lane you are comfortable in"],ans:2,exp:"On multi-lane highways, the right lane is for normal travel. The left lane is for passing only. Staying in the left lane when not passing is against Ontario's rules of the road."},
+    {id:16,cat:"Traffic Lights",q:"You are stopped at a red light. The light turns green. What should you do before proceeding?",opts:["Move immediately — you have the right of way","Check that the intersection is clear of cross-traffic before moving forward","Sound your horn to alert other drivers","Wait five seconds before moving"],ans:1,exp:"Even when a light turns green, check that the intersection is clear before entering it. Cross-traffic may still be clearing from a late yellow or red light."},
+    {id:17,cat:"Traffic Lights",q:"What does a flashing red traffic light mean?",opts:["The light is broken — proceed at normal speed","Slow down and be prepared to stop","Treat it as a stop sign — come to a full stop, then proceed when safe","Yield to traffic on the main road"],ans:2,exp:"A flashing red light must be treated exactly like a stop sign. Come to a complete stop, check that it is safe, and then proceed."},
+    {id:18,cat:"Seatbelts",q:"As the driver, you are legally responsible for ensuring which passengers wear their seatbelts?",opts:["Only yourself","Yourself and all passengers under 16 years old","Yourself and all front-seat passengers","Every passenger in the vehicle regardless of age"],ans:1,exp:"In Ontario, drivers are legally responsible for ensuring all passengers under 16 are properly buckled. Passengers 16 and older are responsible for buckling themselves, though the driver can still be fined."},
+    {id:19,cat:"Winter Driving",q:"You are driving in heavy snow and your visibility drops significantly. What is the most important adjustment to make?",opts:["Turn on your hazard lights and maintain your speed","Increase your following distance and reduce your speed","Switch to high-beam headlights to see further ahead","Stay close behind a large truck to follow its tracks"],ans:1,exp:"In poor visibility or slippery conditions, slowing down and increasing your following distance gives you more time and space to react. High beams actually reflect off snow and reduce visibility further."},
+    {id:20,cat:"G1 Restrictions",q:"You hold a G1 licence and want to drive on a 400-series highway. What condition must be met?",opts:["You may drive freely as long as it is daytime","You must be accompanied by a fully licensed driver with at least four years of experience","You need a special highway permit from the MTO","You must have held your G1 for at least six months first"],ans:1,exp:"G1 drivers may drive on 400-series highways and high-speed expressways only when accompanied by a fully licensed driver (G licence) with at least four years of driving experience in the front passenger seat."}
+  ],
+  current: [],
+  idx: 0,
+  score: 0,
+  answered: false
+};
+
+function dqShuffle(arr){
+  var a=arr.slice();
+  for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}
+  return a;
+}
+
+function startDrivingQuiz(){
+  DQ.current = dqShuffle(DQ.bank).slice(0,10);
+  DQ.idx = 0;
+  DQ.score = 0;
+  document.getElementById('dq-start').style.display='none';
+  document.getElementById('dq-result').style.display='none';
+  document.getElementById('dq-question').style.display='block';
+  dqRender();
+}
+
+function dqRender(){
+  var q = DQ.current[DQ.idx];
+  var total = DQ.current.length;
+  DQ.answered = false;
+  // Progress
+  document.getElementById('dq-bar').style.width = (DQ.idx/total*100)+'%';
+  document.getElementById('dq-qnum').textContent = 'Question '+(DQ.idx+1)+' of '+total;
+  document.getElementById('dq-cat').textContent = q.cat;
+  document.getElementById('dq-qtext').textContent = q.q;
+  // Options
+  var html='';
+  var letters=['A','B','C','D'];
+  for(var i=0;i<q.opts.length;i++){
+    html+='<button class="dq-opt" onclick="dqAnswer('+i+')" data-idx="'+i+'">'
+      +'<span class="dq-opt-letter">'+letters[i]+'</span>'
+      +'<span>'+q.opts[i]+'</span>'
+      +'</button>';
+  }
+  document.getElementById('dq-opts').innerHTML=html;
+  // Hide explanation & next
+  document.getElementById('dq-explanation').style.display='none';
+  document.getElementById('dq-next').style.display='none';
+  document.getElementById('dq-next').textContent = (DQ.idx+1 < total) ? 'Next Question →' : 'See My Score →';
+}
+
+function dqAnswer(chosen){
+  if(DQ.answered) return;
+  DQ.answered = true;
+  var q = DQ.current[DQ.idx];
+  var correct = q.ans;
+  if(chosen === correct) DQ.score++;
+  // Style buttons
+  var btns = document.querySelectorAll('.dq-opt');
+  for(var i=0;i<btns.length;i++){
+    btns[i].disabled=true;
+    if(i===correct){ btns[i].classList.add('correct'); }
+    else if(i===chosen && chosen!==correct){ btns[i].classList.add('wrong'); }
+    else{ btns[i].classList.add('dimmed'); }
+  }
+  // Show explanation
+  var expEl = document.getElementById('dq-explanation');
+  expEl.innerHTML = '<strong>'+(chosen===correct?'✅ Correct! ':'❌ Not quite. ')+'</strong>'+q.exp;
+  expEl.style.display='block';
+  document.getElementById('dq-next').style.display='block';
+}
+
+function drivingNext(){
+  DQ.idx++;
+  if(DQ.idx >= DQ.current.length){
+    dqShowResult();
+  } else {
+    dqRender();
+  }
+}
+
+function dqShowResult(){
+  document.getElementById('dq-question').style.display='none';
+  document.getElementById('dq-result').style.display='flex';
+  var s=DQ.score, t=DQ.current.length;
+  document.getElementById('dq-final-num').textContent=s;
+  document.getElementById('dq-final-denom').textContent='/ '+t;
+  var pct = s/t;
+  var title, msg;
+  if(pct>=0.9){title='Excellent! 🌟';msg='Outstanding knowledge of Ontario road rules. You\'re well prepared — keep reviewing the handbook to stay sharp.';}
+  else if(pct>=0.7){title='Good work! 👍';msg='Solid result! Review the questions you missed and do another round before your exam.';}
+  else if(pct>=0.5){title='Keep studying! 📚';msg='You\'re on the right track but a few areas need more practice. Review the MTO Driver\'s Handbook and try again.';}
+  else{title='More practice needed 💪';msg='Don\'t worry — practice makes perfect. Study the official handbook and try a few more rounds.';}
+  document.getElementById('dq-result-title').textContent=title;
+  document.getElementById('dq-result-msg').textContent=msg;
+  document.getElementById('dq-bar').style.width='100%';
+}
+
+function restartDrivingQuiz(){
+  document.getElementById('dq-result').style.display='none';
+  startDrivingQuiz();
+}
 </script>
 <!-- Anonymous, cookieless visit counts (Cloudflare Web Analytics). No personal data, no cookies, no consent banner needed. Active. -->
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "0e68f4a92134408bbb8d55c0285e2d6f"}'></script>
