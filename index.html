@@ -1689,8 +1689,8 @@ function endGame(){
   // held (flagged) and submitted the moment they sign up at the result screen.
   if(_reg){submitScore();try{localStorage.removeItem("tml_pending_score");}catch(e){}}
   else{try{localStorage.setItem("tml_pending_score","1");}catch(e){}}
-  var _base=(S.city && LB.some(function(p){return p.city===S.city}))?LB.filter(function(p){return p.city===S.city}):LB;
-  var rank=_base.filter(function(p){return p.score>(S.totalXP||0);}).length+1;
+  // Rank from the same source as the leaderboard + share card, so all three agree.
+  var rank=playerStanding().rank;
   S.lastRank=rank;
   var move=Math.floor(Math.random()*6)+1;
   document.getElementById("res-num").textContent=correct;
@@ -1900,11 +1900,34 @@ function renderLB(f){
 // rounded-rect path helper
 function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
 
+// Single source of truth for the player's rank + XP, so the share card always
+// matches the CITY leaderboard the player sees (same data, same sort order).
+// Reading straight from lbList() guarantees card == board.
+function playerStanding(){
+  var city=S.city||"Toronto";
+  var list=lbList(city);
+  // 1) Player is visible on the city board → use their exact position + score.
+  for(var i=0;i<list.length;i++){
+    if(list[i].you)return {rank:i+1, xp:(parseInt(list[i].score,10)||0)};
+  }
+  // 2) Not shown on the board (guest, or below the visible rows): rank against
+  //    the real Supabase players in their city by total_score, fall back to local.
+  var me=null;
+  (S.realLB||[]).forEach(function(r){if(S.username&&r.username===S.username)me=r;});
+  if(me){
+    var ahead=(S.realLB||[]).filter(function(r){
+      return (r.city||"")===city && (r.total_score||0)>(me.total_score||0);}).length;
+    return {rank:ahead+1, xp:(me.total_score||0)};
+  }
+  return {rank:(S.lastRank||list.length+1), xp:(S.totalXP||0)};
+}
+
 // Derive a FIFA-style OVERALL rating + 6 stats from the player's data.
 // Scaling is intentionally flattering (floors ~40-60) — people share high numbers, not low ones.
 function cardData(){
   var correct=S.answers.filter(Boolean).length;
-  var fast=S.fast||0, streak=S.streak||0, xp=S.totalXP||0, rank=S.lastRank||18;
+  var _st=playerStanding();
+  var fast=S.fast||0, streak=S.streak||0, xp=_st.xp||0, rank=_st.rank||18;
   var per=S.persona||personaFor(correct,fast);
   var clamp=function(v,lo,hi){return Math.max(lo,Math.min(hi,Math.round(v)));};
   var ACC=clamp(correct*10,35,99);      // accuracy — correct answers this round
@@ -1916,7 +1939,7 @@ function cardData(){
   var stats=[["ACC",ACC],["SPD",SPD],["STK",STK],["RNK",RNK],["XP",XP],["IQ",IQ]];
   var overall=clamp((ACC+SPD+STK+RNK+XP+IQ)/6,40,99);   // OVERALL = average of the six (FIFA logic)
   var tier=overall>=85?"ELITE":overall>=70?"GOLD":"RISING";
-  return {correct:correct,streak:streak,rank:rank,per:per,overall:overall,stats:stats,tier:tier,city:S.city||"Toronto"};
+  return {correct:correct,streak:streak,rank:rank,xpTotal:xp,per:per,overall:overall,stats:stats,tier:tier,city:S.city||"Toronto"};
 }
 
 function drawQR(ctx,x,y,size,text){
@@ -2011,7 +2034,7 @@ function drawShareCard(canvas){
     ["Accuracy", accPct+"%"],
     ["City rank", "#"+d.rank+" in "+d.city],
     ["Day streak", d.streak+(d.streak===1?" day":" days")],
-    ["Total XP", (S.totalXP||0).toLocaleString()+" pts"]
+    ["Total XP", (d.xpTotal||0).toLocaleString()+" pts"]
   ];
   var ry=502;
   for(var i=0;i<rows.length;i++){
