@@ -1870,8 +1870,8 @@ function lbList(f){
     return {name:r.username,city:r.city||"",prov:"",streak:r.streak||0,score:r.total_score||0,real:true,you:you,
             av:(r.username||"P").substring(0,2).toUpperCase(),ac:you?"#fff0f0":c[0],at:you?"#c8102e":c[1]};
   });
-  if(reg&&(S.bestScore||0)>0&&!real.some(function(p){return p.you;})){
-    real.push({name:S.username,city:S.city,prov:"",streak:S.streak,score:S.bestScore,real:true,you:true,
+  if(reg&&((S.totalXP||S.bestScore||0)>0)&&!real.some(function(p){return p.you;})){
+    real.push({name:S.username,city:S.city,prov:"",streak:S.streak,score:(S.totalXP||0),real:true,you:true,
                av:(S.username||"ME").substring(0,2).toUpperCase(),ac:"#fff0f0",at:"#c8102e"});
   }
   var seeds=LB.slice();
@@ -1903,6 +1903,14 @@ function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w
 // Single source of truth for the player's rank + XP, so the share card always
 // matches the CITY leaderboard the player sees (same data, same sort order).
 // Reading straight from lbList() guarantees card == board.
+// Lifetime XP — the player's TOTAL points, never a single round's score.
+// Prefers the server's accumulated total when known, else the local lifetime tally.
+// Decoupled from leaderboard-refresh timing so the card never shows a stale round score.
+function myTotalXP(){
+  var me=null;
+  (S.realLB||[]).forEach(function(r){if(S.username&&r.username===S.username)me=r;});
+  return Math.max((me?me.total_score:0)||0, S.totalXP||0);
+}
 function playerStanding(){
   var city=S.city||"Toronto";
   var list=lbList(city);
@@ -1927,7 +1935,7 @@ function playerStanding(){
 function cardData(){
   var correct=S.answers.filter(Boolean).length;
   var _st=playerStanding();
-  var fast=S.fast||0, streak=S.streak||0, xp=_st.xp||0, rank=_st.rank||18;
+  var fast=S.fast||0, streak=S.streak||0, xp=myTotalXP(), rank=_st.rank||18;
   var per=S.persona||personaFor(correct,fast);
   var clamp=function(v,lo,hi){return Math.max(lo,Math.min(hi,Math.round(v)));};
   var ACC=clamp(correct*10,35,99);      // accuracy — correct answers this round
