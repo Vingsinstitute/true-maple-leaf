@@ -2497,19 +2497,15 @@ function restartDrivingQuiz(){
   <button class="if-x" id="install-fab-x" type="button" aria-label="Hide for now">&times;</button>
 </div>
 
-<!-- iOS guided install sheet (Apple gives no programmatic install API, so we guide visually) -->
-<div class="ios-sheet-wrap" id="ios-install-sheet" style="display:none">
-  <div class="ios-sheet-back" id="ios-sheet-back"></div>
+<!-- Guided install sheet — steps adapt to the device (iOS / Android / desktop) -->
+<div class="ios-sheet-wrap" id="install-guide" style="display:none">
+  <div class="ios-sheet-back" id="guide-back"></div>
   <div class="ios-sheet">
     <div class="ios-sheet-grip" aria-hidden="true"></div>
     <div class="ios-sheet-title">Add True Maple Leaf to your Home Screen</div>
-    <ol class="ios-steps">
-      <li>Tap the <b>Share</b> button <span aria-hidden="true">（⬆️）</span> in Safari's bottom bar.</li>
-      <li>Scroll down and tap <b>Add to Home Screen</b>.</li>
-      <li>Tap <b>Add</b> — done. One tap to keep your streak alive!</li>
-    </ol>
-    <button class="ios-sheet-close" id="ios-sheet-close" type="button">Got it</button>
-    <div class="ios-arrow" aria-hidden="true">▾</div>
+    <ol class="ios-steps" id="guide-steps"></ol>
+    <button class="ios-sheet-close" id="guide-close" type="button">Got it</button>
+    <div class="ios-arrow" id="guide-arrow" aria-hidden="true">▾</div>
   </div>
 </div>
 
@@ -2526,30 +2522,49 @@ function restartDrivingQuiz(){
   function snoozed(){ try{ var u=parseInt(localStorage.getItem("tml_pin_snooze")||"0",10); return u&&Date.now()<u; }catch(e){return false;} }
   function snooze(){ try{localStorage.setItem("tml_pin_snooze",String(Date.now()+SNOOZE_MS));}catch(e){} }
   function standalone(){return (window.matchMedia&&window.matchMedia("(display-mode: standalone)").matches)||window.navigator.standalone===true;}
-  function isIOS(){return /iphone|ipad|ipod/i.test(navigator.userAgent);}
+  function isIOS(){return /iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);}
   function isAndroid(){return /android/i.test(navigator.userAgent);}
   // Show only on engagement screens — never over the live quiz answers or the sign-in forms.
   function onAllowedScreen(){ var a=document.querySelector(".screen.active"); var id=a?a.id:""; return id==="screen-home"||id==="screen-result"||id==="screen-leaderboard"; }
-  // The pill only appears when a click will actually INSTALL: a captured native prompt
-  // (Android/desktop Chrome → one-tap install) or iOS (guided sheet, since Apple gives no
-  // install API). So tapping it always does something — it never dead-ends in raw text.
-  function installableNow(){ return !!deferred || isIOS(); }
-  function updateUI(){ if(!fab)return; fab.style.display=(!standalone()&&!snoozed()&&onAllowedScreen()&&installableNow())?"flex":"none"; }
+  // Always visible on the engagement screens (unless already installed or snoozed) so the
+  // option is never lost. Tapping it does the most direct thing the platform allows.
+  function updateUI(){ if(!fab)return; fab.style.display=(!standalone()&&!snoozed()&&onAllowedScreen())?"flex":"none"; }
   window.__installUI=updateUI;  // go() calls this so the pill refreshes on every screen change
-  var iosSheet=document.getElementById("ios-install-sheet"),
-      iosClose=document.getElementById("ios-sheet-close"),
-      iosBack=document.getElementById("ios-sheet-back");
-  function closeIOS(){ if(iosSheet)iosSheet.style.display="none"; }
-  function openIOS(){ if(iosSheet)iosSheet.style.display="flex"; }
+  var guide=document.getElementById("install-guide"),
+      guideSteps=document.getElementById("guide-steps"),
+      guideArrow=document.getElementById("guide-arrow"),
+      guideClose=document.getElementById("guide-close"),
+      guideBack=document.getElementById("guide-back");
+  function closeGuide(){ if(guide)guide.style.display="none"; }
+  function openGuide(){
+    if(!guide)return;
+    var steps, showArrow=false;
+    if(isIOS()){
+      showArrow=true;
+      steps=["Tap the <b>Share</b> button <span aria-hidden='true'>（⬆️）</span> in Safari's bottom bar.",
+             "Scroll down and tap <b>Add to Home Screen</b>.",
+             "Tap <b>Add</b> — done. One tap to keep your streak alive!"];
+    } else if(isAndroid()){
+      steps=["Tap the <b>⋮</b> menu (top-right) in Chrome.",
+             "Tap <b>Install app</b> (or <b>Add to Home screen</b>).",
+             "Tap <b>Install</b> — done. One tap to keep your streak alive!"];
+    } else {
+      steps=["Open your browser menu (the <b>⋮</b>, or an install icon in the address bar).",
+             "Choose <b>Install True Maple Leaf</b>.",
+             "Confirm — done. One tap to keep your streak alive!"];
+    }
+    guideSteps.innerHTML=steps.map(function(s){return "<li>"+s+"</li>";}).join("");
+    if(guideArrow)guideArrow.style.display=showArrow?"block":"none";
+    guide.style.display="flex";
+  }
   function doInstall(){
     if(deferred){ deferred.prompt(); deferred.userChoice.then(function(){ deferred=null; updateUI(); }); return; } // direct one-tap install
-    if(isIOS()){ openIOS(); return; }  // iOS: guided sheet (no programmatic install on Apple)
-    updateUI();                        // nothing to trigger right now; just refresh
+    openGuide();  // no native prompt available → device-specific guided steps
   }
   if(fabAdd)fabAdd.onclick=doInstall;
   if(fabX)fabX.onclick=function(){ snooze(); updateUI(); };
-  if(iosClose)iosClose.onclick=closeIOS;
-  if(iosBack)iosBack.onclick=closeIOS;
+  if(guideClose)guideClose.onclick=closeGuide;
+  if(guideBack)guideBack.onclick=closeGuide;
   window.addEventListener("beforeinstallprompt",function(e){ e.preventDefault(); deferred=e; updateUI(); });
   window.addEventListener("appinstalled",function(){ snooze(); deferred=null; updateUI(); });
   // One-time migration: lift the OLD permanent dismissal so returning users get the pill back.
