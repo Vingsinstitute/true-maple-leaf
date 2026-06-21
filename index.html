@@ -40,6 +40,21 @@
 @keyframes fabBob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-5px)}}
 @media(min-width:721px){.install-fab{left:auto;right:24px;bottom:24px;transform:none;animation:fabIn .4s both}.install-fab .if-main{font-size:14px}}
 @media(prefers-reduced-motion:reduce){.install-fab{animation:fabIn .3s both}}
+/* iOS guided install sheet */
+.ios-sheet-wrap{position:fixed;inset:0;z-index:1000;display:flex;align-items:flex-end;justify-content:center}
+.ios-sheet-back{position:absolute;inset:0;background:rgba(15,15,15,.5);backdrop-filter:blur(3px)}
+.ios-sheet{position:relative;background:#fff;width:100%;max-width:460px;border-radius:20px 20px 0 0;padding:16px 22px calc(env(safe-area-inset-bottom,0px) + 64px);box-shadow:0 -10px 40px rgba(0,0,0,.22);animation:sheetUp .34s cubic-bezier(.34,1.2,.64,1) both}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.ios-sheet-grip{width:38px;height:4px;border-radius:2px;background:#e2d9bf;margin:2px auto 14px}
+.ios-sheet-title{font-size:18px;font-weight:800;color:#3d2a06;text-align:center;margin-bottom:16px;letter-spacing:-.01em}
+.ios-steps{counter-reset:s;list-style:none;margin:0 0 18px;padding:0;display:flex;flex-direction:column;gap:13px}
+.ios-steps li{font-size:14.5px;line-height:1.4;color:#3d2a06;display:flex;align-items:flex-start;gap:11px;counter-increment:s}
+.ios-steps li::before{content:counter(s);flex:0 0 22px;width:22px;height:22px;border-radius:50%;background:#c8102e;color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.ios-steps b{font-weight:800}
+.ios-sheet-close{display:block;width:100%;background:#c8102e;color:#fff;border:none;border-radius:12px;padding:13px;font-size:15px;font-weight:800;font-family:inherit;cursor:pointer}
+.ios-arrow{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);color:#c8102e;font-size:30px;line-height:1;animation:arrowBob 1.2s ease-in-out infinite}
+@keyframes arrowBob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+@media(prefers-reduced-motion:reduce){.ios-sheet{animation:none}.ios-arrow{animation:none}}
 </style>
 <meta property="og:title" content="True Maple Leaf — Canadian Trivia">
 <meta property="og:description" content="How well do you know Canada? 10 fresh questions every hour. Build your streak, climb your city's leaderboard.">
@@ -2482,6 +2497,22 @@ function restartDrivingQuiz(){
   <button class="if-x" id="install-fab-x" type="button" aria-label="Hide for now">&times;</button>
 </div>
 
+<!-- iOS guided install sheet (Apple gives no programmatic install API, so we guide visually) -->
+<div class="ios-sheet-wrap" id="ios-install-sheet" style="display:none">
+  <div class="ios-sheet-back" id="ios-sheet-back"></div>
+  <div class="ios-sheet">
+    <div class="ios-sheet-grip" aria-hidden="true"></div>
+    <div class="ios-sheet-title">Add True Maple Leaf to your Home Screen</div>
+    <ol class="ios-steps">
+      <li>Tap the <b>Share</b> button <span aria-hidden="true">（⬆️）</span> in Safari's bottom bar.</li>
+      <li>Scroll down and tap <b>Add to Home Screen</b>.</li>
+      <li>Tap <b>Add</b> — done. One tap to keep your streak alive!</li>
+    </ol>
+    <button class="ios-sheet-close" id="ios-sheet-close" type="button">Got it</button>
+    <div class="ios-arrow" aria-hidden="true">▾</div>
+  </div>
+</div>
+
 <!-- Install to home screen (PWA) + service worker -->
 <script>
 (function(){
@@ -2499,16 +2530,26 @@ function restartDrivingQuiz(){
   function isAndroid(){return /android/i.test(navigator.userAgent);}
   // Show only on engagement screens — never over the live quiz answers or the sign-in forms.
   function onAllowedScreen(){ var a=document.querySelector(".screen.active"); var id=a?a.id:""; return id==="screen-home"||id==="screen-result"||id==="screen-leaderboard"; }
-  function updateUI(){ if(!fab)return; fab.style.display=(!standalone()&&!snoozed()&&onAllowedScreen())?"flex":"none"; }
+  // The pill only appears when a click will actually INSTALL: a captured native prompt
+  // (Android/desktop Chrome → one-tap install) or iOS (guided sheet, since Apple gives no
+  // install API). So tapping it always does something — it never dead-ends in raw text.
+  function installableNow(){ return !!deferred || isIOS(); }
+  function updateUI(){ if(!fab)return; fab.style.display=(!standalone()&&!snoozed()&&onAllowedScreen()&&installableNow())?"flex":"none"; }
   window.__installUI=updateUI;  // go() calls this so the pill refreshes on every screen change
+  var iosSheet=document.getElementById("ios-install-sheet"),
+      iosClose=document.getElementById("ios-sheet-close"),
+      iosBack=document.getElementById("ios-sheet-back");
+  function closeIOS(){ if(iosSheet)iosSheet.style.display="none"; }
+  function openIOS(){ if(iosSheet)iosSheet.style.display="flex"; }
   function doInstall(){
-    if(deferred){ deferred.prompt(); deferred.userChoice.then(function(){ deferred=null; updateUI(); }); return; }
-    if(isIOS()){ alert("To add True Maple Leaf to your home screen:\n\n1. Tap the Share button at the bottom of Safari (a square with an up arrow).\n2. Scroll down and tap “Add to Home Screen”.\n3. Tap “Add”. Now it’s one tap away to keep your streak alive!"); return; }
-    if(isAndroid()){ alert("To add True Maple Leaf to your home screen:\n\n1. Tap the ⋮ menu (top-right) in Chrome.\n2. Tap “Add to Home screen” (or “Install app”).\n3. Tap “Add”. One tap away to keep your streak alive!"); return; }
-    alert("To install True Maple Leaf, click the install icon in your browser's address bar — or open the browser menu and choose “Install True Maple Leaf”.");
+    if(deferred){ deferred.prompt(); deferred.userChoice.then(function(){ deferred=null; updateUI(); }); return; } // direct one-tap install
+    if(isIOS()){ openIOS(); return; }  // iOS: guided sheet (no programmatic install on Apple)
+    updateUI();                        // nothing to trigger right now; just refresh
   }
   if(fabAdd)fabAdd.onclick=doInstall;
   if(fabX)fabX.onclick=function(){ snooze(); updateUI(); };
+  if(iosClose)iosClose.onclick=closeIOS;
+  if(iosBack)iosBack.onclick=closeIOS;
   window.addEventListener("beforeinstallprompt",function(e){ e.preventDefault(); deferred=e; updateUI(); });
   window.addEventListener("appinstalled",function(){ snooze(); deferred=null; updateUI(); });
   // One-time migration: lift the OLD permanent dismissal so returning users get the pill back.
