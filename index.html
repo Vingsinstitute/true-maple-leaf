@@ -1774,7 +1774,7 @@ function endGame(){
   var move=Math.floor(Math.random()*6)+1;
   document.getElementById("res-num").textContent=correct;
   document.getElementById("res-rank").innerHTML="#<span>"+rank+"</span>";
-  document.getElementById("res-prov").textContent="in "+(S.city||"Other");
+  document.getElementById("res-prov").textContent="in "+((!S.city||S.city==="Other")?"Canada":S.city);
   document.getElementById("res-move").textContent="↑ Up "+move+" spots this hour";
   document.getElementById("xp-label").textContent=S.score+" pts";
   var tag=document.getElementById("res-tag");
@@ -2044,18 +2044,22 @@ function myTotalXP(){
 }
 function playerStanding(){
   var city=S.city||"Other";
-  var list=lbList(city);
-  // 1) Player is visible on the city board → use their exact position + score.
+  // "Other" has no local community and no demo seeds, so a lone player would show as #1 on an
+  // empty board — looks fake. Rank these players NATIONALLY so the position reflects all players.
+  var national=(!city||city==="Other");
+  var board=national?"National":city;
+  var list=lbList(board);
+  // 1) Player is visible on the board → use their exact position + score.
   for(var i=0;i<list.length;i++){
     if(list[i].you)return {rank:i+1, xp:(parseInt(list[i].score,10)||0)};
   }
-  // 2) Not shown on the board (guest, or below the visible rows): rank against
-  //    the real Supabase players in their city by total_score, fall back to local.
+  // 2) Not shown on the board (guest, or below the visible rows): rank against the real Supabase
+  //    players — in their city, or everyone when national — by total_score, fall back to local.
   var me=null;
   (S.realLB||[]).forEach(function(r){if(S.username&&r.username===S.username)me=r;});
   if(me){
     var ahead=(S.realLB||[]).filter(function(r){
-      return (r.city||"")===city && (r.total_score||0)>(me.total_score||0);}).length;
+      return (national||(r.city||"")===city) && (r.total_score||0)>(me.total_score||0);}).length;
     return {rank:ahead+1, xp:(me.total_score||0)};
   }
   return {rank:(S.lastRank||list.length+1), xp:(S.totalXP||0)};
