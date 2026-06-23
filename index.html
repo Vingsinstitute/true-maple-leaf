@@ -117,6 +117,10 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0 40px
 .nav-actions{display:flex;align-items:center;gap:8px}
 .nav-link{font-size:13px;font-weight:500;color:var(--ink3);padding:6px 14px;border-radius:var(--rx);cursor:pointer;background:none;border:none;font-family:inherit;transition:color .15s,background .15s}
 .nav-link:hover{color:var(--ink);background:var(--paper2)}
+/* Permanent "Install" icon button in the header — always findable, tinted to stand out from plain links */
+.nav-install{display:inline-flex;align-items:center;gap:5px;color:var(--red);font-weight:700;background:rgba(200,16,46,.08);border:1px solid rgba(200,16,46,.22)}
+.nav-install:hover{color:var(--red-dk);background:rgba(200,16,46,.14)}
+@media(max-width:520px){.nav-install .ni-txt{display:none}.nav-install{padding:6px 11px}}
 .nav-cta{font-size:13px;font-weight:600;color:#fff;background:var(--red);padding:8px 20px;border-radius:var(--rx);cursor:pointer;border:none;font-family:inherit;transition:background .15s,transform .12s,box-shadow .15s}
 .nav-cta:hover{background:var(--red-dk);box-shadow:0 4px 14px rgba(200,16,46,.35)}
 .nav-cta:active{transform:scale(.97)}
@@ -670,6 +674,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
       <div class="logo-text">True <span>Maple</span> Leaf</div>
     </div>
     <div class="nav-actions">
+      <button class="nav-link nav-install" onclick="if(window.__installPWA)window.__installPWA()" style="display:none" aria-label="Install True Maple Leaf to your home screen"><span aria-hidden="true">📲</span> <span class="ni-txt">Install</span></button>
       <button class="nav-link" onclick="goLB()">Leaderboard</button>
       <button class="nav-link" id="nav-signout" onclick="signOut()" style="display:none">Sign out</button>
       <button class="nav-cta" id="nav-auth" onclick="go('screen-signin')">Sign in</button>
@@ -1106,6 +1111,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
       <div class="logo-text">True <span>Maple</span> Leaf</div>
     </div>
     <div class="nav-actions">
+      <button class="nav-link nav-install" onclick="if(window.__installPWA)window.__installPWA()" style="display:none" aria-label="Install True Maple Leaf to your home screen"><span aria-hidden="true">📲</span> <span class="ni-txt">Install</span></button>
       <button class="nav-link" onclick="goLB()">Leaderboard</button>
     </div>
   </nav>
@@ -1158,6 +1164,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
       <div class="logo-text">True <span>Maple</span> Leaf</div>
     </div>
     <div class="nav-actions">
+      <button class="nav-link nav-install" onclick="if(window.__installPWA)window.__installPWA()" style="display:none" aria-label="Install True Maple Leaf to your home screen"><span aria-hidden="true">📲</span> <span class="ni-txt">Install</span></button>
       <button class="nav-cta" onclick="playGate()">Play now →</button>
     </div>
   </nav>
@@ -2579,7 +2586,14 @@ function restartDrivingQuiz(){
   function onAllowedScreen(){ var a=document.querySelector(".screen.active"); var id=a?a.id:""; return id==="screen-home"||id==="screen-result"||id==="screen-leaderboard"; }
   // Always visible on the engagement screens (unless already installed or snoozed) so the
   // option is never lost. Tapping it does the most direct thing the platform allows.
-  function updateUI(){ if(!fab)return; fab.style.display=(!standalone()&&!snoozed()&&onAllowedScreen())?"flex":"none"; }
+  function updateUI(){
+    if(fab)fab.style.display=(!standalone()&&!snoozed()&&onAllowedScreen())?"flex":"none";
+    // The header "Install" icon is PERMANENT — shown whenever the app isn't already installed,
+    // regardless of snooze, so the option is never lost. Hidden only once installed (standalone).
+    var hide=standalone();
+    var navBtns=document.querySelectorAll(".nav-install");
+    for(var i=0;i<navBtns.length;i++)navBtns[i].style.display=hide?"none":"inline-flex";
+  }
   window.__installUI=updateUI;  // go() calls this so the pill refreshes on every screen change
   var guide=document.getElementById("install-guide"),
       guideSteps=document.getElementById("guide-steps"),
@@ -2612,6 +2626,7 @@ function restartDrivingQuiz(){
     if(deferred){ deferred.prompt(); deferred.userChoice.then(function(){ deferred=null; updateUI(); }); return; } // direct one-tap install
     openGuide();  // no native prompt available → device-specific guided steps
   }
+  window.__installPWA=doInstall;   // header "Install" icon calls this (native prompt if available, else guided steps)
   if(fabAdd)fabAdd.onclick=doInstall;
   if(fabX)fabX.onclick=function(){ snooze(); updateUI(); };
   if(guideClose)guideClose.onclick=closeGuide;
