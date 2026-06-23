@@ -1889,7 +1889,9 @@ function refreshTotalXP(){
               bds[i].textContent="💎 "+(S.totalXP||0).toLocaleString()+" XP total";
           }
         }catch(e){}
-        // If the share overlay is open, redraw the card with the corrected total.
+        // Redraw the on-screen result card (always) and the share-modal card (if open)
+        // so both show the corrected, full lifetime total.
+        try{var rc=document.getElementById("result-card");if(rc)drawShareCard(rc);}catch(e){}
         try{
           var ov=document.getElementById("share-overlay");
           if(ov&&ov.classList.contains("open"))drawShareCard(document.getElementById("share-canvas"));
@@ -2138,6 +2140,10 @@ function openShare(){
   document.getElementById("m-title").textContent =
     d.tier==="ELITE" ? "Elite card unlocked! 🏆 Flaunt it." : d.tier==="GOLD" ? "Gold card earned! 🥇 Show it off." : "Your card's ready — challenge your friends!";
   document.getElementById("share-overlay").classList.add("open");
+  // Self-heal: always reconcile lifetime XP from the server when the card opens, then
+  // redraw — so the card shows the player's FULL total even if the load-time sync was
+  // slow or missed. (refreshTotalXP redraws the open share-canvas when it returns.)
+  try{refreshTotalXP();}catch(e){}
 }
 
 function shareText(){
