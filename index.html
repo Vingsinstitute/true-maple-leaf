@@ -1756,10 +1756,14 @@ function endGame(){
   if(correct===10)S.score+=500;
   S.persona=personaFor(correct,S.fast||0);
   bumpStreak();                 // advance the real daily streak (once per day)
-  S.totalXP+=S.score;           // accumulate lifetime XP (endowment effect)
+  var _reg=false;try{_reg=!!localStorage.getItem("tml_registered");}catch(e){}
+  // Registered players' lifetime XP is server-authoritative (it accrues once per hour for
+  // anti-spoof) and is reconciled from the server right after submit — so we do NOT inflate it
+  // locally here, or the result card would drift ABOVE the leaderboard. Guests have no server
+  // row yet, so they keep a local running tally until they register.
+  if(!_reg) S.totalXP+=S.score; // accumulate lifetime XP (guests only)
   S.bestScore=Math.max(S.bestScore||0,S.score);   // best score drives leaderboard rank
   saveUser();
-  var _reg=false;try{_reg=!!localStorage.getItem("tml_registered");}catch(e){}
   // Play-first: only registered players post to the public leaderboard. A guest's round is
   // held (flagged) and submitted the moment they sign up at the result screen.
   if(_reg){submitScore();try{localStorage.removeItem("tml_pending_score");}catch(e){}}
@@ -1981,7 +1985,12 @@ function restoreStreak(){
 // Never lowers the local tally (protects the just-played round before it syncs).
 function reconcileTotalXP(serverTotal){
   var srv=parseInt(serverTotal,10);
-  if(!isNaN(srv))S.totalXP=Math.max(S.totalXP||0,srv);
+  if(!isNaN(srv)){
+    var reg=false;try{reg=!!localStorage.getItem("tml_registered");}catch(e){}
+    // Registered: trust the server's authoritative total EXACTLY so the share card always
+    // matches the leaderboard (even if a local same-hour tally ran ahead). Guests: keep the max.
+    S.totalXP = reg ? srv : Math.max(S.totalXP||0, srv);
+  }
   try{updateHomeStreak();}catch(e){}
 }
 function lbList(f){
