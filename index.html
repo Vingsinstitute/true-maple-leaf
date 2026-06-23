@@ -1139,7 +1139,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
       <div class="rank-block">
         <div class="rank-label">Your rank</div>
         <div class="rank-num" id="res-rank">#<span>—</span></div>
-        <div class="rank-province" id="res-prov">in Toronto</div>
+        <div class="rank-province" id="res-prov">in Canada</div>
         <div class="rank-move" id="res-move">↑ Up 3 spots this hour</div>
       </div>
       <div class="save-streak" id="save-streak" style="display:none">
@@ -1205,7 +1205,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
       <div class="lb-av" style="background:var(--red-lt);color:var(--red);border:2px solid rgba(200,16,46,.25)" id="you-av">ME</div>
       <div class="lb-details">
         <div class="lb-name" style="color:var(--red)" id="you-name">YourName</div>
-        <div class="lb-meta" id="you-meta">Toronto · 🔥 0 day streak</div>
+        <div class="lb-meta" id="you-meta">Other · 🔥 0 day streak</div>
       </div>
       <div class="lb-score" id="you-rank">#—</div>
     </div>
@@ -1268,7 +1268,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
 
 <script>
 var S = {
-  username:"CanadaFan", city:"Toronto", streak:0, totalXP:0, lastPlay:null,
+  username:"CanadaFan", city:"Other", streak:0, totalXP:0, lastPlay:null,
   score:0, qIndex:0, sStreak:0, answered:false,
   timerVal:30, timerInt:null, answers:[], questions:[]
 };
@@ -1414,12 +1414,12 @@ function go(id){document.querySelectorAll(".screen").forEach(function(s){s.class
 function signOut(){
   try{ if(sbAuth&&sbAuth.auth&&sbAuth.auth.signOut) sbAuth.auth.signOut(); }catch(e){}
   try{['tml_user','tml_registered','tml_email','tml_pending_score','tml_claim','tml_oauth_pending'].forEach(function(k){localStorage.removeItem(k);});}catch(e){}
-  S.username="CanadaFan";S.city="Toronto";S.streak=0;S.totalXP=0;S.bestScore=0;S.lastPlay=null;S.realLB=[];
+  S.username="CanadaFan";S.city="Other";S.streak=0;S.totalXP=0;S.bestScore=0;S.lastPlay=null;S.realLB=[];
   var na=document.getElementById("nav-auth");if(na){na.textContent="Sign in";na.onclick=function(){go("screen-signin");};}
   var so=document.getElementById("nav-signout");if(so)so.style.display="none";
   var yn=document.getElementById("you-name");if(yn)yn.textContent="YourName";
   var ya=document.getElementById("you-av");if(ya)ya.textContent="ME";
-  var ym=document.getElementById("you-meta");if(ym)ym.textContent="Toronto · 🔥 0 day streak";
+  var ym=document.getElementById("you-meta");if(ym)ym.textContent="Other · 🔥 0 day streak";
   var yr=document.getElementById("you-rank");if(yr)yr.textContent="#—";
   try{updateHomeStreak();}catch(e){}
   go("screen-home");
@@ -1557,6 +1557,42 @@ function toggleTableQR(){
     if(btn){btn.setAttribute("aria-expanded","false");btn.textContent="Show table QR";}
   }
 }
+// ── Question variety + de-duplication ──────────────────────────────
+// The hourly pool now holds ~30 questions. Each play draws a fresh 10 with a
+// balanced difficulty mix (3 easy / 4 medium / 3 hard) while avoiding questions
+// the player has seen recently — so replays in the same hour don't repeat.
+function tmlSeen(){ try{return JSON.parse(localStorage.getItem("tml_seenQ")||"[]");}catch(e){return [];} }
+function tmlRecordSeen(texts){
+  try{
+    var merged=(texts||[]).concat(tmlSeen()), out=[], seen={};
+    for(var i=0;i<merged.length;i++){var k=merged[i];if(k&&!seen[k]){seen[k]=1;out.push(k);}}
+    localStorage.setItem("tml_seenQ",JSON.stringify(out.slice(0,40)));
+  }catch(e){}
+}
+function pickFreshSet(pool,n){
+  n=n||10;
+  var seenMap={};tmlSeen().forEach(function(t){seenMap[t]=1;});
+  // De-duplicate the pool by question text (belt-and-suspenders).
+  var uniq=[],uq={};
+  (pool||[]).forEach(function(q){var t=(q&&q.q)||"";if(t&&!uq[t]){uq[t]=1;uniq.push(q);}});
+  var targets={e:3,m:4,h:3}, buckets={e:[],m:[],h:[]};
+  uniq.forEach(function(q){var d=(q.d==="e"||q.d==="m"||q.d==="h")?q.d:"m";buckets[d].push(q);});
+  var chosen=[];
+  ["e","m","h"].forEach(function(d){
+    var unseen=shuffle(buckets[d].filter(function(q){return !seenMap[q.q];}));
+    var seenB=shuffle(buckets[d].filter(function(q){return seenMap[q.q];}));
+    chosen=chosen.concat(unseen.concat(seenB).slice(0,targets[d]));
+  });
+  if(chosen.length<n){ // top up if a difficulty bucket was short
+    var cm={};chosen.forEach(function(q){cm[q.q]=1;});
+    var unseenRest=shuffle(uniq.filter(function(q){return !cm[q.q]&&!seenMap[q.q];}));
+    var seenRest=shuffle(uniq.filter(function(q){return !cm[q.q]&&seenMap[q.q];}));
+    chosen=chosen.concat(unseenRest.concat(seenRest).slice(0,n-chosen.length));
+  }
+  chosen=shuffle(chosen).slice(0,n);
+  tmlRecordSeen(chosen.map(function(q){return q.q;}));
+  return chosen;
+}
 function startGame(){
   S.score=0;S.qIndex=0;S.sStreak=0;S.answers=[];S.fast=0;
   try{var _a=audioCtx();if(_a&&_a.state==="suspended")_a.resume();}catch(e){}
@@ -1566,7 +1602,7 @@ function startGame(){
   go("screen-game");
   fetchActiveQuestions().then(function(liveQ){
     if(liveQ&&liveQ.length>=10){
-      S.questions=shuffle(liveQ).slice(0,10);
+      S.questions=pickFreshSet(liveQ,10);
       if(fresh&&lastFetchTime){
         var mins=Math.round((Date.now()-lastFetchTime.getTime())/60000);
         fresh.textContent="🔄 This hour's set · "+(mins<1?"just now":"refreshed "+mins+"m ago");
@@ -1734,7 +1770,7 @@ function endGame(){
   var move=Math.floor(Math.random()*6)+1;
   document.getElementById("res-num").textContent=correct;
   document.getElementById("res-rank").innerHTML="#<span>"+rank+"</span>";
-  document.getElementById("res-prov").textContent="in "+(S.city||"Toronto");
+  document.getElementById("res-prov").textContent="in "+(S.city||"Other");
   document.getElementById("res-move").textContent="↑ Up "+move+" spots this hour";
   document.getElementById("xp-label").textContent=S.score+" pts";
   var tag=document.getElementById("res-tag");
@@ -1755,7 +1791,7 @@ function endGame(){
     : correct>=6 ? "Solid card — challenge your friends to top it."
     : "Think your friends can do better? Send them your card and find out.";
   document.getElementById("you-rank").textContent="#"+rank;
-  document.getElementById("you-meta").textContent=(S.city||"Toronto")+" · 🔥 "+S.streak+" day streak";
+  document.getElementById("you-meta").textContent=(S.city||"Other")+" · 🔥 "+S.streak+" day streak";
   go("screen-result");
   try{drawShareCard(document.getElementById("result-card"));}catch(e){}
   if(correct>=8)playSound("win");
@@ -1872,7 +1908,7 @@ function submitScore(){
       var sv=parseInt(srv,10);
       if(!isNaN(sv)){
         S.streak=sv;S.lastPlay=todayKey();saveUser();
-        var ym=document.getElementById("you-meta");if(ym)ym.textContent=(S.city||"Toronto")+" · 🔥 "+S.streak+" day streak";
+        var ym=document.getElementById("you-meta");if(ym)ym.textContent=(S.city||"Other")+" · 🔥 "+S.streak+" day streak";
         try{updateHomeStreak();}catch(e){}
       }
       // Pull the player's freshly-committed lifetime total back from the server so the
@@ -1998,7 +2034,7 @@ function myTotalXP(){
   return Math.max((me?me.total_score:0)||0, S.totalXP||0);
 }
 function playerStanding(){
-  var city=S.city||"Toronto";
+  var city=S.city||"Other";
   var list=lbList(city);
   // 1) Player is visible on the city board → use their exact position + score.
   for(var i=0;i<list.length;i++){
@@ -2033,7 +2069,7 @@ function cardData(){
   var stats=[["ACC",ACC],["SPD",SPD],["STK",STK],["RNK",RNK],["XP",XP],["IQ",IQ]];
   var overall=clamp((ACC+SPD+STK+RNK+XP+IQ)/6,40,99);   // OVERALL = average of the six (FIFA logic)
   var tier=overall>=85?"ELITE":overall>=70?"GOLD":"RISING";
-  return {correct:correct,streak:streak,rank:rank,xpTotal:xp,per:per,overall:overall,stats:stats,tier:tier,city:S.city||"Toronto"};
+  return {correct:correct,streak:streak,rank:rank,xpTotal:xp,per:per,overall:overall,stats:stats,tier:tier,city:S.city||"Other"};
 }
 
 function drawQR(ctx,x,y,size,text){
