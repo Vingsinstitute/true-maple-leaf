@@ -9,6 +9,13 @@
 <meta name="description" content="True Maple Leaf — the Canadian trivia game made in Canada. 10 fresh questions every hour on Canada, pop culture and football. Build a streak, climb your city leaderboard. Free to play, no sign-up needed to start.">
 <meta name="theme-color" content="#c8102e">
 <link rel="manifest" href="/manifest.webmanifest">
+<script>
+// EARLY capture of Chrome's install prompt. Chrome can fire beforeinstallprompt before the
+// main install script (at the end of <body>) runs — if we don't listen here in <head>, the
+// event is lost and the Install button can only show manual instructions. Stash it for later.
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();window.__bipEvent=e;if(window.__onBip)window.__onBip(e);});
+window.addEventListener('appinstalled',function(){window.__bipEvent=null;if(window.__onAppInstalled)window.__onAppInstalled();});
+</script>
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -2574,7 +2581,8 @@ function restartDrivingQuiz(){
   var fab=document.getElementById("install-fab"),
       fabAdd=document.getElementById("install-fab-add"),
       fabX=document.getElementById("install-fab-x");
-  var deferred=null;
+  // Initialise from the early <head> capture in case Chrome fired the prompt before this ran.
+  var deferred=window.__bipEvent||null;
   // Snooze, NOT a permanent kill: after the user hides it, the pill returns in 14 days.
   var SNOOZE_MS=14*24*60*60*1000;
   function snoozed(){ try{ var u=parseInt(localStorage.getItem("tml_pin_snooze")||"0",10); return u&&Date.now()<u; }catch(e){return false;} }
@@ -2631,6 +2639,9 @@ function restartDrivingQuiz(){
   if(fabX)fabX.onclick=function(){ snooze(); updateUI(); };
   if(guideClose)guideClose.onclick=closeGuide;
   if(guideBack)guideBack.onclick=closeGuide;
+  // If the early <head> listener catches the prompt after this script has run, pick it up.
+  window.__onBip=function(e){ deferred=e; updateUI(); };
+  window.__onAppInstalled=function(){ snooze(); deferred=null; updateUI(); };
   window.addEventListener("beforeinstallprompt",function(e){ e.preventDefault(); deferred=e; updateUI(); });
   window.addEventListener("appinstalled",function(){ snooze(); deferred=null; updateUI(); });
   // One-time migration: lift the OLD permanent dismissal so returning users get the pill back.
