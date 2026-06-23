@@ -1861,14 +1861,47 @@ function submitScore(){
         var ym=document.getElementById("you-meta");if(ym)ym.textContent=(S.city||"Toronto")+" · 🔥 "+S.streak+" day streak";
         try{updateHomeStreak();}catch(e){}
       }
+      // Pull the player's freshly-committed lifetime total back from the server so the
+      // result badge + share card show the FULL total XP (not just the local tally).
+      refreshTotalXP();
     }).catch(function(){});
   }catch(e){}
+}
+// Fetch the player's authoritative lifetime total_score and reconcile it into local state,
+// then refresh anything on screen that shows lifetime XP (result badge + open share card),
+// guaranteeing the share card == leaderboard.
+function refreshTotalXP(){
+  if(!SUPABASE_URL||!S.username)return;
+  fetch(SUPABASE_URL+"/rest/v1/leaderboard?select=total_score&username=eq."+encodeURIComponent(S.username),
+    {headers:{apikey:SUPABASE_ANON_KEY,Authorization:"Bearer "+SUPABASE_ANON_KEY}})
+    .then(function(r){return r.ok?r.json():[];})
+    .then(function(rows){
+      if(rows&&rows[0]){
+        reconcileTotalXP(rows[0].total_score);
+        saveUser();
+        // Refresh the "XP total" badge on the result screen, if present.
+        try{
+          var bd=document.getElementById("badges");
+          if(bd){var hit=bd.querySelector(".badge");/* badges already rendered with old total */}
+          var bds=bd?bd.querySelectorAll(".badge"):[];
+          for(var i=0;i<bds.length;i++){
+            if(/XP total/.test(bds[i].textContent))
+              bds[i].textContent="💎 "+(S.totalXP||0).toLocaleString()+" XP total";
+          }
+        }catch(e){}
+        // If the share overlay is open, redraw the card with the corrected total.
+        try{
+          var ov=document.getElementById("share-overlay");
+          if(ov&&ov.classList.contains("open"))drawShareCard(document.getElementById("share-canvas"));
+        }catch(e){}
+      }
+    }).catch(function(){});
 }
 // Pull the authoritative streak (and last-play date) back from the server for a known
 // player — so a returning user sees their real streak even on a fresh device/browser.
 function restoreStreak(){
   if(!SUPABASE_URL||!S.username)return;
-  fetch(SUPABASE_URL+"/rest/v1/leaderboard?select=streak,last_play_date&username=eq."+encodeURIComponent(S.username),
+  fetch(SUPABASE_URL+"/rest/v1/leaderboard?select=streak,last_play_date,total_score&username=eq."+encodeURIComponent(S.username),
     {headers:{apikey:SUPABASE_ANON_KEY,Authorization:"Bearer "+SUPABASE_ANON_KEY}})
     .then(function(r){return r.ok?r.json():[];})
     .then(function(rows){
@@ -1882,10 +1915,22 @@ function restoreStreak(){
             if(diff>1.5)sv=0;
             S.lastPlay=rows[0].last_play_date;
           }
-          S.streak=sv;saveUser();paintUser();
+          S.streak=sv;
         }
+        // The server holds the authoritative lifetime XP. On a returning user / new device /
+        // cleared storage, local S.totalXP is low or 0 — pull the real total so the share
+        // card and leaderboard always show the player's FULL lifetime XP.
+        reconcileTotalXP(rows[0].total_score);
+        saveUser();paintUser();
       }
     }).catch(function(){});
+}
+// Reconcile local lifetime XP up to the server's authoritative total_score.
+// Never lowers the local tally (protects the just-played round before it syncs).
+function reconcileTotalXP(serverTotal){
+  var srv=parseInt(serverTotal,10);
+  if(!isNaN(srv))S.totalXP=Math.max(S.totalXP||0,srv);
+  try{updateHomeStreak();}catch(e){}
 }
 function lbList(f){
   var reg=false;try{reg=!!localStorage.getItem("tml_registered");}catch(e){}
