@@ -210,10 +210,12 @@ h1.hero-headline em{font-style:normal;color:var(--red)}
 .rc-badge svg{width:17px;height:17px}
 .rc-tier{position:absolute;top:13px;right:16px;background:#7a5e16;color:#fff;font-size:12px;font-weight:800;letter-spacing:2px;border-radius:16px;padding:5px 13px}
 .rc-num{font-size:58px;font-weight:900;line-height:.9;letter-spacing:-.03em;margin-top:20px}
-.rc-code{font-size:22px;font-weight:800;margin-top:3px}
+.rc-code{font-size:12px;font-weight:800;letter-spacing:2px;margin-top:6px;opacity:.66}
 .rc-rule{width:84px;height:2px;background:rgba(74,50,8,.4);margin:8px 0}
 .rc-city{font-size:15px;font-weight:700}
-.rc-emoji{position:absolute;top:74px;right:26px;font-size:92px;line-height:1;z-index:1}
+.rc-emoji{position:absolute;top:52px;right:16px;font-size:90px;line-height:1;z-index:1;width:128px;height:128px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:radial-gradient(circle at 34% 28%,#ffffff 0%,#f6e6b0 42%,#dcb45c 78%,#bb8c2c 100%);box-shadow:0 14px 26px rgba(120,85,15,.38),inset 0 3px 8px rgba(255,255,255,.78),inset 0 -10px 18px rgba(120,80,12,.20);text-shadow:0 6px 10px rgba(60,40,6,.34);animation:rcFloat 4.6s ease-in-out infinite;will-change:transform}
+@keyframes rcFloat{0%,100%{transform:translateY(0) rotate(-2.5deg)}50%{transform:translateY(-7px) rotate(2.5deg)}}
+@media(prefers-reduced-motion:reduce){.rc-emoji{animation:none}}
 .rc-persona{text-align:center;font-size:12px;font-weight:700;letter-spacing:3px;color:rgba(61,42,6,.62);margin-top:16px}
 .rc-handle{text-align:center;font-size:30px;font-weight:800;letter-spacing:-.01em;margin-top:3px}
 .rc-hr{height:2px;width:62%;margin:9px auto 0;background:linear-gradient(90deg,rgba(74,50,8,0),rgba(74,50,8,.5),rgba(74,50,8,0))}
@@ -389,8 +391,11 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
 .res-col-b{align-items:stretch;justify-content:center}
 .res-col-b .btn-outline{width:100%}
 @media(min-width:860px){.result-page{grid-template-columns:1.05fr 1fr;gap:44px;align-items:center}}
-.result-card{width:100%;max-width:262px;height:auto;display:block;margin:14px auto 16px;border-radius:18px;box-shadow:0 14px 34px rgba(140,100,20,.32);cursor:pointer;transition:transform .15s}
-.result-card:hover{transform:translateY(-3px)}
+.result-card-live{display:flex;justify-content:center;margin:14px auto 16px;animation:cardFloat 5s ease-in-out infinite;will-change:transform}
+@keyframes cardFloat{0%,100%{transform:translateY(0) rotate(-.5deg)}50%{transform:translateY(-7px) rotate(.5deg)}}
+@media(prefers-reduced-motion:reduce){.result-card-live{animation:none}}
+.result-card{width:100%;max-width:262px;height:auto;display:block;border-radius:18px;box-shadow:0 18px 40px rgba(140,100,20,.36);cursor:pointer;transition:transform .15s,box-shadow .15s}
+.result-card:hover{transform:translateY(-4px) scale(1.015);box-shadow:0 24px 52px rgba(140,100,20,.42)}
 .result-top-tag{font-size:11px;font-weight:700;color:var(--gold-dk);letter-spacing:.12em;text-transform:uppercase;margin-bottom:18px}
 .result-maple{font-size:72px;animation:bigPop .7s cubic-bezier(.34,1.56,.64,1) forwards;display:block;margin-bottom:6px}
 @keyframes bigPop{from{transform:scale(0) rotate(-15deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
@@ -475,7 +480,10 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
 .modal-em{font-size:40px;margin-bottom:14px}
 .modal-title{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-bottom:8px}
 .modal-sub{font-size:14px;color:var(--ink3);line-height:1.6;margin-bottom:24px}
-#share-canvas{width:100%;border-radius:var(--rl);border:1px solid var(--border);margin-bottom:16px;display:block}
+#share-canvas{width:auto;max-width:100%;max-height:58vh;border-radius:var(--rl);border:1px solid var(--border);margin:0 auto 16px;display:block}
+.fmt-toggle{display:flex;gap:8px;justify-content:center;margin:0 0 12px}
+.fmt-btn{padding:8px 16px;border-radius:999px;border:1px solid var(--border);background:var(--paper);color:var(--ink3);font:600 13px/1 Inter,sans-serif;cursor:pointer;transition:all .15s}
+.fmt-btn.on{background:var(--ink);color:#fff;border-color:var(--ink)}
 .share-social{display:flex;gap:8px;justify-content:center;margin-bottom:14px}
 .share-ic{width:44px;height:44px;border-radius:50%;border:1px solid var(--border);background:var(--paper);font-size:18px;font-weight:700;cursor:pointer;font-family:inherit;color:var(--ink);transition:transform .12s,background .15s,border-color .15s;display:flex;align-items:center;justify-content:center}
 .share-ic:hover{transform:translateY(-2px)}
@@ -721,7 +729,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
             <span class="rc-badge"><svg viewBox="0 0 64 64"><path d="M32 7 C33.4 26 38 31 57 32 C38 33 33.4 38 32 57 C30.6 38 26 33 7 32 C26 31 30.6 26 32 7 Z" fill="#f0cf73"/></svg></span>
             <span class="rc-tier elite">ELITE</span>
             <div class="rc-num">97</div>
-            <div class="rc-code">MSE</div>
+            <div class="rc-code">MAPLE SCORE</div>
             <div class="rc-rule"></div>
             <div class="rc-city">Calgary</div>
             <div class="rc-emoji">🫎</div>
@@ -754,7 +762,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
             <span class="rc-badge"><svg viewBox="0 0 64 64"><path d="M32 7 C33.4 26 38 31 57 32 C38 33 33.4 38 32 57 C30.6 38 26 33 7 32 C26 31 30.6 26 32 7 Z" fill="#f0cf73"/></svg></span>
             <span class="rc-tier">GOLD</span>
             <div class="rc-num">84</div>
-            <div class="rc-code">PLR</div>
+            <div class="rc-code">MAPLE SCORE</div>
             <div class="rc-rule"></div>
             <div class="rc-city">Ottawa</div>
             <div class="rc-emoji">🐻‍❄️</div>
@@ -1130,7 +1138,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
         <span class="result-denom">/10</span>
       </div>
       <div class="result-sub">questions correct</div>
-      <canvas id="result-card" class="result-card" width="540" height="760" onclick="openShare()" title="Tap to share your card" aria-label="Your shareable result card"></canvas>
+      <div class="result-card-live"><canvas id="result-card" class="result-card" width="540" height="760" onclick="openShare()" title="Tap to share your card" aria-label="Your shareable result card"></canvas></div>
       <div class="share-nudge" id="share-nudge">Think your friends can beat this? Send them your card.</div>
       <button class="btn-share-big" onclick="openShare()">Share my card — show it off 🍁</button>
       <div class="share-micro" style="font-size:12.5px;color:var(--ink3);text-align:center;margin:2px 0 0">Your own gold card · one tap · about 5 seconds</div>
@@ -1238,6 +1246,10 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
     <div class="modal-em">🏆</div>
     <div class="modal-title" id="m-title">Great score!</div>
     <div class="modal-sub">This is <strong>your</strong> card — your rating, your rank, your streak. Post it and dare your friends and city to beat it. Bragging rights only, no prizes.</div>
+    <div class="fmt-toggle">
+      <button id="fmt-square" class="fmt-btn on" onclick="setShareFormat('square')">▢ Card</button>
+      <button id="fmt-story" class="fmt-btn" onclick="setShareFormat('story')">▭ Story 9:16</button>
+    </div>
     <canvas id="share-canvas" width="480" height="360"></canvas>
     <button class="btn-main" style="margin-bottom:9px" onclick="shareCard()"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px;margin-right:6px" aria-hidden="true"><path d="M12 16V4m0 0 4 4m-4-4-4 4"/><path d="M5 14v3a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3v-3"/></svg>Share my card</button>
     <div class="share-social">
@@ -1948,7 +1960,7 @@ function refreshTotalXP(){
         try{var rc=document.getElementById("result-card");if(rc)drawShareCard(rc);}catch(e){}
         try{
           var ov=document.getElementById("share-overlay");
-          if(ov&&ov.classList.contains("open"))drawShareCard(document.getElementById("share-canvas"));
+          if(ov&&ov.classList.contains("open"))renderShareCanvas();
         }catch(e){}
       }
     }).catch(function(){});
@@ -2065,23 +2077,26 @@ function playerStanding(){
   return {rank:(S.lastRank||list.length+1), xp:(S.totalXP||0)};
 }
 
-// Derive a FIFA-style OVERALL rating + 6 stats from the player's data.
-// Scaling is intentionally flattering (floors ~40-60) — people share high numbers, not low ones.
+// ── MAPLE SCORE (0–100) — True Maple Leaf's own scoring formula ──
+// Additive and "today-first": your quiz result is the main driver, with quick
+// answers, your daily streak, and your city rank added as bonuses on top.
+//   Quiz    today's correct answers × 8     → up to 80
+//   Speed   quick (bonus) answers × 2        → up to 8
+//   Streak  1 point per day kept             → up to 8
+//   Rank    city-rank bonus (#1 = 8)         → up to 8
+// Summed, then bounded 25–100 so every shared card still looks presentable.
 function cardData(){
   var correct=S.answers.filter(Boolean).length;
   var _st=playerStanding();
   var fast=S.fast||0, streak=S.streak||0, xp=myTotalXP(), rank=_st.rank||18;
   var per=S.persona||personaFor(correct,fast);
-  var clamp=function(v,lo,hi){return Math.max(lo,Math.min(hi,Math.round(v)));};
-  var ACC=clamp(correct*10,35,99);      // accuracy — correct answers this round
-  var SPD=clamp(45+fast*10,40,99);      // speed — number of fast (bonus) answers
-  var STK=clamp(45+streak*6,40,99);     // streak — consecutive days played
-  var RNK=clamp(101-rank,40,99);        // rank — position in your city (lower # = higher)
-  var XP =clamp(48+xp/120,45,99);       // experience — lifetime points
-  var IQ =clamp((ACC+XP+RNK)/3,40,99);  // Canada IQ — blend of accuracy, experience, rank
-  var stats=[["ACC",ACC],["SPD",SPD],["STK",STK],["RNK",RNK],["XP",XP],["IQ",IQ]];
-  var overall=clamp((ACC+SPD+STK+RNK+XP+IQ)/6,40,99);   // OVERALL = average of the six (FIFA logic)
-  var tier=overall>=85?"ELITE":overall>=70?"GOLD":"RISING";
+  var quiz  = correct*8;                                  // up to 80
+  var speed = Math.min(fast*2, 8);                        // up to 8
+  var loyal = Math.min(streak, 8);                        // up to 8
+  var local = Math.max(0, Math.round(8-(rank-1)*0.35));   // up to 8 (rank #1 = 8)
+  var overall = Math.max(25, Math.min(100, Math.round(quiz+speed+loyal+local)));
+  var stats=[["Quiz",quiz],["Speed",speed],["Streak",loyal],["Rank",local]]; // breakdown (not drawn on the card)
+  var tier=overall>=85?"ELITE":overall>=60?"GOLD":"RISING";
   return {correct:correct,streak:streak,rank:rank,xpTotal:xp,per:per,overall:overall,stats:stats,tier:tier,city:S.city||"Other"};
 }
 
@@ -2112,6 +2127,47 @@ function drawLogoBadge(ctx,x,y,size){
 }
 // 4-point sparkle used to mark rare (Elite) cards
 function spark(ctx,x,y,r){ctx.beginPath();ctx.moveTo(x,y-r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.quadraticCurveTo(x,y,x,y+r);ctx.quadraticCurveTo(x,y,x-r,y);ctx.quadraticCurveTo(x,y,x,y-r);ctx.closePath();ctx.fill();}
+// Per-persona medallion tint [highlight, mid, edge]
+var PERSONA_TINT={
+  MSE:["#f3ddcd","#d6a98c","#a4674a"], OWL:["#f1ead8","#cfc097","#998a5c"],
+  CHE:["#fce9c2","#eac76f","#c39733"], PLR:["#eaf7ff","#bfe1f4","#7fb2d4"],
+  GRZ:["#f4e3c8","#d8b483","#a4763c"], BVR:["#f7e6c4","#e2bd7c","#b3863a"],
+  FOX:["#ffe7d0","#f6b178","#d57e3d"], GSE:["#eef1f5","#c8d0d9","#959fab"],
+  RAC:["#eff1f4","#c6ccd4","#8f95a1"], LON:["#e8eef0","#bdcccd","#88a0a1"],
+  _:["#fbf2d6","#ecd595","#c8a23e"]
+};
+// Draw a glossy 3D medallion with the persona animal sitting on it (lit sphere + grounded shadow + depth)
+function drawPersona3D(ctx,cx,cy,R,emoji,code){
+  var T=PERSONA_TINT[code]||PERSONA_TINT._;
+  ctx.save();
+  // grounded contact shadow
+  var sh=ctx.createRadialGradient(cx,cy+R*0.96,2,cx,cy+R*0.98,R*0.96);
+  sh.addColorStop(0,"rgba(60,42,6,.34)");sh.addColorStop(1,"rgba(60,42,6,0)");
+  ctx.fillStyle=sh;ctx.beginPath();ctx.ellipse(cx,cy+R*0.98,R*0.82,R*0.22,0,0,Math.PI*2);ctx.fill();
+  // medallion sphere (light from top-left)
+  var g=ctx.createRadialGradient(cx-R*0.36,cy-R*0.42,R*0.12,cx,cy,R*1.06);
+  g.addColorStop(0,"#ffffff");g.addColorStop(.22,T[0]);g.addColorStop(.62,T[1]);g.addColorStop(1,T[2]);
+  ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.fillStyle=g;
+  ctx.shadowColor="rgba(80,55,10,.30)";ctx.shadowBlur=R*0.34;ctx.shadowOffsetY=R*0.12;ctx.fill();
+  ctx.shadowColor="transparent";ctx.shadowBlur=0;ctx.shadowOffsetY=0;
+  // rim: bright top-left, soft dark bottom-right
+  ctx.lineWidth=R*0.05;ctx.strokeStyle="rgba(255,255,255,.6)";
+  ctx.beginPath();ctx.arc(cx,cy,R*0.97,Math.PI*1.05,Math.PI*1.95);ctx.stroke();
+  ctx.strokeStyle="rgba(90,60,12,.20)";
+  ctx.beginPath();ctx.arc(cx,cy,R*0.97,Math.PI*0.08,Math.PI*0.92);ctx.stroke();
+  // top gloss highlight (clipped to sphere)
+  ctx.save();ctx.beginPath();ctx.arc(cx,cy,R*0.96,0,Math.PI*2);ctx.clip();
+  var gl=ctx.createLinearGradient(0,cy-R,0,cy+R*0.1);
+  gl.addColorStop(0,"rgba(255,255,255,.62)");gl.addColorStop(1,"rgba(255,255,255,0)");
+  ctx.fillStyle=gl;ctx.beginPath();ctx.ellipse(cx,cy-R*0.34,R*0.66,R*0.42,0,0,Math.PI*2);ctx.fill();
+  ctx.restore();
+  // the animal — large & cute, with depth shadow so it lifts off the medallion
+  ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.font=(R*1.62)+'px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",serif';
+  ctx.shadowColor="rgba(45,30,5,.40)";ctx.shadowBlur=R*0.18;ctx.shadowOffsetY=R*0.12;
+  ctx.fillText(emoji,cx,cy+R*0.02);
+  ctx.restore();
+}
 function drawShareCard(canvas){
   if(!canvas)return null;
   var ctx=canvas.getContext("2d");
@@ -2120,7 +2176,7 @@ function drawShareCard(canvas){
   canvas.width=W*2;canvas.height=H*2;       // hi-res render for crisp social images
   ctx.setTransform(2,0,0,2,0,0);
   ctx.clearRect(0,0,W,H);
-  var INK="#3d2a06", INKsoft="rgba(61,42,6,.62)";
+  var INK="#3d2a06", INKsoft="rgba(61,42,6,.82)";  // higher-contrast secondary text (legible at thumbnail size)
 
   // ── card body: gold luxe gradient ──
   var g=ctx.createLinearGradient(0,0,0,H);
@@ -2132,6 +2188,17 @@ function drawShareCard(canvas){
   // inner hairline frame
   rr(ctx,30,30,W-60,H-60,32);ctx.lineWidth=2;ctx.strokeStyle="rgba(74,50,8,.30)";ctx.stroke();
   drawLogoBadge(ctx,W/2-16,28,32);
+
+  // ── TODAY date stamp (freshness / FOMO — proves the card is current) ──
+  (function(){
+    var MM=["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
+    var dt=new Date(), ds="TODAY · "+MM[dt.getMonth()]+" "+dt.getDate();
+    ctx.save();ctx.font="800 14px Inter,sans-serif";ctx.letterSpacing="2px";
+    var tw=ctx.measureText(ds).width+34, px=W/2-tw/2, py=70;
+    rr(ctx,px,py,tw,26,13);ctx.fillStyle="rgba(74,50,8,.13)";ctx.fill();
+    ctx.fillStyle=INK;ctx.textAlign="center";ctx.fillText(ds,W/2,py+18);
+    ctx.restore();ctx.textAlign="left";
+  })();
 
   // ── rare (Elite) foil treatment: holographic sheen + sparkles ──
   if(d.tier==="ELITE"){
@@ -2155,12 +2222,13 @@ function drawShareCard(canvas){
   // ── rating block (top-left) ──
   ctx.textAlign="left";ctx.fillStyle=INK;
   ctx.font="900 94px Inter,sans-serif";ctx.fillText(String(d.overall),52,152);
-  ctx.font="800 30px Inter,sans-serif";ctx.fillText(d.per.c,56,192);
+  ctx.save();ctx.font="800 15px Inter,sans-serif";ctx.letterSpacing="2px";ctx.fillStyle=INKsoft;ctx.fillText("MAPLE SCORE",56,188);ctx.restore();
   ctx.strokeStyle="rgba(74,50,8,.4)";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(56,208);ctx.lineTo(150,208);ctx.stroke();
   ctx.fillStyle=INK;ctx.font="700 19px Inter,sans-serif";ctx.fillText(d.city,56,244);
 
-  // ── portrait (persona emoji) ──
-  ctx.textAlign="center";ctx.font="168px serif";ctx.fillText(d.per.e,W/2+72,302);
+  // ── portrait: 3D persona medallion (lit sphere + grounded animal) ──
+  // Same spot as the old flat emoji; bigger, cuter medallion (layout untouched).
+  drawPersona3D(ctx, 344, 232, 104, d.per.e, (d.per.c||"_"));
 
   // ── persona title + player name ──
   ctx.fillStyle=INKsoft;ctx.font="700 17px Inter,sans-serif";
@@ -2181,7 +2249,7 @@ function drawShareCard(canvas){
   ];
   var ry=502;
   for(var i=0;i<rows.length;i++){
-    ctx.textAlign="left";ctx.fillStyle=INKsoft;ctx.font="600 17px Inter,sans-serif";ctx.fillText(rows[i][0],62,ry);
+    ctx.textAlign="left";ctx.fillStyle=INKsoft;ctx.font="700 17px Inter,sans-serif";ctx.fillText(rows[i][0],62,ry);
     ctx.textAlign="right";ctx.fillStyle=INK;ctx.font="800 19px Inter,sans-serif";ctx.fillText(rows[i][1],W-62,ry);
     if(i<rows.length-1){ctx.strokeStyle="rgba(74,50,8,.16)";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(62,ry+14);ctx.lineTo(W-62,ry+14);ctx.stroke();}
     ry+=42;
@@ -2191,14 +2259,63 @@ function drawShareCard(canvas){
   drawQR(ctx,W-62-78,648,78,"https://truemapleleaf.com");
   ctx.textAlign="left";ctx.fillStyle=INK;ctx.font="800 18px Inter,sans-serif";
   ctx.save();ctx.letterSpacing="2px";ctx.fillText("TRUE MAPLE LEAF",62,684);ctx.restore();
-  ctx.fillStyle=INKsoft;ctx.font="600 13px Inter,sans-serif";
+  ctx.fillStyle=INKsoft;ctx.font="700 13px Inter,sans-serif";
   ctx.fillText("Scan to play free",62,706);
   ctx.fillText("truemapleleaf.com",62,726);
   ctx.textAlign="left";
   return d;
 }
+
+// ── Stories 9:16 variant (1080×1920): the gold card on a branded full-bleed bg ──
+// Reuses drawShareCard (so it inherits the 3D animal, date stamp, contrast). Renders
+// into whatever canvas is passed — we render into #share-canvas so every existing
+// share/download path (cardFile/canvasBlob/downloadCard) works unchanged.
+function drawStoryCard(canvas){
+  if(!canvas)return null;
+  var off=document.createElement("canvas");
+  var d=drawShareCard(off); if(!d)return null;
+  var W=1080,H=1920,ctx=canvas.getContext("2d");
+  canvas.width=W;canvas.height=H;
+  var bg=ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,"#b3122e");bg.addColorStop(.5,"#5e0c1a");bg.addColorStop(1,"#220609");
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  var glow=ctx.createRadialGradient(W/2,860,80,W/2,860,760);
+  glow.addColorStop(0,"rgba(255,210,120,.22)");glow.addColorStop(1,"rgba(255,210,120,0)");
+  ctx.fillStyle=glow;ctx.fillRect(0,0,W,H);
+  // headline (kept inside Story safe-area, ~top 200px clear)
+  ctx.textAlign="center";ctx.fillStyle="#fff";ctx.font="800 70px Inter,sans-serif";
+  ctx.fillText("I scored "+d.correct+"/10 today", W/2, 246);
+  ctx.font="600 31px Inter,sans-serif";ctx.fillStyle="rgba(255,255,255,.85)";
+  ctx.fillText("True Maple Leaf · fresh Canadian trivia every hour", W/2, 298);
+  // the gold card, centered, rounded + drop shadow
+  var cardW=772, cardH=cardW*(off.height/off.width), cx=(W-cardW)/2, cy=392;
+  ctx.save();ctx.shadowColor="rgba(0,0,0,.45)";ctx.shadowBlur=60;ctx.shadowOffsetY=26;
+  rr(ctx,cx,cy,cardW,cardH,40);ctx.fillStyle="#3a0810";ctx.fill();ctx.restore();
+  ctx.save();rr(ctx,cx,cy,cardW,cardH,40);ctx.clip();ctx.drawImage(off,cx,cy,cardW,cardH);ctx.restore();
+  // CTA (kept above Story bottom UI)
+  var ctaY=cy+cardH+118;
+  ctx.fillStyle="#fff";ctx.font="800 62px Inter,sans-serif";ctx.fillText("Can you beat me?", W/2, ctaY);
+  ctx.fillStyle="#ffd86b";ctx.font="700 41px Inter,sans-serif";ctx.fillText("Play free → truemapleleaf.com", W/2, ctaY+64);
+  ctx.textAlign="left";
+  return d;
+}
+// format state + renderer the share modal uses
+var shareFormat="square";
+function renderShareCanvas(){
+  var cv=document.getElementById("share-canvas");if(!cv)return null;
+  return shareFormat==="story"?drawStoryCard(cv):drawShareCard(cv);
+}
+function setShareFormat(f){
+  shareFormat=f;
+  var sq=document.getElementById("fmt-square"),so=document.getElementById("fmt-story");
+  if(sq)sq.classList.toggle("on",f==="square");
+  if(so)so.classList.toggle("on",f==="story");
+  renderShareCanvas();
+}
 function openShare(){
-  var d=drawShareCard(document.getElementById("share-canvas"));
+  if(!document.getElementById("share-canvas"))return;
+  setShareFormat("square");            // default to the square card, draws #share-canvas
+  var d=cardData();
   if(!d)return;
   document.getElementById("m-title").textContent =
     d.tier==="ELITE" ? "Elite card unlocked! 🏆 Flaunt it." : d.tier==="GOLD" ? "Gold card earned! 🥇 Show it off." : "Your card's ready — challenge your friends!";
@@ -2211,7 +2328,7 @@ function openShare(){
 
 function shareText(){
   var d=cardData();
-  return "I just earned a "+d.tier+" "+d.overall+"-rated "+d.per.e+" "+d.per.t+" card on True Maple Leaf! Ranked #"+d.rank+" in "+d.city+" · "+d.streak+"-day streak. Think you can beat it?";
+  return "I scored "+d.overall+" on True Maple Leaf and earned the "+d.per.e+" "+d.per.t+"! Ranked #"+d.rank+" in "+d.city+" · "+d.streak+"-day streak. Think you can beat it?";
 }
 function canvasBlob(){return new Promise(function(res){document.getElementById("share-canvas").toBlob(res,"image/png")});}
 
