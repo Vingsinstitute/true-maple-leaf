@@ -82,6 +82,7 @@ window.addEventListener('appinstalled',function(){window.__bipEvent=null;if(wind
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is True Maple Leaf free to play?","acceptedAnswer":{"@type":"Answer","text":"Yes. It's free to play during our launch, and you can start instantly with no sign-up."}},{"@type":"Question","name":"How often do new questions appear?","acceptedAnswer":{"@type":"Answer","text":"Ten fresh trivia questions every hour — the same set for every player, so you can compete head-to-head."}},{"@type":"Question","name":"Do I need an account?","acceptedAnswer":{"@type":"Answer","text":"No. You can play right away. Picking a game name (and optionally an email) saves your streak and ranks you on your city's leaderboard."}},{"@type":"Question","name":"What topics does the trivia cover?","acceptedAnswer":{"@type":"Answer","text":"Three categories every round: Canada, pop culture, and football (soccer)."}},{"@type":"Question","name":"Is True Maple Leaf affiliated with the Government of Canada?","acceptedAnswer":{"@type":"Answer","text":"No. It's an independent, privately run game made in Canada, just for fun — not affiliated with any government body, league, or broadcaster."}}]}</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="persona-icons.js"></script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='15' fill='%23c8102e'/><path d='M32 7 C33.4 26 38 31 57 32 C38 33 33.4 38 32 57 C30.6 38 26 33 7 32 C26 31 30.6 26 32 7 Z' fill='%23f0cf73'/><g transform='rotate(45 32 32)' opacity='0.5'><path d='M32 16 C32.7 28 36 31.3 48 32 C36 32.7 32.7 36 32 48 C31.3 36 28 32.7 16 32 C28 31.3 31.3 28 32 16 Z' fill='%23f0cf73'/></g></svg>">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://leosxdqsetcnocyaixix.supabase.co">
@@ -2195,6 +2196,20 @@ var PERSONA_TINT={
   RAC:["#eff1f4","#c6ccd4","#8f95a1"], LON:["#e8eef0","#bdcccd","#88a0a1"],
   _:["#fbf2d6","#ecd595","#c8a23e"]
 };
+// Self-hosted persona icon art (from PERSONA_ICON_SRC in persona-icons.js) — used instead of the
+// raw Unicode emoji glyph. Some persona animals (goose 🪿, moose 🫎, beaver 🦫, raccoon 🦝) are recent
+// Unicode additions that many devices/browsers/OSes don't have a color glyph for yet, which made the
+// medallion render completely blank on those devices. Bundling our own small PNG per animal guarantees
+// the artwork always shows, identically, everywhere — no dependency on the visitor's system fonts.
+var PERSONA_ICON_IMG={};
+(function(){
+  if(typeof PERSONA_ICON_SRC==="undefined")return;
+  for(var k in PERSONA_ICON_SRC){
+    var im=new Image();
+    im.src=PERSONA_ICON_SRC[k];
+    PERSONA_ICON_IMG[k]=im;
+  }
+})();
 // Draw a glossy 3D medallion with the persona animal sitting on it (lit sphere + grounded shadow + depth)
 function drawPersona3D(ctx,cx,cy,R,emoji,code){
   var T=PERSONA_TINT[code]||PERSONA_TINT._;
@@ -2220,11 +2235,19 @@ function drawPersona3D(ctx,cx,cy,R,emoji,code){
   gl.addColorStop(0,"rgba(255,255,255,.62)");gl.addColorStop(1,"rgba(255,255,255,0)");
   ctx.fillStyle=gl;ctx.beginPath();ctx.ellipse(cx,cy-R*0.34,R*0.66,R*0.42,0,0,Math.PI*2);ctx.fill();
   ctx.restore();
-  // the animal — large & cute, with depth shadow so it lifts off the medallion
-  ctx.textAlign="center";ctx.textBaseline="middle";
-  ctx.font=(R*1.62)+'px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",serif';
+  // the animal — large & cute, with depth shadow so it lifts off the medallion.
+  // Prefer our bundled icon image (always renders); fall back to the emoji glyph only if the
+  // image hasn't finished loading yet (e.g. drawn a split-second before the page finished paint).
+  var _icon=PERSONA_ICON_IMG[code];
   ctx.shadowColor="rgba(45,30,5,.40)";ctx.shadowBlur=R*0.18;ctx.shadowOffsetY=R*0.12;
-  ctx.fillText(emoji,cx,cy+R*0.02);
+  if(_icon&&_icon.complete&&_icon.naturalWidth>0){
+    var _s=R*1.5;
+    ctx.drawImage(_icon,cx-_s/2,cy-_s/2+R*0.02,_s,_s);
+  }else{
+    ctx.textAlign="center";ctx.textBaseline="middle";
+    ctx.font=(R*1.62)+'px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",serif';
+    ctx.fillText(emoji,cx,cy+R*0.02);
+  }
   ctx.restore();
 }
 function drawShareCard(canvas){
