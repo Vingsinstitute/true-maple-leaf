@@ -185,21 +185,30 @@ h1.hero-headline em{font-style:normal;color:var(--red)}
 
 /* ─── HERO PREVIEW: auto-flips question → real gold result card ─── */
 .flipdeck{position:relative;width:100%}
-.flipdeck .s1{position:relative;animation:deckS1 20s ease-in-out infinite}
-.flipdeck .s2,.flipdeck .s3,.flipdeck .s4,.flipdeck .s5{position:absolute;top:50%;left:0;right:0;margin:0 auto;opacity:0}
-.flipdeck .s2{animation:deckS2 20s ease-in-out infinite}
-.flipdeck .s3{animation:deckS3 20s ease-in-out infinite}
-.flipdeck .s4{animation:deckS4 20s ease-in-out infinite}
-.flipdeck .s5{animation:deckS5 20s ease-in-out infinite}
-@keyframes deckS1{0%{opacity:1;transform:translateX(0) scale(1)}18%{opacity:1;transform:translateX(0) scale(1)}22%{opacity:0;transform:translateX(-22px) scale(.95)}95%{opacity:0;transform:translateX(22px) scale(.95)}100%{opacity:1;transform:translateX(0) scale(1)}}
-@keyframes deckS2{0%,18%{opacity:0;transform:translateY(-50%) translateX(22px) scale(.95)}22%,38%{opacity:1;transform:translateY(-50%) translateX(0) scale(1)}42%,100%{opacity:0;transform:translateY(-50%) translateX(-22px) scale(.95)}}
-@keyframes deckS3{0%,38%{opacity:0;transform:translateY(-50%) translateX(22px) scale(.95)}42%,58%{opacity:1;transform:translateY(-50%) translateX(0) scale(1)}62%,100%{opacity:0;transform:translateY(-50%) translateX(-22px) scale(.95)}}
-@keyframes deckS4{0%,58%{opacity:0;transform:translateY(-50%) translateX(22px) scale(.95)}62%,78%{opacity:1;transform:translateY(-50%) translateX(0) scale(1)}82%,100%{opacity:0;transform:translateY(-50%) translateX(-22px) scale(.95)}}
-@keyframes deckS5{0%,78%{opacity:0;transform:translateY(-50%) translateX(22px) scale(.95)}82%,98%{opacity:1;transform:translateY(-50%) translateX(0) scale(1)}100%{opacity:0;transform:translateY(-50%) translateX(-22px) scale(.95)}}
+.flipdeck .s1{position:relative;animation:deckS1 28s ease-in-out infinite}
+.flipdeck .s2,.flipdeck .s3,.flipdeck .s4,.flipdeck .s5,.flipdeck .s6,.flipdeck .s7{position:absolute;top:50%;left:0;right:0;margin:0 auto;opacity:0}
+.flipdeck .s2{animation:deckS2 28s ease-in-out infinite}
+.flipdeck .s3{animation:deckS3 28s ease-in-out infinite}
+.flipdeck .s4{animation:deckS4 28s ease-in-out infinite}
+.flipdeck .s5{animation:deckS5 28s ease-in-out infinite}
+.flipdeck .s6{animation:deckS6 28s ease-in-out infinite}
+.flipdeck .s7{animation:deckS7 28s ease-in-out infinite}
+@keyframes deckS1{0%{opacity:1;transform:translateX(0) scale(1)}12.1%{opacity:1;transform:translateX(0) scale(1)}14.3%{opacity:0;transform:translateX(-22px) scale(.95)}97.8%{opacity:0;transform:translateX(22px) scale(.95)}100%{opacity:1;transform:translateX(0) scale(1)}}
+@keyframes deckS2{0%,14.3%{opacity:0;transform:translateY(-50%) translateX(22px) scale(.95)}16.5%,26.4%{opacity:1;transform:translateY(-50%) translateX(0) scale(1)}28.6%,100%{opacity:0;transform:translateY(-50%) translateX(-22px) scale(.95)}}
+@keyframes deckS3{0%,28.6%{opacity:0;transform:translateY(-50%) translateX(22px) scale(.95)}30.8%,40.7%{opacity:1;transform:translateY(-50%) translateX(0) scale(1)}42.9%,100%{opacity:0;transform:translateY(-50%) translateX(-22px) scale(.95)}}
+@keyframes deckS4{0%,42.9%{opacity:0;transform:translateY(-50%) translateX(22px) scale(.95)}45.1%,54.9%{opacity:1;transform:translateY(-50%) translateX(0) scale(1)}57.1%,100%{opacity:0;transform:translateY(-50%) translateX(-22px) scale(.95)}}
+@keyframes deckS5{0%,57.1%{opacity:0;transform:translateY(-50%) translateX(22px) scale(.95)}59.3%,69.2%{opacity:1;transform:translateY(-50%) translateX(0) scale(1)}71.4%,100%{opacity:0;transform:translateY(-50%) translateX(-22px) scale(.95)}}
+@keyframes deckS6{0%,71.4%{opacity:0;transform:translateY(-50%) translateX(22px) scale(.95)}73.6%,83.5%{opacity:1;transform:translateY(-50%) translateX(0) scale(1)}85.7%,100%{opacity:0;transform:translateY(-50%) translateX(-22px) scale(.95)}}
+@keyframes deckS7{0%,85.7%{opacity:0;transform:translateY(-50%) translateX(22px) scale(.95)}87.9%,97.8%{opacity:1;transform:translateY(-50%) translateX(0) scale(1)}100%{opacity:0;transform:translateY(-50%) translateX(-22px) scale(.95)}}
 .rc-tier.elite{background:#c8102e}
 .rare-shine{position:absolute;inset:0;border-radius:26px;background:linear-gradient(115deg,transparent 38%,rgba(255,255,255,.6) 50%,transparent 62%);transform:translateX(-120%);animation:rareShine 3.8s ease-in-out infinite;pointer-events:none;z-index:3}
 @keyframes rareShine{0%,55%{transform:translateX(-120%)}100%{transform:translateX(125%)}}
-@media(prefers-reduced-motion:reduce){.flipdeck .s1{animation:none;opacity:1}.flipdeck .s2,.flipdeck .s3,.flipdeck .s4,.flipdeck .s5{animation:none;opacity:0}.rare-shine{display:none}}
+@media(prefers-reduced-motion:reduce){.flipdeck .s1{animation:none;opacity:1}.flipdeck .s2,.flipdeck .s3,.flipdeck .s4,.flipdeck .s5,.flipdeck .s6,.flipdeck .s7{animation:none;opacity:0}.rare-shine{display:none}}
+/* Canada Day banner (date-gated, shown around July 1) */
+.cd-banner{display:flex;align-items:center;gap:8px;background:linear-gradient(90deg,#c8102e,#e0243d);color:#fff;font-weight:700;font-size:14.5px;letter-spacing:-.01em;padding:11px 16px;border-radius:12px;margin-bottom:14px;cursor:pointer;box-shadow:0 8px 22px rgba(200,16,46,.32);transition:transform .15s,box-shadow .15s}
+.cd-banner b{font-weight:800}
+.cd-banner span{margin-left:auto;font-size:17px}
+.cd-banner:hover{transform:translateY(-1px);box-shadow:0 12px 28px rgba(200,16,46,.42)}
 
 /* faithful CSS replica of the shareable gold card */
 .rcard{position:relative;border-radius:26px;padding:20px 22px 18px;color:#3d2a06;background:linear-gradient(180deg,#fbeeb6 0%,#edca6d 42%,#d6a83a 78%,#b8841d 100%);box-shadow:0 20px 46px rgba(140,100,20,.34);overflow:hidden}
@@ -711,10 +720,11 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
           <div class="sh-body"><b id="home-streak-title">Start your streak</b><span id="home-streak-sub">Play one round today to begin.</span></div>
           <button class="sh-go" onclick="startGame()">Play &rarr;</button>
         </div>
+        <div class="cd-banner" id="cd-banner" style="display:none" onclick="playGate()" role="button" tabindex="0">🍁 <b>Happy Canada Day!</b> Play today's special Canadian round <span aria-hidden="true">→</span></div>
         <div class="hero-kicker"><span></span> Fresh questions every hour</div>
         <div class="hero-gold"><span aria-hidden="true">★</span> Free to play during our launch</div>
-        <h1 class="hero-headline">Soccer's biggest summer <em>is here</em>.</h1>
-        <p class="hero-desc">How well do you really know the beautiful game — and Canada's part in it? Ten fresh trivia questions every hour. Play on your own, or make it a friendly contest with friends, coworkers, and the table next to you.</p>
+        <h1 class="hero-headline" id="hero-headline">Soccer's biggest summer <em>is here</em>.</h1>
+        <p class="hero-desc" id="hero-desc">How well do you really know the beautiful game — and Canada's part in it? Ten fresh trivia questions every hour. Play on your own, or make it a friendly contest with friends, coworkers, and the table next to you.</p>
         <p class="hero-discreet">Made in Canada · built for every Canadian, ages 16 to 100.</p>
         <div class="hero-cta-wrap">
           <button class="btn-play" onclick="playGate()"><span>Play this hour's challenge</span><span style="font-size:18px">&rarr;</span></button>
@@ -780,7 +790,29 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
               <div class="rc-qr"><svg viewBox="0 0 29 29" shape-rendering="crispEdges"><path fill="#1a1208" fill-rule="evenodd" d="M0 0h7v7h-7zM1 1v5h5v-5zM22 0h7v7h-7zM23 1v5h5v-5zM0 22h7v7h-7zM1 23v5h5v-5z"/><path fill="#1a1208" d="M2 2h3v3h-3zM24 2h3v3h-3zM2 24h3v3h-3zM9 1h1v1H9zM11 2h1v1h-1zM13 1h1v1h-1zM15 3h1v1h-1zM17 2h1v1h-1zM19 4h1v1h-1zM8 4h1v1H8zM10 5h1v1h-1zM2 9h1v1H2zM4 11h1v1H4zM6 13h1v1H6zM9 9h1v1H9zM11 11h1v1h-1zM13 9h1v1h-1zM15 11h1v1h-1zM17 13h1v1h-1zM19 9h1v1h-1zM21 11h1v1h-1zM23 13h1v1h-1zM25 9h1v1h-1zM10 17h1v1h-1zM13 19h1v1h-1zM16 21h1v1h-1zM24 17h1v1h-1z"/></svg></div>
             </div>
           </div>
-          <div class="phone s4">
+          <div class="rcard s4">
+            <span class="rc-badge"><svg viewBox="0 0 64 64"><path d="M32 7 C33.4 26 38 31 57 32 C38 33 33.4 38 32 57 C30.6 38 26 33 7 32 C26 31 30.6 26 32 7 Z" fill="#f0cf73"/></svg></span>
+            <span class="rc-tier">GOLD</span>
+            <div class="rc-num">78</div>
+            <div class="rc-code">MAPLE SCORE</div>
+            <div class="rc-rule"></div>
+            <div class="rc-city">Toronto</div>
+            <div class="rc-emoji">🐻</div>
+            <div class="rc-persona">THE GRIZZLY BEAR</div>
+            <div class="rc-handle">@MAPLEMAV</div>
+            <div class="rc-hr"></div>
+            <div class="rc-rows">
+              <div class="rc-row"><span>Accuracy</span><b>70%</b></div>
+              <div class="rc-row"><span>City rank</span><b>#4 in Toronto</b></div>
+              <div class="rc-row"><span>Day streak</span><b>12 days</b></div>
+              <div class="rc-row"><span>Total XP</span><b>3,480 pts</b></div>
+            </div>
+            <div class="rc-foot">
+              <div class="rc-brand">TRUE MAPLE LEAF<small>Scan to play free</small><small>truemapleleaf.com</small></div>
+              <div class="rc-qr"><svg viewBox="0 0 29 29" shape-rendering="crispEdges"><path fill="#1a1208" fill-rule="evenodd" d="M0 0h7v7h-7zM1 1v5h5v-5zM22 0h7v7h-7zM23 1v5h5v-5zM0 22h7v7h-7zM1 23v5h5v-5z"/><path fill="#1a1208" d="M2 2h3v3h-3zM24 2h3v3h-3zM2 24h3v3h-3zM9 1h1v1H9zM11 2h1v1h-1zM13 1h1v1h-1zM15 3h1v1h-1zM17 2h1v1h-1zM19 4h1v1h-1zM8 4h1v1H8zM10 5h1v1h-1zM2 9h1v1H2zM4 11h1v1H4zM6 13h1v1H6zM9 9h1v1H9zM11 11h1v1h-1zM13 9h1v1h-1zM15 11h1v1h-1zM17 13h1v1h-1zM19 9h1v1h-1zM21 11h1v1h-1zM23 13h1v1h-1zM25 9h1v1h-1zM10 17h1v1h-1zM13 19h1v1h-1zM16 21h1v1h-1zM24 17h1v1h-1z"/></svg></div>
+            </div>
+          </div>
+          <div class="phone s5">
             <div class="phone-bar"><span class="phone-dot"></span><small>Question 7 of 10</small><span class="phone-timer">&#9201; 18</span></div>
             <div class="phone-body">
               <span class="phone-cat" style="color:#c8102e;background:#fff5f7;border-color:#fcc">&#129517; Canada</span>
@@ -791,7 +823,29 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
               <div class="phone-opt"><b>D</b> Montreal</div>
             </div>
           </div>
-          <div class="phone s5">
+          <div class="rcard s6">
+            <span class="rc-badge"><svg viewBox="0 0 64 64"><path d="M32 7 C33.4 26 38 31 57 32 C38 33 33.4 38 32 57 C30.6 38 26 33 7 32 C26 31 30.6 26 32 7 Z" fill="#f0cf73"/></svg></span>
+            <span class="rc-tier">GOLD</span>
+            <div class="rc-num">71</div>
+            <div class="rc-code">MAPLE SCORE</div>
+            <div class="rc-rule"></div>
+            <div class="rc-city">Vancouver</div>
+            <div class="rc-emoji">🦊</div>
+            <div class="rc-persona">THE RED FOX</div>
+            <div class="rc-handle">@WESTFOX</div>
+            <div class="rc-hr"></div>
+            <div class="rc-rows">
+              <div class="rc-row"><span>Accuracy</span><b>60%</b></div>
+              <div class="rc-row"><span>City rank</span><b>#8 in Vancouver</b></div>
+              <div class="rc-row"><span>Day streak</span><b>6 days</b></div>
+              <div class="rc-row"><span>Total XP</span><b>1,820 pts</b></div>
+            </div>
+            <div class="rc-foot">
+              <div class="rc-brand">TRUE MAPLE LEAF<small>Scan to play free</small><small>truemapleleaf.com</small></div>
+              <div class="rc-qr"><svg viewBox="0 0 29 29" shape-rendering="crispEdges"><path fill="#1a1208" fill-rule="evenodd" d="M0 0h7v7h-7zM1 1v5h5v-5zM22 0h7v7h-7zM23 1v5h5v-5zM0 22h7v7h-7zM1 23v5h5v-5z"/><path fill="#1a1208" d="M2 2h3v3h-3zM24 2h3v3h-3zM2 24h3v3h-3zM9 1h1v1H9zM11 2h1v1h-1zM13 1h1v1h-1zM15 3h1v1h-1zM17 2h1v1h-1zM19 4h1v1h-1zM8 4h1v1H8zM10 5h1v1h-1zM2 9h1v1H2zM4 11h1v1H4zM6 13h1v1H6zM9 9h1v1H9zM11 11h1v1h-1zM13 9h1v1h-1zM15 11h1v1h-1zM17 13h1v1h-1zM19 9h1v1h-1zM21 11h1v1h-1zM23 13h1v1h-1zM25 9h1v1h-1zM10 17h1v1h-1zM13 19h1v1h-1zM16 21h1v1h-1zM24 17h1v1h-1z"/></svg></div>
+            </div>
+          </div>
+          <div class="phone s7">
             <div class="phone-bar"><span class="phone-dot"></span><small>Question 5 of 10</small><span class="phone-timer">&#9201; 21</span></div>
             <div class="phone-body">
               <span class="phone-cat" style="color:#7F77DD;background:#f5f4ff;border-color:#CECBF6">&#127916; Pop Culture</span>
@@ -990,6 +1044,11 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
 
   <footer>
     <div class="footer-brand">© 2026 True Maple Leaf · Made in Canada, for Canadians</div>
+    <div class="footer-links" style="flex-wrap:wrap">
+      <a href="canada-trivia.html">Canada Trivia</a>
+      <a href="canadian-pop-culture-quiz.html">Pop Culture Quiz</a>
+      <a href="canada-day-trivia.html">Canada Day Trivia</a>
+    </div>
     <div class="footer-links">
       <a href="privacy.html">Privacy Policy</a>
       <a href="terms.html">Terms of Service</a>
@@ -2813,6 +2872,23 @@ function restartDrivingQuiz(){
   // One-time migration: lift the OLD permanent dismissal so returning users get the pill back.
   try{ if(localStorage.getItem("tml_pin_dismiss")==="1") localStorage.removeItem("tml_pin_dismiss"); }catch(e){}
   updateUI();
+})();
+</script>
+<script>
+// Canada Day (July 1) themed banner + headline — auto-shows Jun 30–Jul 2, no manual toggle needed.
+(function(){
+  try{
+    var d=new Date(), m=d.getMonth(), day=d.getDate();
+    var inWindow=(m===6&&day<=2)||(m===5&&day===30);   // June 30 → July 2
+    if(!inWindow) return;
+    var b=document.getElementById("cd-banner"); if(b) b.style.display="flex";
+    if(m===6&&day===1){                                 // On Canada Day itself, theme the hero
+      var h=document.getElementById("hero-headline");
+      if(h) h.innerHTML="Happy <em>Canada Day</em> 🍁";
+      var p=document.getElementById("hero-desc");
+      if(p) p.textContent="Celebrate Canada with 10 fresh trivia questions — Canada, pop culture and football. Play solo or challenge your friends, coworkers and the whole table.";
+    }
+  }catch(e){}
 })();
 </script>
 </body>
