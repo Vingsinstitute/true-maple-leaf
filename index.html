@@ -2102,6 +2102,14 @@ function renderLB(f){
 
 // rounded-rect path helper
 function rr(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+// lighten (positive amt) or darken (negative amt) a #rrggbb hex color by amt (-100..100)
+function shade(hex,amt){
+  var c=hex.replace('#',''); var n=parseInt(c,16);
+  var r=(n>>16)&255, g=(n>>8)&255, b=n&255;
+  function adj(v){ return Math.max(0,Math.min(255, Math.round(v + (amt/100)*(amt>0?(255-v):v)) )); }
+  r=adj(r);g=adj(g);b=adj(b);
+  return 'rgb('+r+','+g+','+b+')';
+}
 
 // Single source of truth for the player's rank + XP, so the share card always
 // matches the CITY leaderboard the player sees (same data, same sort order).
@@ -2161,6 +2169,10 @@ function cardData(){
 }
 
 function drawQR(ctx,x,y,size,text){
+  // lift the white QR panel off the gold card with a soft shadow before drawing its contents
+  ctx.save();ctx.shadowColor="rgba(70,45,8,.30)";ctx.shadowBlur=10;ctx.shadowOffsetY=5;
+  rr(ctx,x,y,size,size,8);ctx.fillStyle="#ffffff";ctx.fill();
+  ctx.restore();
   if(typeof qrcode==="undefined"){
     ctx.save();rr(ctx,x,y,size,size,8);ctx.fillStyle="#ffffff";ctx.fill();
     ctx.fillStyle="#3d2a06";ctx.textAlign="center";ctx.font="600 10px Inter,sans-serif";
@@ -2260,13 +2272,22 @@ function drawShareCard(canvas){
   ctx.clearRect(0,0,W,H);
   var INK="#3d2a06", INKsoft="rgba(61,42,6,.82)";  // higher-contrast secondary text (legible at thumbnail size)
 
-  // ── card body: gold luxe gradient ──
+  // ── card body: gold luxe gradient, cast as a floating 3D slab ──
+  // Drop shadow first (card lifts off the page) — drawn under the real fill so it
+  // reads as depth, not a stray dark smear.
+  ctx.save();
+  ctx.shadowColor="rgba(80,45,8,.42)";ctx.shadowBlur=34;ctx.shadowOffsetY=18;
   var g=ctx.createLinearGradient(0,0,0,H);
   g.addColorStop(0,"#fbeeb6");g.addColorStop(.42,"#edca6d");g.addColorStop(.78,"#d6a83a");g.addColorStop(1,"#b8841d");
   rr(ctx,14,14,W-28,H-28,42);ctx.fillStyle=g;ctx.fill();
+  ctx.restore();
   // top sheen
   var sh=ctx.createLinearGradient(0,14,0,270);sh.addColorStop(0,"rgba(255,255,255,.55)");sh.addColorStop(1,"rgba(255,255,255,0)");
   rr(ctx,14,14,W-28,256,42);ctx.fillStyle=sh;ctx.fill();
+  // beveled outer rim — diagonal light-to-dark stroke reads as an embossed, physical edge
+  var bevel=ctx.createLinearGradient(14,14,W-14,H-14);
+  bevel.addColorStop(0,"rgba(255,255,255,.9)");bevel.addColorStop(.45,"rgba(255,255,255,.18)");bevel.addColorStop(1,"rgba(80,50,8,.6)");
+  rr(ctx,14,14,W-28,H-28,42);ctx.lineWidth=3;ctx.strokeStyle=bevel;ctx.stroke();
   // inner hairline frame
   rr(ctx,30,30,W-60,H-60,32);ctx.lineWidth=2;ctx.strokeStyle="rgba(74,50,8,.30)";ctx.stroke();
   drawLogoBadge(ctx,W/2-16,28,32);
@@ -2293,17 +2314,30 @@ function drawShareCard(canvas){
     spark(ctx,415,150,9);spark(ctx,468,255,7);spark(ctx,360,335,6);spark(ctx,440,360,8);
   }
 
-  // ── tier ribbon (top-right) ──
+  // ── tier ribbon (top-right) — raised glossy pill, not a flat sticker ──
   ctx.textAlign="center";
   var ribbonW=d.tier==="RISING"?122:112, rx=W-40-ribbonW, ry=50;
-  rr(ctx,rx,ry,ribbonW,34,17);
-  ctx.fillStyle=d.tier==="ELITE"?"#c8102e":d.tier==="GOLD"?"#7a5e16":"#5b4a8f";ctx.fill();
+  var ribbonBase=d.tier==="ELITE"?"#c8102e":d.tier==="GOLD"?"#7a5e16":"#5b4a8f";
+  ctx.save();
+  ctx.shadowColor="rgba(40,20,5,.35)";ctx.shadowBlur=10;ctx.shadowOffsetY=4;
+  var rg=ctx.createLinearGradient(0,ry,0,ry+34);
+  rg.addColorStop(0,shade(ribbonBase,22));rg.addColorStop(1,shade(ribbonBase,-14));
+  rr(ctx,rx,ry,ribbonW,34,17);ctx.fillStyle=rg;ctx.fill();
+  ctx.restore();
+  // thin glossy highlight along the top half
+  ctx.save();rr(ctx,rx,ry,ribbonW,34,17);ctx.clip();
+  var rgl=ctx.createLinearGradient(0,ry,0,ry+16);
+  rgl.addColorStop(0,"rgba(255,255,255,.45)");rgl.addColorStop(1,"rgba(255,255,255,0)");
+  ctx.fillStyle=rgl;ctx.fillRect(rx,ry,ribbonW,17);
+  ctx.restore();
   ctx.fillStyle="#fff";ctx.font="800 16px Inter,sans-serif";
-  ctx.save();ctx.letterSpacing="2px";ctx.fillText(d.tier,rx+ribbonW/2,ry+23);ctx.restore();
+  ctx.save();ctx.shadowColor="rgba(0,0,0,.25)";ctx.shadowBlur=2;ctx.shadowOffsetY=1;ctx.letterSpacing="2px";ctx.fillText(d.tier,rx+ribbonW/2,ry+23);ctx.restore();
 
-  // ── rating block (top-left) ──
-  ctx.textAlign="left";ctx.fillStyle=INK;
-  ctx.font="900 94px Inter,sans-serif";ctx.fillText(String(d.overall),52,152);
+  // ── rating block (top-left) — soft drop shadow gives the big number some pop/lift ──
+  ctx.textAlign="left";
+  ctx.save();ctx.shadowColor="rgba(80,50,8,.35)";ctx.shadowBlur=6;ctx.shadowOffsetY=4;
+  ctx.fillStyle=INK;ctx.font="900 94px Inter,sans-serif";ctx.fillText(String(d.overall),52,152);
+  ctx.restore();
   ctx.save();ctx.font="800 15px Inter,sans-serif";ctx.letterSpacing="2px";ctx.fillStyle=INKsoft;ctx.fillText("MAPLE SCORE",56,188);ctx.restore();
   ctx.strokeStyle="rgba(74,50,8,.4)";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(56,208);ctx.lineTo(150,208);ctx.stroke();
   ctx.fillStyle=INK;ctx.font="700 19px Inter,sans-serif";ctx.fillText(d.city,56,244);
