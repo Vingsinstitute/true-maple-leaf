@@ -401,6 +401,11 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
 .res-col-b{align-items:stretch;justify-content:center}
 .res-col-b .btn-outline{width:100%}
 @media(min-width:860px){.result-page{grid-template-columns:1.05fr 1fr;gap:44px;align-items:center}}
+@media(min-width:860px){
+  .gtb-row,.prog-wrap,.timer-stage,.q-card,.opts-grid,.feedback,.fact-card{max-width:640px;margin-left:auto;margin-right:auto}
+  .q-card{margin-top:24px}
+  .timer-stage{padding-top:32px}
+}
 .result-card-live{display:flex;justify-content:center;margin:14px auto 16px;animation:cardFloat 5s ease-in-out infinite;will-change:transform}
 @keyframes cardFloat{0%,100%{transform:translateY(0) rotate(-.5deg)}50%{transform:translateY(-7px) rotate(.5deg)}}
 @media(prefers-reduced-motion:reduce){.result-card-live{animation:none}}
