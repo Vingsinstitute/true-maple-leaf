@@ -2,7 +2,7 @@
 // Purpose: make the site installable (Add to Home Screen) and resilient offline.
 // Strategy: network-first for everything so players always get the freshest hourly
 // questions; only fall back to a cached shell when the network is unavailable.
-const CACHE = 'tml-v12';
+const CACHE = 'tml-v13';
 const SHELL = ['/', '/index.html', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png', '/apple-touch-icon.png'];
 
 self.addEventListener('install', function (e) {
