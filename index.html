@@ -435,6 +435,9 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
 /* badges */
 .badge-row{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-bottom:22px}
 .badge{background:var(--gold-lt);border:1px solid var(--gold-br);border-radius:var(--r);padding:7px 13px;font-size:12px;font-weight:700;color:var(--gold-dk);box-shadow:var(--sh)}
+.badge.milestone{background:var(--red);border-color:var(--red-dk);color:#fff;animation:milestonePulse 1.6s ease-in-out 2}
+@keyframes milestonePulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+@media(prefers-reduced-motion:reduce){.badge.milestone{animation:none}}
 
 /* rank card */
 .rank-block{background:linear-gradient(150deg,var(--gold-mid),var(--gold));border-radius:var(--r2x);padding:24px 28px;margin-bottom:22px;width:100%;text-align:left;position:relative;overflow:hidden;box-shadow:0 8px 28px rgba(200,150,30,.30)}
@@ -1863,13 +1866,19 @@ function endGame(){
   var _pe=document.getElementById("persona-em");if(_pe)_pe.textContent=S.persona.e;
   var _pn=document.getElementById("persona-name");if(_pn)_pn.textContent=S.persona.t;
   var _pb=document.getElementById("persona-blurb");if(_pb)_pb.textContent=S.persona.d;
+  var STREAK_MILESTONES=[7,30,100,365];
+  var hitMilestone=STREAK_MILESTONES.indexOf(S.streak)!==-1;
   var bds=[];
   if(correct===10)bds.push("🏆 Perfect!");
   else if(correct>=8)bds.push("⭐ Great round!");
-  if(S.streak>=3)bds.push("🔥 "+S.streak+"-day streak");
+  if(hitMilestone)bds.push({t:"🎯 "+S.streak+"-day streak milestone!",cls:"milestone"});
+  else if(S.streak>=3)bds.push("🔥 "+S.streak+"-day streak");
   if(S.sStreak>=4)bds.push("⚡ "+S.sStreak+" in a row");
   bds.push("💎 "+S.totalXP.toLocaleString()+" XP total");
-  document.getElementById("badges").innerHTML=bds.map(function(b){return "<div class='badge'>"+b+"</div>"}).join("");
+  document.getElementById("badges").innerHTML=bds.map(function(b){
+    var txt=typeof b==="string"?b:b.t, cls=typeof b==="string"?"":" "+b.cls;
+    return "<div class='badge"+cls+"'>"+txt+"</div>";
+  }).join("");
   var sn=document.getElementById("share-nudge");
   if(sn)sn.textContent = correct===10 ? "A perfect 10. That earns serious bragging rights. Show your card off!"
     : correct>=8 ? "Top-tier round. Post your card and dare your friends to beat it."
@@ -1879,11 +1888,12 @@ function endGame(){
   document.getElementById("you-meta").textContent=(S.city||"Other")+" · 🔥 "+S.streak+" day streak";
   go("screen-result");
   try{drawShareCard(document.getElementById("result-card"));}catch(e){}
-  if(correct>=8)playSound("win");
+  if(correct>=8||hitMilestone)playSound("win");
   var _ss=document.getElementById("save-streak");
   if(_ss){if(!_reg){var _d=document.getElementById("ss-days");if(_d)_d.textContent=S.streak+"-day streak";_ss.style.display="flex";}else{_ss.style.display="none";}}
   setTimeout(function(){document.getElementById("xp-bar").style.width=Math.min(100,correct/10*100)+"%"},300);
   if(correct>=8)setTimeout(function(){launchConfetti(34,true)},500);
+  if(hitMilestone)setTimeout(function(){launchConfetti(60,true)},700);
 }
 
 var REDUCE_MOTION = window.matchMedia && matchMedia("(prefers-reduced-motion:reduce)").matches;
