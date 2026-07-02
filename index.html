@@ -1992,6 +1992,10 @@ function fetchLeaderboard(){
 }
 function submitScore(){
   if(!SUPABASE_URL)return;
+  // Snapshot pre-submit state so we can tell, after the server responds, whether a streak
+  // freeze must have been spent to keep the streak alive (server is the sole source of
+  // truth for this — the client only infers it afterward to decide whether to show a note).
+  var priorLastPlay=S.lastPlay,priorStreak=S.streak||0;
   // The server is the source of truth for the daily streak: it compares the player's
   // stored last-play date with today and returns the corrected streak. This keeps the
   // streak accurate across devices/browsers and stops the count being faked client-side.
@@ -2002,6 +2006,14 @@ function submitScore(){
     .then(function(srv){
       var sv=parseInt(srv,10);
       if(!isNaN(sv)){
+        // A freeze must have been spent if we'd missed exactly one full day and yet the
+        // streak still grew instead of resetting to 1.
+        if(priorLastPlay){
+          var gap=Math.round((new Date(todayKey())-new Date(priorLastPlay))/86400000);
+          if(gap===2&&sv===priorStreak+1){
+            try{comboToast("🛡️ Streak freeze used — you're still safe!");}catch(e){}
+          }
+        }
         S.streak=sv;S.lastPlay=todayKey();saveUser();
         var ym=document.getElementById("you-meta");if(ym)ym.textContent=(S.city||"Other")+" · 🔥 "+S.streak+" day streak";
         try{updateHomeStreak();}catch(e){}
@@ -2048,7 +2060,7 @@ function refreshTotalXP(){
 // player — so a returning user sees their real streak even on a fresh device/browser.
 function restoreStreak(){
   if(!SUPABASE_URL||!S.username)return;
-  fetch(SUPABASE_URL+"/rest/v1/leaderboard?select=streak,last_play_date,total_score&username=eq."+encodeURIComponent(S.username),
+  fetch(SUPABASE_URL+"/rest/v1/leaderboard?select=streak,last_play_date,total_score,freezes_remaining&username=eq."+encodeURIComponent(S.username),
     {headers:{apikey:SUPABASE_ANON_KEY,Authorization:"Bearer "+SUPABASE_ANON_KEY}})
     .then(function(r){return r.ok?r.json():[];})
     .then(function(rows){
@@ -2056,10 +2068,14 @@ function restoreStreak(){
         var sv=parseInt(rows[0].streak,10);
         if(!isNaN(sv)){
           // If they've already missed more than a day, the streak has lapsed — show it as
-          // broken rather than stale, matching what their next play will record.
+          // broken rather than stale, matching what their next play will record. A gap of
+          // exactly one missed day (diff==2) still counts as alive if a streak freeze is
+          // banked, since playing today will auto-save it server-side.
           if(rows[0].last_play_date){
             var diff=(new Date(todayKey())-new Date(rows[0].last_play_date))/86400000;
-            if(diff>1.5)sv=0;
+            var hasFreeze=(parseInt(rows[0].freezes_remaining,10)||0)>0;
+            if(diff>2.5)sv=0;
+            else if(diff>1.5&&!hasFreeze)sv=0;
             S.lastPlay=rows[0].last_play_date;
           }
           S.streak=sv;
