@@ -1494,7 +1494,16 @@ var LB=[
   {name:"SensNation",city:"Ottawa",prov:"ON",streak:2,score:1900,av:"SN",ac:"#fee2e2",at:"#991b1b"}
 ];
 
-function go(id){document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active")});document.getElementById(id).classList.add("active");window.scrollTo(0,0);if(window.__installUI)window.__installUI();}
+function go(id){document.querySelectorAll(".screen").forEach(function(s){s.classList.remove("active")});document.getElementById(id).classList.add("active");window.scrollTo(0,0);if(window.__installUI)window.__installUI();if(id==="screen-username")try{refreshClaimScreen();}catch(e){}}
+// If the player already gave an email (signed in via the nav's email/Google flow before
+// reaching this screen), don't ask again here — hide the redundant "optional" email box
+// so returning-via-signin players see only the 3 fields they actually still need
+// (game name, city, age check) instead of a second, duplicate email/Google prompt.
+function refreshClaimScreen(){
+  var em="";try{em=localStorage.getItem("tml_email")||"";}catch(e){}
+  var box=document.querySelector("#screen-username .opt-save");
+  if(box)box.style.display=em?"none":"";
+}
 function signOut(){
   try{ if(sbAuth&&sbAuth.auth&&sbAuth.auth.signOut) sbAuth.auth.signOut(); }catch(e){}
   try{['tml_user','tml_registered','tml_email','tml_pending_score','tml_claim','tml_oauth_pending'].forEach(function(k){localStorage.removeItem(k);});}catch(e){}
