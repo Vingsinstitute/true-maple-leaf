@@ -2297,8 +2297,20 @@ function drawPersona3D(ctx,cx,cy,R,emoji,code){
   var _icon=PERSONA_ICON_IMG[code];
   ctx.shadowColor="rgba(45,30,5,.40)";ctx.shadowBlur=R*0.18;ctx.shadowOffsetY=R*0.12;
   if(_icon&&_icon.complete&&_icon.naturalWidth>0){
-    var _s=R*1.5;
-    ctx.drawImage(_icon,cx-_s/2,cy-_s/2+R*0.02,_s,_s);
+    // Source art ships with a big transparent/white margin around the mascot — crop to the
+    // real content box (PERSONA_ICON_BBOX) so the animal fills the medallion, not floats small
+    // and off-center inside it. Aspect ratio is preserved; the larger side fills ~1.9x the radius.
+    var _bb=(typeof PERSONA_ICON_BBOX!=="undefined")?PERSONA_ICON_BBOX[code]:null;
+    if(_bb){
+      var sx=_bb[0],sy=_bb[1],sw=_bb[2],sh=_bb[3];
+      var _target=R*1.92;
+      var _scale=_target/Math.max(sw,sh);
+      var dw=sw*_scale,dh=sh*_scale;
+      ctx.drawImage(_icon,sx,sy,sw,sh,cx-dw/2,cy-dh/2+R*0.02,dw,dh);
+    }else{
+      var _s=R*1.5;
+      ctx.drawImage(_icon,cx-_s/2,cy-_s/2+R*0.02,_s,_s);
+    }
   }else{
     ctx.textAlign="center";ctx.textBaseline="middle";
     ctx.font=(R*1.62)+'px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",serif';
