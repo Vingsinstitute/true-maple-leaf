@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — True Maple Leaf</title>
+<meta name="description" content="True Maple Leaf is an independent Canadian trivia game built for playing solo, with friends, at the office, or around the table at a restaurant. Learn who made it, what it covers, and how we keep it fair, safe, and legal.">
+<link rel="canonical" href="https://truemapleleaf.com/about.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --red: #c8102e; --text: #1d1d1f; --text-secondary: #6e6e73;
+    --bg: #ffffff; --bg-soft: #f5f5f7; --border: #e5e5ea;
+    --radius-md: 12px; --radius-lg: 16px;
+  }
+  html { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); }
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 24px; border-bottom: 0.5px solid var(--border);
+    position: sticky; top: 0; background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(12px); z-index: 100;
+  }
+  .nav-logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
+  .nav-logo-icon { width: 32px; height: 32px; background: var(--red); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 17px; }
+  .nav-logo-text { font-size: 15px; font-weight: 600; color: var(--text); }
+  .nav-back { background: none; border: 0.5px solid var(--border); border-radius: 20px; padding: 6px 16px; font-size: 13px; font-weight: 500; color: var(--text); cursor: pointer; font-family: inherit; text-decoration: none; }
+  .nav-back:hover { background: var(--bg-soft); }
+  .content { max-width: 720px; margin: 0 auto; padding: 48px 24px 80px; }
+  .page-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--red); margin-bottom: 10px; }
+  .page-title { font-size: 38px; font-weight: 600; color: var(--text); letter-spacing: -.02em; margin-bottom: 8px; }
+  .page-date { font-size: 14px; color: var(--text-secondary); margin-bottom: 40px; }
+  .callout { background: #EAF3DE; border-left: 3px solid #1D9E75; border-radius: 0 var(--radius-md) var(--radius-md) 0; padding: 14px 18px; margin-bottom: 20px; }
+  .callout p { color: #27500A; margin: 0; font-size: 14px; }
+  .toc { background: var(--bg-soft); border-radius: var(--radius-lg); padding: 20px 24px; margin-bottom: 40px; }
+  .toc-title { font-size: 13px; font-weight: 500; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .06em; }
+  .toc a { display: block; font-size: 14px; color: var(--red); text-decoration: none; padding: 3px 0; }
+  .toc a:hover { text-decoration: underline; }
+  .section { margin-bottom: 40px; }
+  .section-title { font-size: 20px; font-weight: 600; color: var(--text); margin-bottom: 14px; padding-top: 12px; border-top: 0.5px solid var(--border); }
+  p { font-size: 15px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 14px; }
+  ul { padding-left: 20px; margin-bottom: 14px; }
+  li { font-size: 15px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 6px; }
+  strong { color: var(--text); font-weight: 500; }
+  a { color: var(--red); }
+  .stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0 28px; }
+  .stat-card { background: var(--bg-soft); border-radius: var(--radius-md); padding: 16px; text-align: center; }
+  .stat-num { font-size: 22px; font-weight: 600; color: var(--red); }
+  .stat-label { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+  @media (max-width: 560px) { .stat-grid { grid-template-columns: 1fr; } }
+  footer { border-top: 0.5px solid var(--border); padding: 24px; text-align: center; font-size: 12px; color: var(--text-secondary); }
+  footer a { color: var(--red); text-decoration: none; margin: 0 8px; }
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html">
+    <div class="nav-logo-icon"></div>
+    <span class="nav-logo-text">True Maple Leaf</span>
+  </a>
+  <a class="nav-back" href="index.html">← Back to home</a>
+</nav>
+
+<div class="content">
+  <div class="page-eyebrow">About us</div>
+  <h1 class="page-title">Canada's trivia game</h1>
+  <p class="page-date">Independent · privately owned · made in Canada</p>
+
+  <div class="callout">
+    <p><strong>In short:</strong> True Maple Leaf is a free trivia game built for Canadians — play solo on the couch, challenge your friends, start an office pool, or settle an argument at the restaurant table. Ten new questions every hour, always the same set for everyone, so scores are fair to compare.</p>
+  </div>
+
+  <div class="toc">
+    <div class="toc-title">On this page</div>
+    <a href="#mission">1. Our mission</a>
+    <a href="#how">2. How the game works</a>
+    <a href="#story">3. Who's behind it</a>
+    <a href="#legal">4. Keeping it legal, ethical, and safe</a>
+    <a href="#data">5. Your data and privacy</a>
+    <a href="#contact">6. Get in touch</a>
+  </div>
+
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-num">10</div><div class="stat-label">fresh questions, every hour</div></div>
+    <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">categories: Canada, Pop Culture, Sports</div></div>
+    <div class="stat-card"><div class="stat-num">$0</div><div class="stat-label">to play — always free</div></div>
+  </div>
+
+  <div class="section" id="mission">
+    <h2 class="section-title">1. Our mission</h2>
+    <p>We want True Maple Leaf to be the #1 trivia game for Canadians — the one you open when you're waiting for coffee, the one your family plays after Sunday dinner, the one your team pulls up during a lunch break, and the one that comes out at the restaurant table when someone says "I bet you don't know this one."</p>
+    <p>That means the game has to work everywhere: alone, with friends, with coworkers, and in a group at a restaurant with spotty Wi-Fi and someone always trying to Google the answer.</p>
+  </div>
+
+  <div class="section" id="how">
+    <h2 class="section-title">2. How the game works</h2>
+    <p>Every hour, we publish a new set of 10 questions split across three categories:</p>
+    <ul>
+      <li><strong>Canada</strong> — history, geography, culture, food, and the famous (and famously Canadian) people who shaped it</li>
+      <li><strong>Pop Culture</strong> — music, movies, TV, celebrities, internet culture, and the stories behind them</li>
+      <li><strong>Sports</strong> — international soccer and the World Cup, plus baseball and the Blue Jays</li>
+    </ul>
+    <p>Everyone who plays in the same hour gets the exact same questions, so comparing scores with a friend, a coworker, or your city's leaderboard is always a fair fight. Answer streaks, city rankings, and a shareable result card turn a quick quiz into something worth bragging about.</p>
+    <p>You can start playing with no account at all. Adding a game name and city gets you on the leaderboard; adding an email keeps your streak safe across devices.</p>
+  </div>
+
+  <div class="section" id="story">
+    <h2 class="section-title">3. Who's behind it</h2>
+    <p>True Maple Leaf is built in Canada, by a Canadian who got tired of losing trivia night. It's an independent, privately run project — not a big media company, not a government program, just a small team trying to build the trivia game we wanted to play ourselves.</p>
+  </div>
+
+  <div class="section" id="legal">
+    <h2 class="section-title">4. Keeping it legal, ethical, and safe</h2>
+    <p>We take the "is this okay to publish" question seriously, for our players and for us. A few concrete commitments:</p>
+    <ul>
+      <li><strong>Independent, not official.</strong> True Maple Leaf is not affiliated with, endorsed by, or connected to the Government of Canada, any provincial government, FIFA, Major League Baseball, the Toronto Blue Jays, the CFL, the NHL, or any other league, team, or official body. We say so clearly on every page.</li>
+      <li><strong>No trademarked names, logos, or IP misuse.</strong> Our brand uses an original stylised star mark — not a maple leaf, not the national flag, and not any team or league logo. Trivia questions reference public facts (people, places, events, and history), which are not subject to copyright; the specific wording of every question is written by us.</li>
+      <li><strong>No gambling, no monetary prizes.</strong> Streaks, XP, and leaderboard rank are for fun and bragging rights only — there is no betting, no purchasing of chances, and no cash or prize payout of any kind.</li>
+      <li><strong>Politically neutral.</strong> Our trivia sticks to verifiable facts and steers clear of partisan commentary or take-a-side political content.</li>
+      <li><strong>Careful with kids.</strong> The site is intended for a general audience and is not designed to target children. We ask players to confirm they meet our minimum age before creating a profile, and usernames may not impersonate real people or contain offensive content.</li>
+      <li><strong>Accessible by design.</strong> We aim to follow accessibility best practices (contrast, keyboard navigation, and screen-reader-friendly markup) so more people can play.</li>
+    </ul>
+    <p>Full details live in our <a href="terms.html">Terms of Service</a>, including the accuracy disclaimer, acceptable use rules, and limitation of liability.</p>
+  </div>
+
+  <div class="section" id="data">
+    <h2 class="section-title">5. Your data and privacy</h2>
+    <p>We collect the minimum needed to run a leaderboard and streak system, and we handle it in line with Canada's private-sector privacy law (PIPEDA) and anti-spam law (CASL) — including consent before we ever email you and an easy way to unsubscribe or delete your account. The full breakdown of what we collect, why, and how to exercise your rights is in our <a href="privacy.html">Privacy Policy</a>.</p>
+  </div>
+
+  <div class="section" id="contact">
+    <h2 class="section-title">6. Get in touch</h2>
+    <p>Found a factual error in a question? Have an idea for a new category? Want to report a username or a bug? We read every message.</p>
+    <p><strong>Email:</strong> <a href="mailto:truemapleleaf.can@gmail.com">truemapleleaf.can@gmail.com</a></p>
+  </div>
+</div>
+
+<footer>
+  <div>© 2026 True Maple Leaf · Made in Canada, for Canadians.</div>
+  <div style="margin-top:8px;">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="terms.html">Terms of Service</a>
+    <a href="privacy.html">Privacy Policy</a>
+  </div>
+</footer>
+</body>
+</html>
