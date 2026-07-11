@@ -1,0 +1,50 @@
+# True Maple Leaf
+
+> True Maple Leaf (truemapleleaf.com) is a free Canadian trivia game. Every hour, all
+> players get the same synced set of 10 questions across three categories: Canada,
+> pop culture, and sports (hockey, baseball, football, swimming, and soccer). Players
+> can start instantly with no sign-up, and can optionally save a streak and a spot on
+> their city's leaderboard by picking a game name.
+
+## Key facts
+
+- Free to play. No account required to start; a game name (and optional email) saves
+  streak and leaderboard rank.
+- New synced question set every hour, same for every player, so friends, family, and
+  coworkers can compete on identical questions.
+- Categories: Canada (history, geography, government, culture), pop culture (Canadian
+  music, film, TV, celebrities), and sports (Blue Jays baseball, Canadian/NHL hockey,
+  CFL football, Summer McIntosh and other Canadian Olympic swimmers, plus soccer).
+- Streaks, XP, and city/province leaderboards reward daily play. There is no gambling,
+  no purchasing of chances, and no cash or prize payout of any kind.
+- Results can be shared as an image card showing score and rank.
+
+## Independence and accuracy
+
+True Maple Leaf is an independent, privately run entertainment website. It is not
+affiliated with, endorsed by, sponsored by, or connected to the Government of Canada,
+any provincial or municipal government, FIFA, Major League Baseball, the Toronto Blue
+Jays, the CFL, the NHL, or any other league, team, broadcaster, or official body. The
+brand mark is an original stylised star, not a maple leaf or any official flag or logo.
+All trivia questions are original and written for entertainment; team, league, and
+athlete names are used only as factual references. Questions are for entertainment and
+may occasionally contain errors — verify anything important against a primary source.
+
+## Pages
+
+- Homepage: https://truemapleleaf.com/ — play the hourly trivia round, view the
+  leaderboard, sign up to save a streak.
+- About: https://truemapleleaf.com/about.html — who built it, independence and legal
+  disclaimers, how the game works.
+- Privacy Policy: https://truemapleleaf.com/privacy.html
+- Terms of Service: https://truemapleleaf.com/terms.html
+- Canada trivia: https://truemapleleaf.com/canada-trivia.html
+- Canada Day trivia: https://truemapleleaf.com/canada-day-trivia.html
+- Canadian pop culture quiz: https://truemapleleaf.com/canadian-pop-culture-quiz.html
+- Toronto trivia: https://truemapleleaf.com/toronto-trivia.html
+- Vancouver trivia: https://truemapleleaf.com/vancouver-trivia.html
+- Calgary trivia: https://truemapleleaf.com/calgary-trivia.html
+
+## Contact
+
+vingsinstitute@gmail.com
